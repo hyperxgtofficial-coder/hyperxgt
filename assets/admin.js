@@ -15,28 +15,52 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-// INDIAN GST TAX CALCULATOR
+// DYNAMIC INDIAN GST TAX CALCULATOR (INCLUSIVE vs EXCLUSIVE)
 function calculateGstBreakdown() {
-  const priceIncl = Number($("#formPrice")?.value || 0);
+  const mode = $("#formGstTaxType")?.value || "inclusive";
+  const inputPrice = Number($("#formPrice")?.value || 0);
   const gstRate = Number($("#formGstRate")?.value || 18);
 
-  if (!priceIncl || priceIncl <= 0) {
+  if ($("#lblFormPrice")) {
+    $("#lblFormPrice").textContent = mode === "inclusive" ? "Sale Price (Incl. GST) ₹ *" : "Base Price (Excl. GST) ₹ *";
+  }
+  if ($("#lblFormMrp")) {
+    $("#lblFormMrp").textContent = mode === "inclusive" ? "Regular MRP (Incl. GST) ₹ *" : "Base MRP (Excl. GST) ₹ *";
+  }
+
+  if (!inputPrice || inputPrice <= 0) {
     if ($("#formPriceExcl")) $("#formPriceExcl").value = "₹0";
     if ($("#formGstAmount")) $("#formGstAmount").value = "₹0";
     if ($("#gstBreakdownText")) $("#gstBreakdownText").textContent = "Tax Breakdown: CGST 9% (₹0) + SGST 9% (₹0)";
     return;
   }
 
-  const factor = 1 + (gstRate / 100);
-  const priceExcl = priceIncl / factor;
-  const gstAmount = priceIncl - priceExcl;
+  let priceExcl = 0, gstAmount = 0, finalPriceIncl = 0;
+
+  if (mode === "inclusive") {
+    const factor = 1 + (gstRate / 100);
+    priceExcl = inputPrice / factor;
+    gstAmount = inputPrice - priceExcl;
+    finalPriceIncl = inputPrice;
+    if ($("#lblPriceExcl")) $("#lblPriceExcl").textContent = "Price Excl. GST (₹)";
+    if ($("#lblGstAmount")) $("#lblGstAmount").textContent = "GST Tax Amount (₹)";
+  } else {
+    // EXCLUSIVE MODE
+    priceExcl = inputPrice;
+    gstAmount = inputPrice * (gstRate / 100);
+    finalPriceIncl = inputPrice + gstAmount;
+    if ($("#lblPriceExcl")) $("#lblPriceExcl").textContent = "Base Price (Excl. GST)";
+    if ($("#lblGstAmount")) $("#lblGstAmount").textContent = "Final Price (Incl. GST)";
+  }
+
   const halfGst = gstAmount / 2;
   const halfRate = gstRate / 2;
 
   if ($("#formPriceExcl")) $("#formPriceExcl").value = "₹" + priceExcl.toFixed(2);
-  if ($("#formGstAmount")) $("#formGstAmount").value = "₹" + gstAmount.toFixed(2);
+  if ($("#formGstAmount")) $("#formGstAmount").value = "₹" + (mode === "inclusive" ? gstAmount.toFixed(2) : finalPriceIncl.toFixed(2));
+
   if ($("#gstBreakdownText")) {
-    $("#gstBreakdownText").textContent = `Tax Breakdown: Intra-State CGST ${halfRate}% (₹${halfGst.toFixed(2)}) + SGST ${halfRate}% (₹${halfGst.toFixed(2)}) | Inter-State IGST ${gstRate}% (₹${gstAmount.toFixed(2)})`;
+    $("#gstBreakdownText").textContent = `Tax Breakdown (${mode.toUpperCase()}): CGST ${halfRate}% (₹${halfGst.toFixed(2)}) + SGST ${halfRate}% (₹${halfGst.toFixed(2)}) | Final Customer Store Price = ₹${finalPriceIncl.toFixed(2)}`;
   }
 }
 
@@ -242,6 +266,8 @@ function initCsvImportHandler() {
         const regPriceIdx = headers.findIndex(h => h === 'regular price' || h === 'mrp' || h === 'regular_price');
         const catIdx = headers.findIndex(h => h === 'categories' || h === 'category');
         const imgIdx = headers.findIndex(h => h === 'images' || h === 'image' || h === 'photo');
+        const taxModeIdx = headers.findIndex(h => h === 'price tax type' || h === 'gst mode' || h === 'tax type');
+        const gstRateIdx = headers.findIndex(h => h === 'gst rate %' || h === 'gst %' || h === 'gst rate');
 
         let updatedCount = 0, createdCount = 0;
 
@@ -253,17 +279,29 @@ function initCsvImportHandler() {
           const name = nameIdx !== -1 ? (row[nameIdx] || '').trim() : '';
           if (!sku && !name) continue;
 
-          const price = salePriceIdx !== -1 ? Number((row[salePriceIdx] || '').replace(/[^0-9.]/g, '')) || 0 : 0;
-          const mrp = regPriceIdx !== -1 ? Number((row[regPriceIdx] || '').replace(/[^0-9.]/g, '')) || price : price;
+          let rawPrice = salePriceIdx !== -1 ? Number((row[salePriceIdx] || '').replace(/[^0-9.]/g, '')) || 0 : 0;
+          let rawMrp = regPriceIdx !== -1 ? Number((row[regPriceIdx] || '').replace(/[^0-9.]/g, '')) || rawPrice : rawPrice;
           const cat = catIdx !== -1 ? (row[catIdx] || '').trim() : 'Racing Cars';
           const img = imgIdx !== -1 ? (row[imgIdx] || '').split(',')[0].trim() : '';
+          const taxMode = taxModeIdx !== -1 ? (row[taxModeIdx] || '').toLowerCase().trim() : 'inclusive';
+          const gstRate = gstRateIdx !== -1 ? Number((row[gstRateIdx] || '').replace(/[^0-9.]/g, '')) || 18 : 18;
+
+          // Compute final store price if EXCLUSIVE
+          let finalPrice = rawPrice;
+          let finalMrp = rawMrp;
+          if (taxMode === 'exclusive' && rawPrice > 0) {
+            finalPrice = Math.round(rawPrice * (1 + (gstRate / 100)));
+            finalMrp = Math.round(rawMrp * (1 + (gstRate / 100)));
+          }
 
           let existing = P.find(p => (p.sku && p.sku.toLowerCase() === sku.toLowerCase()) || (p.name && p.name.toLowerCase() === name.toLowerCase()));
 
           if (existing) {
             if (name) existing.name = name;
-            if (price > 0) existing.price = price;
-            if (mrp > 0) existing.mrp = mrp;
+            if (finalPrice > 0) existing.price = finalPrice;
+            if (finalMrp > 0) existing.mrp = finalMrp;
+            existing.gstRate = gstRate;
+            existing.taxMode = taxMode;
             if (cat) existing.category = cat;
             if (img) existing.image = img;
             updatedCount++;
@@ -274,8 +312,10 @@ function initCsvImportHandler() {
               sku: sku || ('HX-' + newId),
               name: name || ('HyperXGT Model #' + newId),
               category: cat || 'Racing Cars',
-              price: price || 1999,
-              mrp: mrp || 2499,
+              price: finalPrice || 1999,
+              mrp: finalMrp || 2499,
+              gstRate: gstRate,
+              taxMode: taxMode,
               discount: 20,
               scale: '1:16',
               speed: '35 KM/H',
@@ -304,6 +344,7 @@ function openAddModal() {
   $("#modalTitle").textContent = "Add New Product to Database";
   $("#formProdId").value = "";
   $("#productForm").reset();
+  $("#formGstTaxType").value = "inclusive";
   $("#formImgPreview").src = "assets/products/H104020-R.webp";
   calculateGstBreakdown();
   openModal("productModal");
@@ -319,6 +360,7 @@ function openEditModal(id) {
   $("#formName").value = p.name || "";
   $("#formSku").value = p.sku || "";
   $("#formCat").value = p.category || "Racing Cars";
+  $("#formGstTaxType").value = p.taxMode || "inclusive";
   $("#formPrice").value = p.price || "";
   $("#formMrp").value = p.mrp || "";
   $("#formGstRate").value = p.gstRate || 18;
@@ -344,10 +386,19 @@ async function saveProduct(e) {
   const name = $("#formName").value.trim();
   const sku = $("#formSku").value.trim();
   const category = $("#formCat").value;
-  const price = Number($("#formPrice").value) || 1999;
-  const mrp = Number($("#formMrp").value) || Math.round(price * 1.25);
+  const taxMode = $("#formGstTaxType").value;
+  const rawPrice = Number($("#formPrice").value) || 1999;
+  const rawMrp = Number($("#formMrp").value) || Math.round(rawPrice * 1.25);
   const gstRate = Number($("#formGstRate").value) || 18;
   const hsn = $("#formHsn").value.trim() || "95030090";
+
+  let price = rawPrice;
+  let mrp = rawMrp;
+  if (taxMode === 'exclusive') {
+    price = Math.round(rawPrice * (1 + (gstRate / 100)));
+    mrp = Math.round(rawMrp * (1 + (gstRate / 100)));
+  }
+
   const scale = $("#formScale").value.trim() || "1:16";
   const speed = $("#formSpeed").value.trim() || "35 KM/H";
   const drive = $("#formDrive").value;
@@ -365,6 +416,7 @@ async function saveProduct(e) {
       p.name = name;
       p.sku = sku;
       p.category = category;
+      p.taxMode = taxMode;
       p.price = price;
       p.mrp = mrp;
       p.gstRate = gstRate;
@@ -385,7 +437,7 @@ async function saveProduct(e) {
         });
       } catch(e) {}
       
-      toast(`Product #${p.id} (${p.sku}) updated with ${gstRate}% GST!`);
+      toast(`Product #${p.id} (${p.sku}) saved (${taxMode.toUpperCase()} GST)!`);
     }
   } else {
     // ADD NEW PRODUCT
@@ -395,6 +447,7 @@ async function saveProduct(e) {
       sku: sku,
       name: name,
       category: category,
+      taxMode: taxMode,
       price: price,
       mrp: mrp,
       gstRate: gstRate,
@@ -476,6 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initImageUploadHandler();
   initCsvImportHandler();
 
+  $("#formGstTaxType")?.addEventListener("change", calculateGstBreakdown);
   $("#formPrice")?.addEventListener("input", calculateGstBreakdown);
   $("#formGstRate")?.addEventListener("change", calculateGstBreakdown);
 

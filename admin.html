@@ -165,7 +165,7 @@
   <!-- ADD / EDIT PRODUCT MODAL -->
   <div class="modal" id="productModal">
     <div class="shade"></div>
-    <div class="modal-box" style="width:min(760px,94vw);max-height:88vh">
+    <div class="modal-box" style="width:min(780px,94vw);max-height:88vh">
       <div class="drawer-head">
         <b id="modalTitle">Add New Product</b>
         <button class="x" onclick="closeEl(this)">×</button>
@@ -185,7 +185,7 @@
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px">
           <div>
             <label class="form-label">Category *</label>
             <select class="field" id="formCat">
@@ -199,11 +199,18 @@
             </select>
           </div>
           <div>
-            <label class="form-label">Sale Price (Incl. GST) ₹ *</label>
+            <label class="form-label">Pricing Tax Mode *</label>
+            <select class="field" id="formGstTaxType">
+              <option value="inclusive" selected>Prices INCLUSIVE of GST</option>
+              <option value="exclusive">Prices EXCLUSIVE of GST</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" id="lblFormPrice">Sale Price ₹ *</label>
             <input class="field" type="number" id="formPrice" required placeholder="6248">
           </div>
           <div>
-            <label class="form-label">Regular MRP (Incl. GST) ₹ *</label>
+            <label class="form-label" id="lblFormMrp">Regular MRP ₹ *</label>
             <input class="field" type="number" id="formMrp" required placeholder="7810">
           </div>
         </div>
@@ -223,11 +230,11 @@
               </select>
             </div>
             <div>
-              <label class="form-label">Price Excl. GST (₹)</label>
+              <label class="form-label" id="lblPriceExcl">Price Excl. GST (₹)</label>
               <input class="field" id="formPriceExcl" readonly style="margin:0; background:#fff; font-weight:900; color:#555">
             </div>
             <div>
-              <label class="form-label">GST Tax Amount (₹)</label>
+              <label class="form-label" id="lblGstAmount">GST Tax Amount (₹)</label>
               <input class="field" id="formGstAmount" readonly style="margin:0; background:#fff; font-weight:900; color:#2e7d32">
             </div>
             <div>
