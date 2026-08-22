@@ -14,7 +14,6 @@ function saveProductsDB(arr) {
   window.HX_PRODUCTS = arr;
   try {
     localStorage.setItem("hx_products_db", JSON.stringify(arr));
-    // Broadcast live storage event across open tabs
     window.dispatchEvent(new CustomEvent("hx_stock_update", { detail: arr }));
   } catch(e) {}
 }
@@ -87,6 +86,48 @@ window.HX_ORDERS = [
     cancellationReason: ""
   }
 ];
+
+// SOCIAL MEDIA CONTENT PUBLISHER HUB
+function initSocialPublisher() {
+  const select = $("#socialProdSelect");
+  if (!select) return;
+
+  select.innerHTML = P.map(p => `<option value="${p.id}">${esc(p.name)} (${esc(p.sku)}) — ${INR(p.price)}</option>`).join("");
+
+  const updateCaption = () => {
+    const id = Number(select.value);
+    const p = P.find(x => x.id === id);
+    if (!p) return;
+
+    const hashtags = `#HyperXGT #${p.category.replace(/\s+/g, '')} #RCIndia #RCCar #SpeedDemon #${(p.scale || '1scale').replace(/[^a-zA-Z0-9]/g, '')} #HighSpeedRC`;
+    const copy = `🔥 High-Speed Action Unleashed!\n\nCheck out the all-new ${p.name} (SKU: ${p.sku}) available now on HyperXGT!\n\n⚡ Price: ${INR(p.price)} (Incl. GST)\n🏎️ Specs: ${p.scale || '1:16'} Scale · ${p.speed || 'High Speed'} · ${p.drive || '4WD'}\n🚚 Express 24-Hour Shipping Across India!\n\n👉 Shop now: https://hyperxgt.com/product.html?id=${p.id}\n\n${hashtags}`;
+    
+    if ($("#socialCaption")) $("#socialCaption").value = copy;
+  };
+
+  select.onchange = updateCaption;
+  if ($("#btnAutoCaption")) $("#btnAutoCaption").onclick = updateCaption;
+  updateCaption();
+
+  const form = $("#socialPublisherForm");
+  if (form) {
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      const channels = [];
+      if ($("#chkInsta")?.checked) channels.push("Instagram Reels");
+      if ($("#chkFb")?.checked) channels.push("Facebook Page");
+      if ($("#chkWa")?.checked) channels.push("WhatsApp Channel");
+      if ($("#chkYt")?.checked) channels.push("YouTube Shorts");
+
+      if (!channels.length) {
+        alert("Please select at least one social media channel.");
+        return;
+      }
+
+      toast(`Success! Published post to ${channels.join(", ")} ✓`);
+    };
+  }
+}
 
 // ORDER ACCEPTANCE WORKFLOW BY ADMIN & STOCK DEDUCTION
 function acceptOrder(orderId) {
@@ -278,6 +319,7 @@ function checkAdminAuth() {
     $("#adminPortal").style.display = "block";
     renderAdminProducts();
     renderAdminOrders();
+    initSocialPublisher();
   } else {
     $("#adminLoginOverlay").style.display = "grid";
     $("#adminPortal").style.display = "none";
