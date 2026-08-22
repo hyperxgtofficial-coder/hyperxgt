@@ -12,7 +12,7 @@ function toast(msg) {
   if (!t) return;
   t.textContent = msg;
   t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 1800);
+  setTimeout(() => t.classList.remove("show"), 2200);
 }
 
 // INDIAN GST TAX CALCULATOR
@@ -196,6 +196,109 @@ function initImageUploadHandler() {
   }
 }
 
+// BULK CSV IMPORT & BATCH UPDATE ENGINE
+function parseCSV(text) {
+  const lines = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], next = text[i+1];
+    if (c === '"') {
+      if (inQuotes && next === '"') { field += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if (c === ',' && !inQuotes) {
+      row.push(field); field = '';
+    } else if ((c === '\r' || c === '\n') && !inQuotes) {
+      if (c === '\r' && next === '\n') { i++; }
+      row.push(field); field = '';
+      if (row.some(x => x.trim() !== '')) lines.push(row);
+      row = [];
+    } else {
+      field += c;
+    }
+  }
+  if (field || row.length) { row.push(field); lines.push(row); }
+  return lines;
+}
+
+function initCsvImportHandler() {
+  const input = $("#adminCsvFileInput");
+  if (!input) return;
+
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const rawText = evt.target.result;
+        const csvRows = parseCSV(rawText);
+        if (!csvRows.length) return;
+
+        const headers = csvRows[0].map(h => h.trim().toLowerCase());
+        const skuIdx = headers.findIndex(h => h === 'sku' || h === 'model');
+        const nameIdx = headers.findIndex(h => h === 'name' || h === 'title' || h === 'product name');
+        const salePriceIdx = headers.findIndex(h => h === 'sale price' || h === 'price' || h === 'sale_price');
+        const regPriceIdx = headers.findIndex(h => h === 'regular price' || h === 'mrp' || h === 'regular_price');
+        const catIdx = headers.findIndex(h => h === 'categories' || h === 'category');
+        const imgIdx = headers.findIndex(h => h === 'images' || h === 'image' || h === 'photo');
+
+        let updatedCount = 0, createdCount = 0;
+
+        for (let i = 1; i < csvRows.length; i++) {
+          const row = csvRows[i];
+          if (!row || !row.length) continue;
+
+          const sku = skuIdx !== -1 ? (row[skuIdx] || '').trim() : '';
+          const name = nameIdx !== -1 ? (row[nameIdx] || '').trim() : '';
+          if (!sku && !name) continue;
+
+          const price = salePriceIdx !== -1 ? Number((row[salePriceIdx] || '').replace(/[^0-9.]/g, '')) || 0 : 0;
+          const mrp = regPriceIdx !== -1 ? Number((row[regPriceIdx] || '').replace(/[^0-9.]/g, '')) || price : price;
+          const cat = catIdx !== -1 ? (row[catIdx] || '').trim() : 'Racing Cars';
+          const img = imgIdx !== -1 ? (row[imgIdx] || '').split(',')[0].trim() : '';
+
+          let existing = P.find(p => (p.sku && p.sku.toLowerCase() === sku.toLowerCase()) || (p.name && p.name.toLowerCase() === name.toLowerCase()));
+
+          if (existing) {
+            if (name) existing.name = name;
+            if (price > 0) existing.price = price;
+            if (mrp > 0) existing.mrp = mrp;
+            if (cat) existing.category = cat;
+            if (img) existing.image = img;
+            updatedCount++;
+          } else {
+            const newId = Math.max(0, ...P.map(x => x.id || 0)) + 1;
+            P.unshift({
+              id: newId,
+              sku: sku || ('HX-' + newId),
+              name: name || ('HyperXGT Model #' + newId),
+              category: cat || 'Racing Cars',
+              price: price || 1999,
+              mrp: mrp || 2499,
+              discount: 20,
+              scale: '1:16',
+              speed: '35 KM/H',
+              drive: '4WD',
+              image: img || 'assets/products/H104020-R.webp',
+              short_description: name
+            });
+            createdCount++;
+          }
+        }
+
+        window.HX_PRODUCTS = P;
+        renderAdminProducts();
+        populateAdminCatFilter();
+        toast(`Bulk CSV Success! Updated ${updatedCount} products, added ${createdCount} new products ✓`);
+      } catch (err) {
+        alert("Error parsing CSV file: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+}
+
 // OPEN ADD MODAL
 function openAddModal() {
   $("#modalTitle").textContent = "Add New Product to Database";
@@ -371,6 +474,7 @@ document.addEventListener("DOMContentLoaded", () => {
   populateAdminCatFilter();
   initAdminTabs();
   initImageUploadHandler();
+  initCsvImportHandler();
 
   $("#formPrice")?.addEventListener("input", calculateGstBreakdown);
   $("#formGstRate")?.addEventListener("change", calculateGstBreakdown);
