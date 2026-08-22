@@ -81,3 +81,9 @@ LATEST UPDATE
 - Ambassador is blended with the existing large RC rally-car background.
 - Official BRAND AMBASSADOR badge added.
 - Existing Shop by Scale placement, 4-product desktop grid, 337 catalogue products, cart and all other pages remain unchanged.
+
+LATEST HERO UPDATE
+- Desktop: opening hero is now full-width.
+- The two secondary feature cards are placed below the main hero.
+- Mobile: ambassador is constrained to the right side and no longer covers hero copy.
+- Mobile headline, paragraph, CTA buttons and stats are resized/reflowed for readability.
