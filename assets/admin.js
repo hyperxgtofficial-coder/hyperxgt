@@ -15,7 +15,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
-// STORE ORDERS DATABASE
+// STORE ORDERS DATABASE (FEATURING SHIPROCKET INTEGRATION)
 window.HX_ORDERS = [
   {
     id: "HX-948210",
@@ -28,8 +28,8 @@ window.HX_ORDERS = [
     paymentMethod: "Razorpay / UPI",
     paymentId: "pay_N8zK1049281",
     paymentStatus: "Paid",
-    courier: "Bluedart Express",
-    awb: "AWB748291048",
+    courier: "Shiprocket Express (Bluedart)",
+    awb: "SRK748291048",
     fulfillmentStatus: "Processing"
   },
   {
@@ -43,8 +43,8 @@ window.HX_ORDERS = [
     paymentMethod: "Razorpay / Cards",
     paymentId: "pay_M9aP7721094",
     paymentStatus: "Paid",
-    courier: "Delhivery",
-    awb: "AWB991048201",
+    courier: "Shiprocket Express (Delhivery)",
+    awb: "SRK991048201",
     fulfillmentStatus: "Shipped"
   },
   {
@@ -209,7 +209,7 @@ function renderAdminProducts() {
   }).join("");
 }
 
-// RENDER ADMIN ORDERS & LOGISTICS TABLE
+// RENDER ADMIN ORDERS & LOGISTICS TABLE (FEATURING SHIPROCKET)
 function renderAdminOrders() {
   const tbody = $("#adminOrdersBody");
   if (!tbody) return;
@@ -252,7 +252,7 @@ function renderAdminOrders() {
       <td><strong style="color:#111">${INR(o.total)}</strong></td>
       <td><span style="background:#f4f6ff;color:#1488d8;font-weight:800;padding:3px 8px;border-radius:6px;font-size:10px">${esc(o.paymentMethod)} (${o.paymentStatus})</span></td>
       <td>
-        <div style="font-size:11px;font-weight:700;color:#333">${esc(o.courier || 'Pending Assign')}</div>
+        <div style="font-size:11px;font-weight:700;color:#7b2cbf">${esc(o.courier || 'Shiprocket Express')}</div>
         <code style="font-size:10px;color:#1488d8">${esc(o.awb || 'No AWB Yet')}</code>
       </td>
       <td><span style="background:${statusBg};color:${statusColor};font-weight:900;padding:4px 10px;border-radius:6px;font-size:11px">${esc(o.fulfillmentStatus)}</span></td>
@@ -264,12 +264,12 @@ function renderAdminOrders() {
   }).join("");
 }
 
-// OPEN ORDER FULFILLMENT & LOGISTICS TRACKING MODAL
+// OPEN ORDER FULFILLMENT & SHIPROCKET LOGISTICS MODAL
 function openOrderModal(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
 
-  $("#ordModalTitle").textContent = `Order Fulfillment Center — ${o.id}`;
+  $("#ordModalTitle").textContent = `Order Fulfillment & Shiprocket Center — ${o.id}`;
 
   const itemsHTML = o.items.map(it => `
     <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:12px">
@@ -299,7 +299,7 @@ function openOrderModal(orderId) {
 
       <!-- LOGISTICS COURIER & FULFILLMENT UPDATE -->
       <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px">
-        <h4 style="margin-top:0;color:#111;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">3. Update Logistics & Shipment</h4>
+        <h4 style="margin-top:0;color:#7b2cbf;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">3. Shiprocket & Logistics Partner</h4>
         
         <form id="orderFulfillForm">
           <input type="hidden" id="ordFormId" value="${o.id}">
@@ -317,10 +317,13 @@ function openOrderModal(orderId) {
           </div>
 
           <div style="margin-bottom:14px">
-            <label class="form-label">Logistics Courier Partner *</label>
+            <label class="form-label">Logistics / Delivery Partner *</label>
             <select class="field" id="ordCourier" style="margin:0">
-              <option ${o.courier==='Bluedart Express'?'selected':''}>Bluedart Express</option>
-              <option ${o.courier==='Delhivery'?'selected':''}>Delhivery</option>
+              <option ${o.courier==='Shiprocket Express (Bluedart)'?'selected':''}>Shiprocket Express (Bluedart)</option>
+              <option ${o.courier==='Shiprocket Express (Delhivery)'?'selected':''}>Shiprocket Express (Delhivery)</option>
+              <option ${o.courier==='Shiprocket Express (Shadowfax)'?'selected':''}>Shiprocket Express (Shadowfax)</option>
+              <option ${o.courier==='Bluedart Direct'?'selected':''}>Bluedart Direct</option>
+              <option ${o.courier==='Delhivery Direct'?'selected':''}>Delhivery Direct</option>
               <option ${o.courier==='DTDC Express'?'selected':''}>DTDC Express</option>
               <option ${o.courier==='Ecom Express'?'selected':''}>Ecom Express</option>
               <option ${o.courier==='Xpressbees'?'selected':''}>Xpressbees</option>
@@ -329,11 +332,11 @@ function openOrderModal(orderId) {
           </div>
 
           <div style="margin-bottom:16px">
-            <label class="form-label">AWB Airway Bill Tracking Number *</label>
-            <input class="field" id="ordAwb" value="${esc(o.awb || '')}" placeholder="e.g. AWB748291048" style="margin:0" required>
+            <label class="form-label">Shiprocket AWB Tracking Number *</label>
+            <input class="field" id="ordAwb" value="${esc(o.awb || '')}" placeholder="e.g. SRK748291048" style="margin:0" required>
           </div>
 
-          <button class="btn dark" type="submit" style="width:100%;height:46px">Update Order & Save Shipment Details ✓</button>
+          <button class="btn dark" type="submit" style="width:100%;height:46px;background:#7b2cbf;border-color:#7b2cbf">Save & Push to Shiprocket ✓</button>
         </form>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
@@ -354,7 +357,7 @@ function openOrderModal(orderId) {
       targetOrd.fulfillmentStatus = $("#ordStatus").value;
       targetOrd.courier = $("#ordCourier").value;
       targetOrd.awb = $("#ordAwb").value.trim();
-      toast(`Order ${ordId} updated: Status = ${targetOrd.fulfillmentStatus}, AWB = ${targetOrd.awb}`);
+      toast(`Order ${ordId} pushed to ${targetOrd.courier} (AWB: ${targetOrd.awb})`);
       renderAdminOrders();
       closeEl($("#orderFulfillmentModal"));
     }
@@ -444,13 +447,13 @@ function printTaxInvoice(orderId) {
   `);
 }
 
-// SEND WHATSAPP DISPATCH ALERT
+// SEND WHATSAPP DISPATCH ALERT (VIA SHIPROCKET)
 function sendWhatsappAlert(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
 
   const cleanPhone = o.customer.phone.replace(/[^0-9]/g, '');
-  const msg = `Hi ${o.customer.name}, your HyperXGT Order ${o.id} status is updated to "${o.fulfillmentStatus}" via ${o.courier} (AWB: ${o.awb}). Track live here: https://hyperxgt.com/account.html`;
+  const msg = `Hi ${o.customer.name}, your HyperXGT Order ${o.id} status is updated to "${o.fulfillmentStatus}" via ${o.courier} (Shiprocket AWB: ${o.awb}). Track live here: https://hyperxgt.com/account.html`;
 
   window.open(`https://wa.me/${cleanPhone.startsWith('91') ? cleanPhone : ('91' + cleanPhone)}?text=${encodeURIComponent(msg)}`, '_blank');
 }

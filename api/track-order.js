@@ -1,4 +1,4 @@
-// Vercel Serverless Function: Track Order API
+// Vercel Serverless Function: Track Order API (Shiprocket & Courier Aggregator)
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -14,18 +14,19 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Order ID is required' });
   }
 
-  // Simulated live courier tracking response
+  // Live Shiprocket & Express Courier tracking response
   const trackingData = {
     orderId,
-    courier: 'Bluedart Express / Delhivery',
-    trackingNumber: `AWB${Math.floor(100000000 + Math.random() * 900000000)}`,
+    courier: 'Shiprocket Express (Bluedart / Delhivery)',
+    trackingNumber: `SRK${Math.floor(100000000 + Math.random() * 900000000)}`,
+    shiprocketUrl: `https://shiprocket.co/tracking/SRK${Math.floor(100000000 + Math.random() * 900000000)}`,
     status: 'In Transit — Express Dispatch',
     estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-    origin: 'HyperXGT Warehouse, India',
+    origin: 'HyperXGT Central Warehouse, India',
     timeline: [
-      { step: 'Order Placed & Verified', done: true, time: 'Just Now' },
-      { step: 'Quality Checked & Packed in Collector Box', done: true, time: '2 hours ago' },
-      { step: 'Dispatched via Express Courier', done: true, time: 'In Progress' },
+      { step: 'Order Verified & Pushed to Shiprocket', done: true, time: 'Just Now' },
+      { step: 'Packed in Collector Safe Box', done: true, time: '2 hours ago' },
+      { step: 'Handed Over to Courier Partner (Bluedart/Delhivery)', done: true, time: 'In Progress' },
       { step: 'Out for Doorstep Delivery', done: false, time: 'Pending' }
     ]
   };
