@@ -1,33 +1,486 @@
+const P = window.HX_PRODUCTS || [];
+const $ = (q, r = document) => r.querySelector(q);
+const $$ = (q, r = document) => [...r.querySelectorAll(q)];
+const INR = n => "₹" + Number(n || 0).toLocaleString("en-IN");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+const openModal = id => $("#" + id)?.classList.add("open");
+const closeEl = el => el.closest(".modal,.drawer")?.classList.remove("open");
 
-const P=window.HX_PRODUCTS||[];
-const $=(q,r=document)=>r.querySelector(q), $$=(q,r=document)=>[...r.querySelectorAll(q)];
-const INR=n=>"₹"+Number(n||0).toLocaleString("en-IN");
-const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
-const openModal=id=>$("#"+id)?.classList.add("open");
-const closeEl=el=>el.closest(".modal,.drawer")?.classList.remove("open");
-const getCart=()=>JSON.parse(localStorage.getItem("hx_cart")||"{}");
-const setCart=c=>{localStorage.setItem("hx_cart",JSON.stringify(c));renderCartDrawer();updateCount()};
-const getWish=()=>JSON.parse(localStorage.getItem("hx_wish")||"[]");
-const setWish=w=>localStorage.setItem("hx_wish",JSON.stringify(w));
-function toast(msg){const t=$("#toast");if(!t)return;t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
-function updateCount(){const n=Object.values(getCart()).reduce((a,b)=>a+b,0);$$(".cart-count").forEach(x=>x.textContent=n)}
-function addCart(id,qty=1){const c=getCart();c[id]=(c[id]||0)+Math.max(1,Number(qty)||1);setCart(c);toast("Added to cart")}
-function removeCart(id){const c=getCart();delete c[id];setCart(c);renderCartPage();renderCheckout()}
-function updateQty(id,qty){const c=getCart();c[id]=Math.max(1,Number(qty)||1);setCart(c);renderCartPage();renderCheckout()}
-function toggleWish(id){let w=getWish();w=w.includes(id)?w.filter(x=>x!==id):[...w,id];setWish(w);$$(`[data-wish="${id}"]`).forEach(b=>{b.classList.toggle("on",w.includes(id));b.textContent=w.includes(id)?"♥":"♡"});toast(w.includes(id)?"Saved to wishlist":"Removed from wishlist")}
-function productCard(p){const w=getWish().includes(p.id);return `<article class="product-card"><div class="product-media"><a href="product.html?id=${p.id}"><img loading="lazy" src="${p.image}" alt="${esc(p.name)}"></a><span class="tag">${esc(p.category)}</span>${p.discount?`<span class="tag sale-tag">${p.discount}% OFF</span>`:""}<button class="wish ${w?"on":""}" data-wish="${p.id}" onclick="toggleWish(${p.id})">${w?"♥":"♡"}</button></div><div class="product-meta"><div class="sku">HYPERXGT · ${esc(p.sku)}</div><a href="product.html?id=${p.id}"><h3>${esc(p.name)}</h3></a><p>${esc(p.scale)} · ${esc(p.drive)} · ${esc(p.speed)}</p><div class="price"><strong>${INR(p.price)}</strong>${p.mrp>p.price?`<del>${INR(p.mrp)}</del>`:""}</div><div class="product-actions"><button class="mini-btn quick" onclick="quickView(${p.id})">Quick view</button><button class="mini-btn solid" onclick="addCart(${p.id})">Add to cart</button></div></div></article>`}
-function specGrid(p){return [["Scale",p.scale],["Speed",p.speed],["Drive",p.drive],["Motor",p.motor],["Battery",p.battery],["Control",p.control],["Dimensions",p.dimensions],["Age",p.age],["Catalogue page",p.source_page]].map(x=>`<div><b>${x[0]}</b>${esc(x[1])}</div>`).join("")}
-function quickView(id){const p=P.find(x=>x.id===id);if(!p)return;$("#quickBox").innerHTML=`<div class="drawer-head"><b>Quick View</b><button class="x" onclick="closeEl(this)">×</button></div><div style="display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center;margin-top:20px"><img src="${p.image}" style="width:180px;height:160px;object-fit:contain;background:#f6f6f6;border-radius:14px"><div><div class="eyebrow">${esc(p.category)} · ${esc(p.sku)}</div><h3 style="margin:8px 0">${esc(p.name)}</h3><div class="price"><strong>${INR(p.price)}</strong>${p.mrp>p.price?`<del>${INR(p.mrp)}</del>`:""}</div><p style="font-size:11px;color:#666">${esc(p.scale)} · ${esc(p.speed)} · ${esc(p.drive)}</p><div class="modal-row"><button class="btn dark" onclick="addCart(${p.id})">Add to cart</button><a class="btn" href="product.html?id=${p.id}">Full product</a></div></div></div>`;openModal("quickModal")}
-function renderCartDrawer(){const root=$("#cartItems");if(!root)return;const c=getCart(),ids=Object.keys(c).map(Number);if(!ids.length){root.className="cart-empty";root.innerHTML='Your cart is empty.<br><small>Add a product to start your build.</small>';$("#cartSummary").style.display="none";return}root.className="";root.innerHTML=ids.map(id=>{const p=P.find(x=>x.id===id);if(!p)return"";return `<div class="cart-item"><img src="${p.image}"><div><b>${esc(p.name).slice(0,56)}</b><div style="font-size:9px;color:#888;margin-top:4px">${c[id]} × ${INR(p.price)}</div></div><button class="remove" onclick="removeCart(${id})">Remove</button></div>`}).join("");$("#cartSummary").style.display="block"}
-function initChrome(){updateCount();renderCartDrawer();$$("[data-modal]").forEach(b=>b.addEventListener("click",e=>{e.preventDefault();openModal(b.dataset.modal)}));$$(".modal .shade,.drawer .shade,.x").forEach(el=>el.addEventListener("click",()=>closeEl(el)));const co=$("#cartOpen");if(co)co.onclick=()=>$("#cartDrawer").classList.add("open");const mo=$("#mobileOpen");if(mo)mo.onclick=()=>{openModal("searchModal")};$$(".demoAction").forEach(b=>b.onclick=()=>toast("Frontend flow ready — backend connection is the next phase"));
-const tb=$("#trackBtn");if(tb)tb.onclick=()=>{const o=$("#trackOrder").value.trim()||"HX-10482";$("#trackResult").innerHTML=`<div style="margin-top:18px;padding:16px;border-radius:14px;background:#f4f6ff;border:1px solid #dfe4ff"><b>${esc(o)}</b><div style="font-size:11px;margin-top:5px;color:#5f6471">Tracking UI ready. Live shipment timeline will connect to your logistics provider.</div></div>`};
-const sf=$("#searchField");if(sf)sf.addEventListener("input",e=>{const v=e.target.value.toLowerCase().trim();if(!v){$("#searchResults").textContent="Try: brushless, racing, off road, 1:14";return}const a=P.filter(p=>(p.name+" "+p.sku+" "+p.category+" "+p.scale+" "+p.speed+" "+p.drive).toLowerCase().includes(v)).slice(0,8);$("#searchResults").innerHTML=a.length?a.map(p=>`<a href="product.html?id=${p.id}" style="display:grid;grid-template-columns:46px 1fr;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #eee"><img src="${p.image}" style="width:46px;height:42px;object-fit:contain"><div><b>${esc(p.name)}</b><div style="font-size:9px;color:#999">${esc(p.sku)} · ${INR(p.price)}</div></div></a>`).join(""):"No catalogue products found."})}
-function homeInit(){const root=$("#homeProducts");if(!root)return;function show(cat="All"){let a=P.filter(p=>p.image&&p.category!=="Collectables");if(cat!=="All")a=a.filter(p=>p.category===cat);a=a.sort((x,y)=>(y.featured-x.featured)||(y.discount-x.discount)).slice(0,6);root.innerHTML=a.map(productCard).join("")}show();$$("[data-home-filter]").forEach(b=>b.onclick=()=>{$$("[data-home-filter]").forEach(x=>x.classList.remove("active"));b.classList.add("active");show(b.dataset.homeFilter)})}
-function shopInit(){if(!$("#shopGrid"))return;const qs=new URLSearchParams(location.search);$("#searchFilter").value=qs.get("q")||"";const cats=[...new Set(P.map(p=>p.category))];$("#catFilter").innerHTML='<option value="">All categories</option>'+cats.map(x=>`<option>${esc(x)}</option>`).join("");$("#catFilter").value=qs.get("cat")||"";const scales=[...new Set(P.map(p=>p.scale).filter(x=>x&&x!=="Not specified"))].sort();$("#scaleFilter").innerHTML='<option value="">All scales</option>'+scales.map(x=>`<option>${esc(x)}</option>`).join("");$("#scaleFilter").value=qs.get("scale")||"";let page=1,per=24;
-function render(){let a=[...P],q=$("#searchFilter").value.toLowerCase().trim(),cat=$("#catFilter").value,scale=$("#scaleFilter").value,max=Number($("#priceFilter").value||0),sort=$("#sortFilter").value;if(q)a=a.filter(p=>(p.name+" "+p.sku+" "+p.category+" "+p.scale+" "+p.speed+" "+p.drive+" "+p.motor).toLowerCase().includes(q));if(cat)a=a.filter(p=>p.category===cat);if(scale)a=a.filter(p=>p.scale===scale);if(max)a=a.filter(p=>p.price<=max);if(sort==="low")a.sort((x,y)=>x.price-y.price);if(sort==="high")a.sort((x,y)=>y.price-x.price);if(sort==="discount")a.sort((x,y)=>y.discount-x.discount);const pages=Math.max(1,Math.ceil(a.length/per));page=Math.min(page,pages);const start=(page-1)*per;$("#resultCount").textContent=`${a.length} products`;$("#shopGrid").innerHTML=a.slice(start,start+per).map(productCard).join("")||'<div class="empty">No matching products.</div>';$("#pager").innerHTML=Array.from({length:pages},(_,i)=>i+1).filter(n=>pages<=9||n===1||n===pages||Math.abs(n-page)<=2).map(n=>`<button class="${n===page?"active":""}" data-p="${n}">${n}</button>`).join("");$$("#pager button").forEach(b=>b.onclick=()=>{page=Number(b.dataset.p);render();scrollTo({top:180,behavior:"smooth"})})}
-["searchFilter","catFilter","scaleFilter","priceFilter","sortFilter"].forEach(id=>$("#"+id).addEventListener(id==="searchFilter"?"input":"change",()=>{page=1;render()}));render()}
-function productInit(){const root=$("#productDetail");if(!root)return;const id=Number(new URLSearchParams(location.search).get("id"));const p=P.find(x=>x.id===id)||P[0];document.title=`${p.name} | HyperXGT`;root.innerHTML=`<div class="detail-media"><img src="${p.image}" alt="${esc(p.name)}"></div><div class="detail-info"><div class="eyebrow">${esc(p.category)} · SKU ${esc(p.sku)}</div><h1>${esc(p.name)}</h1><div class="detail-price"><strong>${INR(p.price)}</strong>${p.mrp>p.price?`<del>${INR(p.mrp)}</del>`:""}${p.discount?` <span style="font-size:11px;color:#ed1c24;font-weight:900">${p.discount}% OFF</span>`:""}</div><p style="color:#6d7077">Catalogue data is shown exactly from the supplied HyperXGT export where available.</p><div class="spec-table">${specGrid(p)}</div><div class="modal-row"><input id="detailQty" class="field" style="width:85px;margin:0" type="number" min="1" value="1"><button class="btn dark" onclick="addCart(${p.id},$('#detailQty').value)">Add to cart</button><button class="btn" onclick="toggleWish(${p.id})">♡ Wishlist</button></div><div class="notice" style="margin-top:20px">For live launch, stock availability, colour variants, shipping ETA and payment status should be synchronized with the backend.</div></div>`;$("#relatedGrid").innerHTML=P.filter(x=>x.category===p.category&&x.id!==p.id).slice(0,3).map(productCard).join("")}
-function renderCartPage(){const root=$("#cartPageItems");if(!root)return;const c=getCart(),ids=Object.keys(c).map(Number);if(!ids.length){root.innerHTML='<div class="empty">Your cart is empty.<br><br><a class="btn dark" href="shop.html">Shop HyperXGT</a></div>';$("#cartPageSummary").innerHTML="";return}root.innerHTML=ids.map(id=>{const p=P.find(x=>x.id===id);if(!p)return"";return `<div class="cart-row"><img src="${p.image}"><div><div class="sku">${esc(p.sku)}</div><b>${esc(p.name)}</b><div style="font-size:10px;color:#888;margin-top:4px">${INR(p.price)}</div></div><input type="number" min="1" value="${c[id]}" onchange="updateQty(${id},this.value)"><div class="line-total"><b>${INR(p.price*c[id])}</b></div><button class="x" onclick="removeCart(${id})">×</button></div>`}).join("");const total=ids.reduce((s,id)=>{const p=P.find(x=>x.id===id);return s+(p?p.price*c[id]:0)},0);$("#cartPageSummary").innerHTML=`<div class="sumline"><span>Subtotal</span><b>${INR(total)}</b></div><div class="sumline"><span>Shipping</span><span>Calculated at checkout</span></div><div class="sumline total"><span>Total</span><span>${INR(total)}</span></div><a href="checkout.html" class="btn dark" style="width:100%;display:flex;align-items:center;justify-content:center;margin-top:14px">Secure checkout</a>`}
-function renderCheckout(){const root=$("#checkoutSummary");if(!root)return;const c=getCart();let total=0;root.innerHTML=Object.keys(c).map(id=>{const p=P.find(x=>x.id==id);if(!p)return"";total+=p.price*c[id];return `<div class="sumline"><span>${esc(p.name).slice(0,42)} × ${c[id]}</span><b>${INR(p.price*c[id])}</b></div>`}).join("")+`<div class="sumline total"><span>Total</span><span>${INR(total)}</span></div>`;const po=$("#placeOrder");if(po)po.onclick=e=>{e.preventDefault();toast("Checkout UI is ready — connect Razorpay/Supabase for live orders.")}}
-function faqInit(){$$(".faq-q").forEach(q=>q.onclick=()=>q.parentElement.classList.toggle("open"))}
-document.addEventListener("DOMContentLoaded",()=>{initChrome();homeInit();shopInit();productInit();renderCartPage();renderCheckout();faqInit()});
+const getCart = () => JSON.parse(localStorage.getItem("hx_cart") || "{}");
+const setCart = c => { localStorage.setItem("hx_cart", JSON.stringify(c)); renderCartDrawer(); updateCount(); };
+const getWish = () => JSON.parse(localStorage.getItem("hx_wish") || "[]");
+const setWish = w => localStorage.setItem("hx_wish", JSON.stringify(w));
+
+function toast(msg) {
+  const t = $("#toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+function updateCount() {
+  const n = Object.values(getCart()).reduce((a, b) => a + b, 0);
+  $$(".cart-count").forEach(x => x.textContent = n);
+}
+
+function addCart(id, qty = 1) {
+  const c = getCart();
+  c[id] = (c[id] || 0) + Math.max(1, Number(qty) || 1);
+  setCart(c);
+  toast("Added to cart");
+}
+
+function removeCart(id) {
+  const c = getCart();
+  delete c[id];
+  setCart(c);
+  renderCartPage();
+  renderCheckout();
+}
+
+function updateQty(id, qty) {
+  const c = getCart();
+  c[id] = Math.max(1, Number(qty) || 1);
+  setCart(c);
+  renderCartPage();
+  renderCheckout();
+}
+
+function toggleWish(id) {
+  let w = getWish();
+  w = w.includes(id) ? w.filter(x => x !== id) : [...w, id];
+  setWish(w);
+  $$(`[data-wish="${id}"]`).forEach(b => {
+    b.classList.toggle("on", w.includes(id));
+    b.textContent = w.includes(id) ? "♥" : "♡";
+  });
+  toast(w.includes(id) ? "Saved to wishlist" : "Removed from wishlist");
+}
+
+/* 4-COLUMN RESPONSIVE PRODUCT CARD */
+function productCard(p) {
+  const w = getWish().includes(p.id);
+  const specs = [p.scale, p.drive, p.speed].filter(x => x && x !== "Not specified").join(" · ");
+  return `<article class="product-card">
+    <div class="product-media">
+      <a href="product.html?id=${p.id}"><img loading="lazy" src="${p.image}" alt="${esc(p.name)}"></a>
+      <span class="tag">${esc(p.category)}</span>
+      ${p.discount ? `<span class="tag sale-tag">${p.discount}% OFF</span>` : ""}
+      <button class="wish ${w ? "on" : ""}" data-wish="${p.id}" onclick="toggleWish(${p.id})">${w ? "♥" : "♡"}</button>
+    </div>
+    <div class="product-meta">
+      <div class="sku">HYPERXGT · ${esc(p.sku)}</div>
+      <a href="product.html?id=${p.id}"><h3>${esc(p.name)}</h3></a>
+      <p>${esc(specs || (p.scale + " · " + p.drive))}</p>
+      <div class="price">
+        <strong>${INR(p.price)}</strong>
+        ${p.mrp > p.price ? `<del>${INR(p.mrp)}</del>` : ""}
+      </div>
+      <div class="product-actions">
+        <button class="mini-btn quick" onclick="quickView(${p.id})">Quick view</button>
+        <button class="mini-btn solid" onclick="addCart(${p.id})">Add to cart</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+/* SMART SIMILAR VARIANTS MATCHING ALGORITHM + UPSELL INTEGRATION */
+function getSimilarVariants(p, allProducts) {
+  if (!p || !allProducts) return [];
+  
+  // 1. Explicit Upsell SKUs from CSV export
+  const upsellsList = [];
+  if (p.upsells && p.upsells.length) {
+    p.upsells.forEach(uSku => {
+      const match = allProducts.find(x => x.id !== p.id && (x.sku || '').toUpperCase() === uSku.toUpperCase());
+      if (match) upsellsList.push(match);
+    });
+  }
+
+  const pool = allProducts.filter(x => x.id !== p.id && !upsellsList.some(u => u.id === x.id));
+  const rawSku = (p.sku || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const modelFamily = rawSku.replace(/[-_].*$/, '').slice(0, 5);
+
+  const scored = pool.map(item => {
+    let score = 0;
+    const itemSku = (item.sku || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+    // 1. Same normalized model family / shared SKU prefix
+    if (modelFamily && modelFamily.length >= 3 && itemSku.includes(modelFamily)) {
+      score += 100;
+    }
+    // 2. Same category + same scale
+    if (item.category === p.category && item.scale && p.scale && item.scale === p.scale && item.scale !== 'Not specified') {
+      score += 50;
+    } else if (item.category === p.category) {
+      score += 30;
+    }
+    // 3. Same drive system
+    if (item.drive && p.drive && item.drive === p.drive && item.drive !== 'Not specified') {
+      score += 15;
+    }
+    // 4. Price proximity
+    if (p.price > 0 && item.price > 0) {
+      const diffRatio = Math.abs(item.price - p.price) / p.price;
+      if (diffRatio <= 0.25) score += 20;
+      else if (diffRatio <= 0.5) score += 10;
+    }
+    return { item, score };
+  });
+
+  const algorithmMatches = scored
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map(s => s.item);
+
+  return [...upsellsList, ...algorithmMatches].slice(0, 8);
+}
+
+function renderFullSpecGrid(p) {
+  const specs = [
+    ["Scale", p.scale],
+    ["Top Speed", p.speed],
+    ["Drive System", p.drive],
+    ["Motor Type", p.motor],
+    ["Battery Spec", p.battery],
+    ["Control System", p.control],
+    ["Dimensions", p.dimensions],
+    ["Weight", p.weight],
+    ["Recommended Age", p.age],
+    ["Brand", p.brand]
+  ];
+
+  // Append any extra CSV dynamic attributes
+  if (p.attributes) {
+    Object.entries(p.attributes).forEach(([k, v]) => {
+      if (v && !specs.some(s => s[0].toLowerCase() === k.toLowerCase())) {
+        specs.push([k, v]);
+      }
+    });
+  }
+
+  return specs.map(x => `<div><b>${esc(x[0])}</b><span>${esc(x[1] || "Standard")}</span></div>`).join("");
+}
+
+function quickView(id) {
+  const p = P.find(x => x.id === id);
+  if (!p) return;
+  $("#quickBox").innerHTML = `<div class="drawer-head"><b>Quick View</b><button class="x" onclick="closeEl(this)">×</button></div>
+  <div style="display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center;margin-top:20px">
+    <img src="${p.image}" style="width:180px;height:160px;object-fit:contain;background:#f6f6f6;border-radius:14px">
+    <div>
+      <div class="eyebrow">${esc(p.category)} · ${esc(p.sku)}</div>
+      <h3 style="margin:8px 0">${esc(p.name)}</h3>
+      <div class="price"><strong>${INR(p.price)}</strong>${p.mrp > p.price ? `<del>${INR(p.mrp)}</del>` : ""}</div>
+      <p style="font-size:11px;color:#666;margin-top:4px">${esc(p.scale)} · ${esc(p.speed)} · ${esc(p.drive)}</p>
+      <div class="modal-row" style="margin-top:14px">
+        <button class="btn dark" onclick="addCart(${p.id})">Add to cart</button>
+        <a class="btn" href="product.html?id=${p.id}">Full product page</a>
+      </div>
+    </div>
+  </div>`;
+  openModal("quickModal");
+}
+
+function renderCartDrawer() {
+  const root = $("#cartItems");
+  if (!root) return;
+  const c = getCart(), ids = Object.keys(c).map(Number);
+  if (!ids.length) {
+    root.className = "cart-empty";
+    root.innerHTML = 'Your cart is empty.<br><small>Add a product to start your build.</small>';
+    $("#cartSummary").style.display = "none";
+    return;
+  }
+  root.className = "";
+  root.innerHTML = ids.map(id => {
+    const p = P.find(x => x.id === id);
+    if (!p) return "";
+    return `<div class="cart-item">
+      <img src="${p.image}">
+      <div>
+        <b>${esc(p.name).slice(0, 56)}</b>
+        <div style="font-size:10px;color:#888;margin-top:4px">${c[id]} × ${INR(p.price)}</div>
+      </div>
+      <button class="remove" onclick="removeCart(${id})">Remove</button>
+    </div>`;
+  }).join("");
+  $("#cartSummary").style.display = "block";
+}
+
+function initChrome() {
+  updateCount();
+  renderCartDrawer();
+  $$("[data-modal]").forEach(b => b.addEventListener("click", e => {
+    e.preventDefault();
+    openModal(b.dataset.modal);
+  }));
+  $$(".modal .shade,.drawer .shade,.x").forEach(el => el.addEventListener("click", () => closeEl(el)));
+  const co = $("#cartOpen");
+  if (co) co.onclick = () => $("#cartDrawer").classList.add("open");
+  const mo = $("#mobileOpen");
+  if (mo) mo.onclick = () => openModal("searchModal");
+  $$(".demoAction").forEach(b => b.onclick = () => toast("Frontend flow ready — backend connection is the next phase"));
+
+  const tb = $("#trackBtn");
+  if (tb) tb.onclick = () => {
+    const o = $("#trackOrder")?.value.trim() || "HX-10482";
+    $("#trackResult").innerHTML = `<div style="margin-top:18px;padding:16px;border-radius:14px;background:#f4f6ff;border:1px solid #dfe4ff">
+      <b>Order ${esc(o)}</b>
+      <div style="font-size:11px;margin-top:5px;color:#5f6471">Status: Express Dispatch Ready. SMS & WhatsApp updates sent to registered mobile.</div>
+    </div>`;
+  };
+
+  const sf = $("#searchField");
+  if (sf) sf.addEventListener("input", e => {
+    const v = e.target.value.toLowerCase().trim();
+    if (!v) {
+      $("#searchResults").textContent = "Try: brushless, racing, off road, 1:14";
+      return;
+    }
+    const a = P.filter(p => (p.name + " " + p.sku + " " + p.category + " " + p.scale + " " + p.speed + " " + p.drive + " " + p.motor + " " + p.battery).toLowerCase().includes(v)).slice(0, 8);
+    $("#searchResults").innerHTML = a.length ? a.map(p => `<a href="product.html?id=${p.id}" style="display:grid;grid-template-columns:46px 1fr;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #eee">
+      <img src="${p.image}" style="width:46px;height:42px;object-fit:contain">
+      <div>
+        <b>${esc(p.name)}</b>
+        <div style="font-size:9px;color:#999">${esc(p.sku)} · ${INR(p.price)}</div>
+      </div>
+    </a>`).join("") : "No catalogue products found.";
+  });
+}
+
+function homeInit() {
+  const root = $("#homeProducts");
+  if (!root) return;
+  function show(cat = "All") {
+    let a = P.filter(p => p.image && p.category !== "Collectables");
+    if (cat !== "All") a = a.filter(p => p.category === cat);
+    a = a.sort((x, y) => (y.featured - x.featured) || (y.discount - x.discount)).slice(0, 8);
+    root.innerHTML = a.map(productCard).join("");
+  }
+  show();
+  $$("[data-home-filter]").forEach(b => b.onclick = () => {
+    $$("[data-home-filter]").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    show(b.dataset.homeFilter);
+  });
+}
+
+function shopInit() {
+  if (!$("#shopGrid")) return;
+  const qs = new URLSearchParams(location.search);
+  $("#searchFilter").value = qs.get("q") || "";
+  const cats = [...new Set(P.map(p => p.category))];
+  $("#catFilter").innerHTML = '<option value="">All categories</option>' + cats.map(x => `<option ${qs.get("cat") === x ? 'selected' : ''}>${esc(x)}</option>`).join("");
+  const scales = [...new Set(P.map(p => p.scale).filter(x => x && x !== "Not specified"))].sort();
+  $("#scaleFilter").innerHTML = '<option value="">All scales</option>' + scales.map(x => `<option ${qs.get("scale") === x ? 'selected' : ''}>${esc(x)}</option>`).join("");
+  
+  let page = 1, per = 24;
+  function render() {
+    let a = [...P],
+      q = $("#searchFilter").value.toLowerCase().trim(),
+      cat = $("#catFilter").value,
+      scale = $("#scaleFilter").value,
+      max = Number($("#priceFilter").value || 0),
+      sort = $("#sortFilter").value;
+
+    if (q) a = a.filter(p => (p.name + " " + p.sku + " " + p.category + " " + p.scale + " " + p.speed + " " + p.drive + " " + p.motor + " " + p.battery).toLowerCase().includes(q));
+    if (cat) a = a.filter(p => p.category === cat);
+    if (scale) a = a.filter(p => p.scale === scale);
+    if (max) a = a.filter(p => p.price <= max);
+    if (sort === "low") a.sort((x, y) => x.price - y.price);
+    if (sort === "high") a.sort((x, y) => y.price - x.price);
+    if (sort === "discount") a.sort((x, y) => y.discount - x.discount);
+
+    const pages = Math.max(1, Math.ceil(a.length / per));
+    page = Math.min(page, pages);
+    const start = (page - 1) * per;
+    $("#resultCount").textContent = `${a.length} products found`;
+    $("#shopGrid").innerHTML = a.slice(start, start + per).map(productCard).join("") || '<div class="empty">No matching products found.</div>';
+    
+    $("#pager").innerHTML = Array.from({ length: pages }, (_, i) => i + 1)
+      .filter(n => pages <= 9 || n === 1 || n === pages || Math.abs(n - page) <= 2)
+      .map(n => `<button class="${n === page ? "active" : ""}" data-p="${n}">${n}</button>`).join("");
+    
+    $$("#pager button").forEach(b => b.onclick = () => {
+      page = Number(b.dataset.p);
+      render();
+      scrollTo({ top: 180, behavior: "smooth" });
+    });
+  }
+
+  ["searchFilter", "catFilter", "scaleFilter", "priceFilter", "sortFilter"].forEach(id => {
+    $("#" + id)?.addEventListener(id === "searchFilter" ? "input" : "change", () => {
+      page = 1;
+      render();
+    });
+  });
+  render();
+}
+
+/* ENHANCED PRODUCT DETAIL PAGE WITH COMPLETE CSV ATTRIBUTES & GALLERY SWITCHING */
+function productInit() {
+  const root = $("#productDetail");
+  if (!root) return;
+  const urlParams = new URLSearchParams(location.search);
+  const idParam = Number(urlParams.get("id"));
+  const skuParam = urlParams.get("sku");
+  
+  let p = null;
+  if (idParam) p = P.find(x => x.id === idParam);
+  if (!p && skuParam) p = P.find(x => (x.sku || "").toLowerCase() === skuParam.toLowerCase());
+  if (!p) p = P[0];
+
+  document.title = `${p.name} | HyperXGT`;
+
+  const w = getWish().includes(p.id);
+  const savings = (p.mrp && p.mrp > p.price) ? (p.mrp - p.price) : 0;
+
+  // Build thumbnail gallery if multiple images exist
+  let galleryHTML = '';
+  if (p.images && p.images.length > 1) {
+    galleryHTML = `<div style="display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:6px">
+      ${p.images.map((imgSrc, idx) => `<img src="${imgSrc}" style="width:60px;height:52px;object-fit:contain;background:#fff;border:1px solid ${idx===0?'#1488d8':'var(--line)'};border-radius:8px;cursor:pointer" onclick="$('#mainProdImg').src='${imgSrc}'">`).join('')}
+    </div>`;
+  }
+
+  root.innerHTML = `
+    <div class="detail-media-wrap">
+      <div class="detail-media">
+        <img id="mainProdImg" src="${p.image}" alt="${esc(p.name)}">
+      </div>
+      ${galleryHTML}
+    </div>
+    <div class="detail-info">
+      <div class="eyebrow"><a href="shop.html?cat=${encodeURIComponent(p.category)}" style="color:inherit">${esc(p.category)}</a> · SKU: <strong>${esc(p.sku)}</strong></div>
+      <h1>${esc(p.name)}</h1>
+      
+      <div class="detail-price">
+        <strong>${INR(p.price)}</strong>
+        ${p.mrp > p.price ? `<del>${INR(p.mrp)}</del>` : ""}
+        ${p.discount ? `<span style="font-size:12px;color:#ed1c24;font-weight:900;background:#ffeeef;padding:3px 9px;border-radius:6px;margin-left:8px">${p.discount}% OFF (Save ${INR(savings)})</span>` : ""}
+      </div>
+
+      <div style="margin: 14px 0 20px; font-size: 12px; color: #2e7d32; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e7d32"></span>
+        In Stock — Express Dispatch Across India (Ships within 24 Hours)
+      </div>
+
+      <div style="color:#5f6471; font-size: 13.5px; line-height: 1.6; margin-bottom: 20px;">
+        ${p.short_description || `<p>Official HyperXGT ${esc(p.scale)} ${esc(p.category)} model (${esc(p.sku)}). Built with precision ${esc(p.drive)} drive system, ${esc(p.motor)}, and 2.4GHz remote control system for authentic high-speed performance and collector durability.</p>`}
+      </div>
+
+      <div class="modal-row" style="align-items: center; margin-bottom: 24px;">
+        <div style="display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff">
+          <button style="width:34px;height:42px;border:0;background:none;font-weight:900;cursor:pointer" onclick="const i=$('#detailQty'); i.value=Math.max(1, Number(i.value)-1)">-</button>
+          <input id="detailQty" style="width:48px;height:42px;border:0;text-align:center;font-weight:900;margin:0" type="number" min="1" value="1">
+          <button style="width:34px;height:42px;border:0;background:none;font-weight:900;cursor:pointer" onclick="const i=$('#detailQty'); i.value=Number(i.value)+1">+</button>
+        </div>
+        <button class="btn dark" style="flex:1" onclick="addCart(${p.id}, $('#detailQty').value)">Add to Cart 🛒</button>
+        <button class="btn" style="width:48px;padding:0;display:grid;place-items:center" onclick="toggleWish(${p.id})">${w ? "♥" : "♡"}</button>
+      </div>
+
+      <div style="border-top:1px solid var(--line); padding-top:20px; margin-top:20px">
+        <h4 style="font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:#90949b; margin-bottom:12px">Complete Technical Specifications & CSV Attributes</h4>
+        <div class="spec-table">${renderFullSpecGrid(p)}</div>
+      </div>
+
+      ${p.full_description && p.full_description !== p.short_description ? `
+      <div style="border-top:1px solid var(--line); padding-top:20px; margin-top:20px">
+        <h4 style="font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:#90949b; margin-bottom:12px">Product Description & Features</h4>
+        <div style="font-size:13px; color:#4a505e; line-height:1.65">${p.full_description}</div>
+      </div>` : ''}
+
+      <div style="margin-top:28px; padding:20px; background:#f7f9ff; border:1px solid #dce4ff; border-radius:18px;">
+        <h4 style="font-size:12px; font-weight:900; color:#1488d8; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px">Why Buy from HyperXGT</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:11px; color:#4a505e;">
+          <div>✔ <strong>100% Authentic Guarantee</strong></div>
+          <div>✔ <strong>Collector Safe Packaging</strong></div>
+          <div>✔ <strong>Fast India Shipping</strong></div>
+          <div>✔ <strong>6-Month AMC & Support</strong></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px; font-size:11px; color:#777; line-height:1.5;">
+        <strong>Returns & Replacements:</strong> 7-Day replacement guarantee for manufacturing defects. For care & technical guidance, contact our team via WhatsApp or call <strong>+91 70902 27777</strong>.
+      </div>
+    </div>
+  `;
+
+  // RENDER SIMILAR VARIANTS & UPSELLS
+  const variants = getSimilarVariants(p, P);
+  const relatedEl = $("#relatedGrid");
+  if (relatedEl && variants.length) {
+    relatedEl.innerHTML = variants.map(productCard).join("");
+  }
+}
+
+function renderCartPage() {
+  const root = $("#cartPageItems");
+  if (!root) return;
+  const c = getCart(), ids = Object.keys(c).map(Number);
+  if (!ids.length) {
+    root.innerHTML = '<div class="empty">Your cart is empty.<br><br><a class="btn dark" href="shop.html">Shop HyperXGT</a></div>';
+    $("#cartPageSummary").innerHTML = "";
+    return;
+  }
+  root.innerHTML = ids.map(id => {
+    const p = P.find(x => x.id === id);
+    if (!p) return "";
+    return `<div class="cart-row">
+      <img src="${p.image}">
+      <div>
+        <div class="sku">${esc(p.sku)}</div>
+        <b>${esc(p.name)}</b>
+        <div style="font-size:10px;color:#888;margin-top:4px">${INR(p.price)}</div>
+      </div>
+      <input type="number" min="1" value="${c[id]}" onchange="updateQty(${id},this.value)">
+      <div class="line-total"><b>${INR(p.price * c[id])}</b></div>
+      <button class="x" onclick="removeCart(${id})">×</button>
+    </div>`;
+  }).join("");
+
+  const total = ids.reduce((s, id) => {
+    const p = P.find(x => x.id === id);
+    return s + (p ? p.price * c[id] : 0);
+  }, 0);
+
+  $("#cartPageSummary").innerHTML = `<div class="sumline"><span>Subtotal</span><b>${INR(total)}</b></div>
+    <div class="sumline"><span>Shipping</span><span>Calculated at checkout</span></div>
+    <div class="sumline total"><span>Total</span><span>${INR(total)}</span></div>
+    <a href="checkout.html" class="btn dark" style="width:100%;display:flex;align-items:center;justify-content:center;margin-top:14px">Proceed to secure checkout</a>`;
+}
+
+function renderCheckout() {
+  const root = $("#checkoutSummary");
+  if (!root) return;
+  const c = getCart();
+  let total = 0;
+  root.innerHTML = Object.keys(c).map(id => {
+    const p = P.find(x => x.id == id);
+    if (!p) return "";
+    total += p.price * c[id];
+    return `<div class="sumline"><span>${esc(p.name).slice(0, 42)} × ${c[id]}</span><b>${INR(p.price * c[id])}</b></div>`;
+  }).join("") + `<div class="sumline total"><span>Total</span><span>${INR(total)}</span></div>`;
+
+  const po = $("#placeOrder");
+  if (po) po.onclick = e => {
+    e.preventDefault();
+    toast("Checkout UI is ready — connect Razorpay/Supabase for live orders.");
+  };
+}
+
+function faqInit() {
+  $$(".faq-q").forEach(q => q.onclick = () => q.parentElement.classList.toggle("open"));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initChrome();
+  homeInit();
+  shopInit();
+  productInit();
+  renderCartPage();
+  renderCheckout();
+  faqInit();
+});
