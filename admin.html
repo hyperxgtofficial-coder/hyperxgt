@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HyperXGT — Store Admin Portal & Inventory Manager</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/admin.css">
+</head>
+<body class="admin-body">
+  <!-- LOGIN OVERLAY -->
+  <div id="adminLoginOverlay" class="admin-login-overlay">
+    <div class="admin-login-card">
+      <div class="brand" style="justify-content:center;margin-bottom:14px">
+        <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT Admin">
+      </div>
+      <h2>Store Admin Login</h2>
+      <p style="font-size:12px;color:#666;margin-bottom:20px">Enter admin credentials to manage inventory, products & orders.</p>
+      
+      <form id="adminLoginForm">
+        <input class="field" id="adminEmail" type="email" placeholder="Admin Email (admin@hyperxgt.com)" value="admin@hyperxgt.com" required>
+        <input class="field" id="adminPass" type="password" placeholder="Admin Password" value="hyperxgt2026" required>
+        <button class="btn dark" type="submit" style="width:100%;height:48px;margin-top:10px">Sign In to Admin Portal →</button>
+      </form>
+      <div id="adminLoginErr" style="color:#ed1c24;font-size:11px;margin-top:12px;display:none">Invalid admin credentials.</div>
+    </div>
+  </div>
+
+  <!-- ADMIN PORTAL MAIN -->
+  <div id="adminPortal" style="display:none">
+    <header class="admin-header">
+      <div class="container nav" style="height:64px">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT Admin" style="height:38px">
+          <span style="background:#1488d8;color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:6px;margin-left:8px">ADMIN PORTAL</span>
+        </a>
+        <div style="display:flex;gap:14px;align-items:center">
+          <span style="font-size:11px;color:#666">Logged in as <strong>admin@hyperxgt.com</strong></span>
+          <a class="btn clear" href="index.html" target="_blank" style="height:36px;min-height:0;padding:0 14px;display:inline-flex;align-items:center;background:#f0f2f5;color:#111">View Live Store ↗</a>
+          <button class="btn red" id="adminLogout" style="height:36px;min-height:0;padding:0 14px">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" style="padding-top:28px;padding-bottom:60px">
+      <!-- DASHBOARD METRICS -->
+      <div class="admin-metrics">
+        <div class="metric-card">
+          <small>Total Catalogue Products</small>
+          <strong id="metricCount">338</strong>
+          <span>Sync'd with WooCommerce</span>
+        </div>
+        <div class="metric-card">
+          <small>Active Categories</small>
+          <strong>7</strong>
+          <span>Racing, Drift, Crawlers...</span>
+        </div>
+        <div class="metric-card">
+          <small>Total Inventory Value</small>
+          <strong id="metricValue">₹1.42 Cr</strong>
+          <span>Based on catalog price</span>
+        </div>
+        <div class="metric-card">
+          <small>Store Orders</small>
+          <strong id="metricOrders">12</strong>
+          <span>Express dispatch ready</span>
+        </div>
+      </div>
+
+      <!-- TABS NAVBAR -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="products">Product Inventory Manager</button>
+        <button class="admin-tab" data-tab="orders">Orders & Dispatch</button>
+        <button class="admin-tab" data-tab="database">Database & API Logs</button>
+      </div>
+
+      <!-- PRODUCTS MANAGER SECTION -->
+      <section id="tab-products" class="tab-content active">
+        <div class="admin-toolbar">
+          <div style="display:flex;gap:12px;flex:1;max-width:680px">
+            <input class="field" id="adminSearch" placeholder="Search SKU, name, scale, category..." style="margin:0">
+            <select class="field" id="adminCatFilter" style="margin:0;width:200px">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+          <button class="btn blue" id="btnOpenAddModal" style="height:50px">+ Add New Product</button>
+        </div>
+
+        <div style="font-size:12px;color:#666;margin:14px 0 10px" id="adminCountText">Showing 338 products</div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>SKU</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price (₹)</th>
+                <th>MRP (₹)</th>
+                <th>Scale</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody">
+              <!-- Dynamically rendered -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ORDERS SECTION -->
+      <section id="tab-orders" class="tab-content">
+        <div class="table-wrap" style="margin-top:20px">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Payment Method</th>
+                <th>Fulfillment Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersBody">
+              <!-- Orders list -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- DATABASE & API LOGS SECTION -->
+      <section id="tab-database" class="tab-content">
+        <div style="background:#0d0e11;color:#a6adc8;padding:24px;border-radius:18px;font-family:monospace;font-size:12px;margin-top:20px">
+          <h3 style="color:#fff;margin-top:0">🗄️ Database Status & Connection Info</h3>
+          <div>Database Engine: PostgreSQL / Vercel Serverless JSON KV Store</div>
+          <div>Database Path: <code>/data/products.json</code> & Serverless API Routes</div>
+          <div>REST API Endpoints:</div>
+          <div style="color:#89b4fa;margin-left:14px">
+            - GET /api/products-crud (Fetch Catalogue)<br>
+            - POST /api/products-crud (Add Product)<br>
+            - PUT /api/products-crud (Update Product)<br>
+            - DELETE /api/products-crud?id=X (Delete Product)<br>
+            - POST /api/create-order (Create Order)<br>
+            - GET /api/track-order (Track Shipment)
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ADD / EDIT PRODUCT MODAL -->
+  <div class="modal" id="productModal">
+    <div class="shade"></div>
+    <div class="modal-box" style="width:min(720px,94vw);max-height:88vh">
+      <div class="drawer-head">
+        <b id="modalTitle">Add New Product</b>
+        <button class="x" onclick="closeEl(this)">×</button>
+      </div>
+      
+      <form id="productForm" style="margin-top:18px">
+        <input type="hidden" id="formProdId">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label class="form-label">Product Name *</label>
+            <input class="field" id="formName" required placeholder="e.g. 1:10 Brushless RC Rally Car">
+          </div>
+          <div>
+            <label class="form-label">SKU Code *</label>
+            <input class="field" id="formSku" required placeholder="e.g. HX-10482">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div>
+            <label class="form-label">Category *</label>
+            <select class="field" id="formCat">
+              <option>Racing Cars</option>
+              <option>Drift Cars</option>
+              <option>Monster Trucks</option>
+              <option>Off Road Crawlers</option>
+              <option>Buggies & Truggies</option>
+              <option>Diecast Models</option>
+              <option>Collectables</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Sale Price (₹) *</label>
+            <input class="field" type="number" id="formPrice" required placeholder="6999">
+          </div>
+          <div>
+            <label class="form-label">Regular MRP (₹) *</label>
+            <input class="field" type="number" id="formMrp" required placeholder="8749">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div>
+            <label class="form-label">Scale Factor</label>
+            <input class="field" id="formScale" placeholder="e.g. 1:10">
+          </div>
+          <div>
+            <label class="form-label">Top Speed</label>
+            <input class="field" id="formSpeed" placeholder="e.g. 60 KM/H">
+          </div>
+          <div>
+            <label class="form-label">Drive System</label>
+            <select class="field" id="formDrive">
+              <option>4WD</option>
+              <option>2WD</option>
+              <option>RWD</option>
+              <option>Pull-Back</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="form-label">Image URL / Local Asset Path *</label>
+          <input class="field" id="formImage" required placeholder="assets/products/H104020-R.webp">
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="form-label">Product Short Description</label>
+          <textarea class="field" id="formShortDesc" style="height:70px;padding-top:10px" placeholder="Brief summary of model specs..."></textarea>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="form-label">Full Technical Description (HTML allowed)</label>
+          <textarea class="field" id="formFullDesc" style="height:100px;padding-top:10px" placeholder="Detailed specs and feature highlights..."></textarea>
+        </div>
+
+        <div class="modal-row" style="margin-top:20px">
+          <button class="btn dark" type="submit" style="flex:1">Save Product to Database ✓</button>
+          <button class="btn" type="button" onclick="closeEl(this)">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Changes saved</div>
+
+  <script src="assets/products.js"></script>
+  <script src="assets/admin.js"></script>
+</body>
+</html>
