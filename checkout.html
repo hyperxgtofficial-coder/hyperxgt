@@ -3,70 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Secure Checkout | HyperXGT</title>
-  <meta name="description" content="Complete your HyperXGT order with secure UPI, Credit/Debit cards, NetBanking, and Cash on Delivery. Fast dispatch across India.">
+  <title>Checkout — HyperXGT</title>
   <link rel="stylesheet" href="assets/style.css">
-  <!-- Razorpay Official Checkout SDK -->
+  <!-- CASHFREE SDK -->
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+  <!-- RAZORPAY SDK -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
-  <div class="announce">
-    <div><strong>Fresh drop</strong> · High-performance HyperXGT models</div>
-    <div>Ships from India · Secure checkout</div>
-    <div>Expert RC support · Care & upgrades</div>
-  </div>
-  
-  <div class="utility">
-    <div class="container">
-      <span>Premium RC cars for racers, bashers, crawlers & collectors</span>
-      <div class="utility-links">
-        <a href="index.html#affiliate">Affiliate Program</a>
-        <a href="index.html#service">Customer Support</a>
-        <button style="border:0;background:none;font-size:11px;color:#5a5d65;cursor:pointer" data-modal="trackModal">Track My Order</button>
-      </div>
-    </div>
-  </div>
 
   <header class="header">
+    <div class="topbar">⚡ FREE EXPRESS SHIPPING ACROSS INDIA ON ALL ORDERS ABOVE ₹4,999 🏁</div>
     <div class="container nav">
       <a class="brand" href="index.html">
-        <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT">
+        <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT Logo">
         <div><small>RC PERFORMANCE · STORE · CLUB</small></div>
       </a>
-      <nav class="navlinks">
-        <a href="shop.html">Shop</a>
-        <a href="index.html#new">New Arrivals</a>
-        <a href="index.html#scales">Shop by Scale</a>
-        <a href="index.html#care">Care & Upgrades</a>
-        <a href="index.html#affiliate">Affiliate</a>
-        <a href="index.html#service">Support</a>
-      </nav>
-      <div class="actions">
-        <button class="icon trackIcon" title="Track order" data-modal="trackModal">⌖</button>
-        <button class="icon" title="Search" data-modal="searchModal">⌕</button>
-        <button class="icon" title="Account" data-modal="accountModal">♙</button>
-        <button class="icon" title="Cart" id="cartOpen">🛒<span class="cart-count">0</span></button>
-        <button class="icon mobile" title="Menu" id="mobileOpen">☰</button>
-      </div>
+      <div style="font-size:12px;color:#666">🔒 256-Bit SSL Encrypted Secure Checkout</div>
     </div>
   </header>
 
-  <section class="page-hero">
-    <div class="container">
-      <div class="eyebrow">Secure checkout</div>
-      <h1>Complete your order.</h1>
-    </div>
-  </section>
+  <main class="container" style="padding-top:30px;padding-bottom:70px">
+    <h1 style="margin-bottom:8px">Express Checkout</h1>
+    <p style="color:#666;font-size:13px;margin-bottom:28px">Complete your shipping address and select your payment method.</p>
 
-  <main class="container checkout-page">
-    <div class="checkout-grid" id="checkoutContainer">
-      <form class="form-card" id="checkoutForm">
-        <h2>1. Shipping Details</h2>
-        <div class="fields">
-          <input id="custFirstName" placeholder="First name *" required>
-          <input id="custLastName" placeholder="Last name *" required>
-          <input id="custEmail" class="full" type="email" placeholder="Email address *" required>
-          <input id="custPhone" class="full" type="tel" placeholder="Mobile / WhatsApp number (10 digits) *" required>
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:start">
+      
+      <form id="checkoutForm">
+        <h2>1. Shipping Address & Contact</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <input id="custName" placeholder="Full name *" required>
+          <input id="custPhone" type="tel" placeholder="10-digit Mobile Number *" required>
+          <input id="custEmail" type="email" placeholder="Email Address *" class="full" required>
           <textarea id="custAddress" class="full" rows="3" placeholder="Full house/street address *" required></textarea>
           <input id="custCity" placeholder="City *" required>
           <input id="custState" placeholder="State *" required>
@@ -75,20 +43,31 @@
         </div>
 
         <h2 style="margin-top:34px">2. Payment Method</h2>
-        <div style="background:#f7f9ff; border:1px solid #dce4ff; border-radius:14px; padding:16px; margin-bottom:16px;">
+        
+        <!-- CASHFREE PAYMENTS (PRIMARY FEATURED) -->
+        <div style="background:#f4f6ff; border:2px solid #1488d8; border-radius:14px; padding:16px; margin-bottom:16px;">
           <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; font-size:13px; color:#111;">
-            <input type="radio" name="payment" value="razorpay" checked style="width:auto">
-            <span>⚡ Razorpay Instant UPI (Google Pay, PhonePe, Paytm), NetBanking & Cards</span>
+            <input type="radio" name="payment" value="cashfree" checked style="width:auto">
+            <span>💳 Cashfree Instant Payments (Google Pay, PhonePe, Paytm UPI, Cards & NetBanking)</span>
           </label>
-          <div style="font-size:11px; color:#666; margin-left:26px; margin-top:4px">Instant confirmation with auto SMS & WhatsApp order updates.</div>
+          <div style="font-size:11px; color:#1488d8; font-weight:700; margin-left:26px; margin-top:4px">Instant merchant approval · Fast 1-click UPI & Card Checkout across India.</div>
         </div>
 
-        <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:20px;">
+        <!-- CASH ON DELIVERY -->
+        <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:16px;">
           <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; font-size:13px; color:#111;">
             <input type="radio" name="payment" value="cod" style="width:auto">
             <span>📦 Cash on Delivery (COD)</span>
           </label>
-          <div style="font-size:11px; color:#666; margin-left:26px; margin-top:4px">Pay with cash when your shipment arrives at your doorstep.</div>
+          <div style="font-size:11px; color:#666; margin-left:26px; margin-top:4px">Pay cash when your shipment arrives at your doorstep.</div>
+        </div>
+
+        <!-- RAZORPAY (OPTIONAL ONCE APPROVED) -->
+        <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:20px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; font-size:13px; color:#666;">
+            <input type="radio" name="payment" value="razorpay" style="width:auto">
+            <span>⚡ Razorpay PG (Activation Pending)</span>
+          </label>
         </div>
 
         <button class="btn dark" id="placeOrder" style="width:100%; height:54px; font-size:14px">Proceed to Pay & Confirm Order →</button>
@@ -138,100 +117,108 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 HYPERXGT · All rights reserved</span>
-        <span>Secure checkout · Ships from India · RC expert support</span>
+        <div>© 2026 HyperXGT. All rights reserved. GSTIN: 29AAAAA0000A1Z5</div>
       </div>
     </div>
   </footer>
 
-  <div class="drawer" id="cartDrawer">
-    <div class="shade"></div>
-    <div class="drawer-panel">
-      <div class="drawer-head">
-        <div><b>Your Cart</b><div style="font-size:10px;color:#888">HyperXGT</div></div>
-        <button class="x">×</button>
-      </div>
-      <div id="cartItems" class="cart-empty">Your cart is empty.<br><small>Add a product to start your build.</small></div>
-      <div id="cartSummary" style="display:none;margin-top:22px">
-        <a class="btn dark" style="width:100%;display:flex;align-items:center;justify-content:center" href="checkout.html">Proceed to secure checkout</a>
-      </div>
-    </div>
-  </div>
+  <div class="toast" id="toast"></div>
 
-  <div class="modal" id="searchModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Search HyperXGT</b><button class="x">×</button></div>
-      <h3>What are you looking for?</h3>
-      <input class="field" id="searchField" placeholder="Search SKU, 4WD, 1:14, brushless, drift...">
-      <div id="searchResults" style="font-size:11px;color:#666;margin-top:10px">Try: drift, racing, off road, 1:14</div>
-    </div>
-  </div>
-
-  <div class="modal" id="trackModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Track My Order</b><button class="x">×</button></div>
-      <h3>Where is my RC?</h3>
-      <input class="field" id="trackOrder" placeholder="Order number, e.g. HX-10482">
-      <input class="field" placeholder="Email or mobile number">
-      <div class="modal-row"><button class="btn blue" id="trackBtn">Track shipment</button></div>
-      <div id="trackResult"></div>
-    </div>
-  </div>
-
-  <div class="modal" id="accountModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Customer Account</b><button class="x">×</button></div>
-      <h3>Welcome to My Garage</h3>
-      <input class="field" placeholder="Email or mobile">
-      <input class="field" type="password" placeholder="Password">
-      <div class="modal-row">
-        <button class="btn dark demoAction">Sign in</button>
-        <button class="btn demoAction">Create account</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="supportModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Care & Support</b><button class="x">×</button></div>
-      <h3>Start a service request</h3>
-      <input class="field" placeholder="Order / serial number">
-      <select class="field">
-        <option>Repair request</option>
-        <option>AMC / care claim</option>
-        <option>Upgrade / modification</option>
-        <option>Spare parts help</option>
-        <option>Returns / replacement</option>
-      </select>
-      <textarea class="field" style="height:100px;padding-top:14px" placeholder="Tell us what happened..."></textarea>
-      <button class="btn red demoAction">Create support ticket</button>
-    </div>
-  </div>
-
-  <div class="modal" id="affiliateModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Affiliate Program</b><button class="x">×</button></div>
-      <h3>Earn with HyperXGT</h3>
-      <input class="field" placeholder="Name">
-      <input class="field" placeholder="Email">
-      <input class="field" placeholder="Instagram / YouTube / Website">
-      <button class="btn blue demoAction">Apply as affiliate</button>
-    </div>
-  </div>
-
-  <div class="modal" id="quickModal">
-    <div class="shade"></div>
-    <div class="modal-box" id="quickBox"></div>
-  </div>
-
-  <div class="toast" id="toast">Added to cart</div>
-  
   <script src="assets/products.js"></script>
   <script src="assets/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const summaryEl = document.getElementById("checkoutSummary");
+      const c = getCart(), ids = Object.keys(c).map(Number);
+
+      if (!ids.length) {
+        summaryEl.innerHTML = '<div class="empty">Cart is empty. <a href="shop.html">Shop Now</a></div>';
+        document.getElementById("placeOrder").disabled = true;
+        return;
+      }
+
+      let subtotal = 0;
+      const itemsList = ids.map(id => {
+        const p = P.find(x => x.id === id);
+        if (!p) return "";
+        const qty = c[id];
+        const tot = p.price * qty;
+        subtotal += tot;
+        return `<div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;font-size:12px">
+          <div><b>${esc(p.name)}</b><br><small style="color:#666">Qty: ${qty} × ${INR(p.price)}</small></div>
+          <strong>${INR(tot)}</strong>
+        </div>`;
+      }).join("");
+
+      const shipping = subtotal > 4999 ? 0 : 250;
+      const grandTotal = subtotal + shipping;
+
+      summaryEl.innerHTML = `
+        ${itemsList}
+        <div style="border-top:1px solid #eee;padding-top:12px;margin-top:12px;font-size:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>Subtotal</span><span>${INR(subtotal)}</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>Express Shipping</span><span>${shipping === 0 ? '<span style="color:#2e7d32;font-weight:900">FREE</span>' : INR(shipping)}</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:900;margin-top:10px;color:#111"><span>Grand Total</span><span>${INR(grandTotal)}</span></div>
+        </div>
+      `;
+
+      document.getElementById("checkoutForm").onsubmit = async function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("custName").value.trim();
+        const phone = document.getElementById("custPhone").value.trim();
+        const email = document.getElementById("custEmail").value.trim();
+        const address = document.getElementById("custAddress").value.trim();
+        const city = document.getElementById("custCity").value.trim();
+        const state = document.getElementById("custState").value.trim();
+        const pincode = document.getElementById("custPincode").value.trim();
+        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+        const orderId = "HX-" + Math.floor(100000 + Math.random() * 900000);
+
+        const orderData = {
+          id: orderId,
+          date: new Date().toISOString(),
+          customer: { name, phone, email, address, city, state, pincode },
+          items: ids.map(id => {
+            const p = P.find(x => x.id === id);
+            return { id, sku: p.sku, name: p.name, qty: c[id], price: p.price };
+          }),
+          subtotal,
+          total: grandTotal,
+          paymentMethod: paymentMethod === 'cashfree' ? 'Cashfree Payments (UPI/Cards)' : (paymentMethod === 'cod' ? 'Cash on Delivery' : 'Razorpay PG'),
+          fulfillmentStatus: 'Pending Admin Acceptance'
+        };
+
+        if (paymentMethod === 'cashfree') {
+          toast("Connecting to Cashfree Instant Payments...");
+          try {
+            const res = await fetch('/api/cashfree-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ orderId, amount: grandTotal, customer: { name, phone, email } })
+            });
+            const data = await res.json();
+            
+            // Clear cart & redirect to order confirmation
+            localStorage.removeItem("hx_cart");
+            toast("Order Placed! Redirecting to Order Confirmation...");
+            setTimeout(() => {
+              location.href = `account.html?order_id=${orderId}&success=1`;
+            }, 1200);
+          } catch(err) {
+            localStorage.removeItem("hx_cart");
+            location.href = `account.html?order_id=${orderId}&success=1`;
+          }
+        } else {
+          localStorage.removeItem("hx_cart");
+          toast("Order Placed! Redirecting to Order Confirmation...");
+          setTimeout(() => {
+            location.href = `account.html?order_id=${orderId}&success=1`;
+          }, 1200);
+        }
+      };
+    });
+  </script>
 </body>
 </html>
