@@ -37,7 +37,8 @@ window.HX_PRODUCTS = [
       "H6401-Y"
     ],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 2,
@@ -74,7 +75,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 3,
@@ -111,7 +113,8 @@ window.HX_PRODUCTS = [
       "H22206-P"
     ],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 4,
@@ -147,7 +150,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 5,
@@ -182,7 +186,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 6,
@@ -237,7 +242,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 7,
@@ -297,7 +303,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 8,
@@ -331,7 +338,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 9,
@@ -385,7 +393,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 10,
@@ -443,7 +452,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 11,
@@ -494,7 +504,8 @@ window.HX_PRODUCTS = [
       "H969"
     ],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 12,
@@ -554,7 +565,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 13,
@@ -609,7 +621,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 14,
@@ -669,7 +682,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 15,
@@ -703,7 +717,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 1,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 16,
@@ -766,7 +781,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 17,
@@ -802,7 +818,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 1,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 18,
@@ -858,7 +875,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 19,
@@ -898,7 +916,8 @@ window.HX_PRODUCTS = [
       "H104026-R"
     ],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 20,
@@ -933,7 +952,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 1,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 21,
@@ -967,7 +987,8 @@ window.HX_PRODUCTS = [
       "H104020-R"
     ],
     "source_page": 2,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 22,
@@ -1005,7 +1026,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 23,
@@ -1040,7 +1062,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 24,
@@ -1079,7 +1102,8 @@ window.HX_PRODUCTS = [
       "H104010-O"
     ],
     "source_page": 2,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 25,
@@ -1139,7 +1163,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 26,
@@ -1196,7 +1221,8 @@ window.HX_PRODUCTS = [
     },
     "upsells": [],
     "source_page": 2,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 27,
@@ -1232,7 +1258,8 @@ window.HX_PRODUCTS = [
       "H184020-R"
     ],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 28,
@@ -1265,7 +1292,8 @@ window.HX_PRODUCTS = [
       "H204006-P"
     ],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 29,
@@ -1303,7 +1331,8 @@ window.HX_PRODUCTS = [
       "BG1550-G"
     ],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 30,
@@ -1342,7 +1371,8 @@ window.HX_PRODUCTS = [
       "H989"
     ],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 31,
@@ -1375,7 +1405,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 32,
@@ -1408,7 +1439,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 33,
@@ -1440,7 +1472,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 34,
@@ -1476,7 +1509,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 35,
@@ -1510,7 +1544,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 36,
@@ -1543,7 +1578,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 37,
@@ -1577,7 +1613,8 @@ window.HX_PRODUCTS = [
       "18JJ250BUGDI-B"
     ],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 38,
@@ -1613,7 +1650,8 @@ window.HX_PRODUCTS = [
       "24JJ251BM-B"
     ],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 39,
@@ -1646,7 +1684,8 @@ window.HX_PRODUCTS = [
       "24JJ252Mc-Y"
     ],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 40,
@@ -1680,7 +1719,8 @@ window.HX_PRODUCTS = [
       "32JJ247AMV-Y"
     ],
     "source_page": 2,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 41,
@@ -1715,7 +1755,8 @@ window.HX_PRODUCTS = [
       "32JJ248BU-B"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 42,
@@ -1768,7 +1809,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 43,
@@ -1821,7 +1863,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 44,
@@ -1874,7 +1917,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 45,
@@ -1927,7 +1971,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 46,
@@ -1980,7 +2025,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 47,
@@ -2033,7 +2079,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 48,
@@ -2086,7 +2133,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 49,
@@ -2139,7 +2187,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 50,
@@ -2192,7 +2241,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 51,
@@ -2245,7 +2295,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 52,
@@ -2298,7 +2349,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 53,
@@ -2353,7 +2405,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 54,
@@ -2406,7 +2459,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 55,
@@ -2459,7 +2513,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 56,
@@ -2512,7 +2567,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 57,
@@ -2565,7 +2621,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 58,
@@ -2618,7 +2675,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 59,
@@ -2671,7 +2729,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 60,
@@ -2724,7 +2783,8 @@ window.HX_PRODUCTS = [
       "POS-H11"
     ],
     "source_page": 3,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 61,
@@ -2777,7 +2837,8 @@ window.HX_PRODUCTS = [
       "POS-H12"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 62,
@@ -2830,7 +2891,8 @@ window.HX_PRODUCTS = [
       "POS-H12"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 63,
@@ -2883,7 +2945,8 @@ window.HX_PRODUCTS = [
       "POS-H12"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 64,
@@ -2936,7 +2999,8 @@ window.HX_PRODUCTS = [
       "POS-H12"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 65,
@@ -2991,7 +3055,8 @@ window.HX_PRODUCTS = [
       "POS-H12"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 66,
@@ -3035,7 +3100,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 67,
@@ -3071,7 +3137,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 68,
@@ -3111,7 +3178,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 69,
@@ -3150,7 +3218,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 70,
@@ -3186,7 +3255,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 71,
@@ -3227,7 +3297,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 72,
@@ -3266,7 +3337,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 73,
@@ -3312,7 +3384,8 @@ window.HX_PRODUCTS = [
       "MJXH12Y-B"
     ],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 74,
@@ -3352,7 +3425,8 @@ window.HX_PRODUCTS = [
       "SGJXC5813A-PR"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 75,
@@ -3398,7 +3472,8 @@ window.HX_PRODUCTS = [
       "SGJXC5826-PY"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 76,
@@ -3446,7 +3521,8 @@ window.HX_PRODUCTS = [
       "SGSCY16307-G"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 77,
@@ -3486,7 +3562,8 @@ window.HX_PRODUCTS = [
       "SGHG451-G"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 78,
@@ -3526,7 +3603,8 @@ window.HX_PRODUCTS = [
       "SGHG453-W"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 79,
@@ -3576,7 +3654,8 @@ window.HX_PRODUCTS = [
       "SGR1601-S"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 80,
@@ -3622,7 +3701,8 @@ window.HX_PRODUCTS = [
       "SGRD1201-B"
     ],
     "source_page": 4,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 81,
@@ -3668,7 +3748,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 82,
@@ -3719,7 +3800,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 83,
@@ -3769,7 +3851,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 84,
@@ -3819,7 +3902,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 85,
@@ -3868,7 +3952,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 86,
@@ -3919,7 +4004,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 87,
@@ -3967,7 +4053,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 88,
@@ -4013,7 +4100,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 89,
@@ -4063,7 +4151,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 90,
@@ -4111,7 +4200,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 91,
@@ -4158,7 +4248,8 @@ window.HX_PRODUCTS = [
       "HA5501B"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 92,
@@ -4203,7 +4294,8 @@ window.HX_PRODUCTS = [
       "SG1803-BB"
     ],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 93,
@@ -4235,7 +4327,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 94,
@@ -4270,7 +4363,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 95,
@@ -4303,7 +4397,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 96,
@@ -4335,7 +4430,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 97,
@@ -4372,7 +4468,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 5,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 98,
@@ -4411,7 +4508,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 5,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 99,
@@ -4458,7 +4556,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 5,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 100,
@@ -4507,7 +4606,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 5,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 101,
@@ -4549,7 +4649,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 6,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 102,
@@ -4590,7 +4691,8 @@ window.HX_PRODUCTS = [
       "SG1008-B"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 103,
@@ -4631,7 +4733,8 @@ window.HX_PRODUCTS = [
       "SG1201-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 104,
@@ -4668,7 +4771,8 @@ window.HX_PRODUCTS = [
       "SG 1403-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 105,
@@ -4708,7 +4812,8 @@ window.HX_PRODUCTS = [
       "SG1202-G"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 106,
@@ -4746,7 +4851,8 @@ window.HX_PRODUCTS = [
       "HHG487-W"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 107,
@@ -4787,7 +4893,8 @@ window.HX_PRODUCTS = [
       "HHG493-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 108,
@@ -4828,7 +4935,8 @@ window.HX_PRODUCTS = [
       "HHG485-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 109,
@@ -4865,7 +4973,8 @@ window.HX_PRODUCTS = [
       "HHG4156-R"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 110,
@@ -4904,7 +5013,8 @@ window.HX_PRODUCTS = [
       "HHG4155-W"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 111,
@@ -4943,7 +5053,8 @@ window.HX_PRODUCTS = [
       "HHG4126-W"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 112,
@@ -4979,7 +5090,8 @@ window.HX_PRODUCTS = [
       "HHG4129-R"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 113,
@@ -5015,7 +5127,8 @@ window.HX_PRODUCTS = [
       "HHG4129-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 114,
@@ -5051,7 +5164,8 @@ window.HX_PRODUCTS = [
       "HHG4129-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 115,
@@ -5087,7 +5201,8 @@ window.HX_PRODUCTS = [
       "HHG4129-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 116,
@@ -5123,7 +5238,8 @@ window.HX_PRODUCTS = [
       "HHG4129-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 117,
@@ -5159,7 +5275,8 @@ window.HX_PRODUCTS = [
       "HHG4129-Y"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 118,
@@ -5196,7 +5313,8 @@ window.HX_PRODUCTS = [
       "HHG4126-W"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 119,
@@ -5233,7 +5351,8 @@ window.HX_PRODUCTS = [
       "HHG4126-W"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 120,
@@ -5270,7 +5389,8 @@ window.HX_PRODUCTS = [
       "HHG4126-W"
     ],
     "source_page": 6,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 121,
@@ -5307,7 +5427,8 @@ window.HX_PRODUCTS = [
       "HHG4126-SR"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 122,
@@ -5344,7 +5465,8 @@ window.HX_PRODUCTS = [
       "HHG4126-W"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 123,
@@ -5381,7 +5503,8 @@ window.HX_PRODUCTS = [
       "HHG4155-SR"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 124,
@@ -5418,7 +5541,8 @@ window.HX_PRODUCTS = [
       "HHG4155-W"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 125,
@@ -5455,7 +5579,8 @@ window.HX_PRODUCTS = [
       "HHG4155-W"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 126,
@@ -5492,7 +5617,8 @@ window.HX_PRODUCTS = [
       "HHG4155-W"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 127,
@@ -5529,7 +5655,8 @@ window.HX_PRODUCTS = [
       "HHG4155-W"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 128,
@@ -5566,7 +5693,8 @@ window.HX_PRODUCTS = [
       "HHG4156-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 129,
@@ -5603,7 +5731,8 @@ window.HX_PRODUCTS = [
       "HHG4156-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 130,
@@ -5640,7 +5769,8 @@ window.HX_PRODUCTS = [
       "HHG4156-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 131,
@@ -5677,7 +5807,8 @@ window.HX_PRODUCTS = [
       "HHG4156-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 132,
@@ -5714,7 +5845,8 @@ window.HX_PRODUCTS = [
       "HHG4156-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 133,
@@ -5753,7 +5885,8 @@ window.HX_PRODUCTS = [
       "HHG485-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 134,
@@ -5792,7 +5925,8 @@ window.HX_PRODUCTS = [
       "HHG485-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 135,
@@ -5831,7 +5965,8 @@ window.HX_PRODUCTS = [
       "HHG485-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 136,
@@ -5870,7 +6005,8 @@ window.HX_PRODUCTS = [
       "HHG485-W"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 137,
@@ -5909,7 +6045,8 @@ window.HX_PRODUCTS = [
       "HHG485-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 138,
@@ -5948,7 +6085,8 @@ window.HX_PRODUCTS = [
       "HHG493-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 139,
@@ -5987,7 +6125,8 @@ window.HX_PRODUCTS = [
       "HHG493-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 140,
@@ -6023,7 +6162,8 @@ window.HX_PRODUCTS = [
       "HHG493-Y"
     ],
     "source_page": 7,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 141,
@@ -6062,7 +6202,8 @@ window.HX_PRODUCTS = [
       "HHG493-Y"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 142,
@@ -6101,7 +6242,8 @@ window.HX_PRODUCTS = [
       "HHG493-W"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 143,
@@ -6140,7 +6282,8 @@ window.HX_PRODUCTS = [
       "HHG487-Y"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 144,
@@ -6179,7 +6322,8 @@ window.HX_PRODUCTS = [
       "HHG487-Y"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 145,
@@ -6218,7 +6362,8 @@ window.HX_PRODUCTS = [
       "HHG487-Y"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 146,
@@ -6257,7 +6402,8 @@ window.HX_PRODUCTS = [
       "HHG487-Y"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 147,
@@ -6296,7 +6442,8 @@ window.HX_PRODUCTS = [
       "HHG487-Y"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 148,
@@ -6336,7 +6483,8 @@ window.HX_PRODUCTS = [
       "SGHG453-G"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 149,
@@ -6376,7 +6524,8 @@ window.HX_PRODUCTS = [
       "SG1202-P"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 150,
@@ -6418,7 +6567,8 @@ window.HX_PRODUCTS = [
       "SG1201-B"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 151,
@@ -6455,7 +6605,8 @@ window.HX_PRODUCTS = [
       "SG1403-G"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 152,
@@ -6499,7 +6650,8 @@ window.HX_PRODUCTS = [
       "SG1008-OY"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 153,
@@ -6547,7 +6699,8 @@ window.HX_PRODUCTS = [
       "SG1803-B"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 154,
@@ -6594,7 +6747,8 @@ window.HX_PRODUCTS = [
       "SGRD1201-R"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 155,
@@ -6645,7 +6799,8 @@ window.HX_PRODUCTS = [
       "SGR1601-Y"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 156,
@@ -6691,7 +6846,8 @@ window.HX_PRODUCTS = [
       "SGR1601-Y"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 157,
@@ -6734,7 +6890,8 @@ window.HX_PRODUCTS = [
       "SGHG451-HY"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 158,
@@ -6780,7 +6937,8 @@ window.HX_PRODUCTS = [
       "SGSCY16307-B"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 159,
@@ -6825,7 +6983,8 @@ window.HX_PRODUCTS = [
       "SGJXC5826-PY"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 160,
@@ -6870,7 +7029,8 @@ window.HX_PRODUCTS = [
       "SGJXC5826-PG"
     ],
     "source_page": 8,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 161,
@@ -6908,7 +7068,8 @@ window.HX_PRODUCTS = [
       "SGJXC5813A-PG"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 162,
@@ -6949,7 +7110,8 @@ window.HX_PRODUCTS = [
       "SGJXC5813A-PR"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 163,
@@ -6993,7 +7155,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 9,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 164,
@@ -7035,7 +7198,8 @@ window.HX_PRODUCTS = [
       "MJXH12Y-S"
     ],
     "source_page": 9,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 165,
@@ -7066,7 +7230,8 @@ window.HX_PRODUCTS = [
       "32JJ248BU-G"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 166,
@@ -7101,7 +7266,8 @@ window.HX_PRODUCTS = [
       "32JJ247AMV-LG"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 167,
@@ -7135,7 +7301,8 @@ window.HX_PRODUCTS = [
       "24JJ252Mc-W"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 168,
@@ -7170,7 +7337,8 @@ window.HX_PRODUCTS = [
       "24JJ251BM-Y"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 169,
@@ -7204,7 +7372,8 @@ window.HX_PRODUCTS = [
       "18JJ250BUGDI-G"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 170,
@@ -7241,7 +7410,8 @@ window.HX_PRODUCTS = [
       "BG1550-Y"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 171,
@@ -7275,7 +7445,8 @@ window.HX_PRODUCTS = [
       "H204006-O"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 172,
@@ -7309,7 +7480,8 @@ window.HX_PRODUCTS = [
       "H184020-B"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 173,
@@ -7345,7 +7517,8 @@ window.HX_PRODUCTS = [
       "H104020-G"
     ],
     "source_page": 9,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 174,
@@ -7383,7 +7556,8 @@ window.HX_PRODUCTS = [
       "H104026-Y"
     ],
     "source_page": 9,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 175,
@@ -7420,7 +7594,8 @@ window.HX_PRODUCTS = [
       "H22206-B"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 176,
@@ -7463,7 +7638,8 @@ window.HX_PRODUCTS = [
       "H6401-Y"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 177,
@@ -7503,7 +7679,8 @@ window.HX_PRODUCTS = [
       "H6401-P"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 178,
@@ -7552,7 +7729,8 @@ window.HX_PRODUCTS = [
       "HA8801A"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 179,
@@ -7592,7 +7770,8 @@ window.HX_PRODUCTS = [
       "H104010-B"
     ],
     "source_page": 9,
-    "featured": true
+    "featured": true,
+    "stock": 25
   },
   {
     "id": 180,
@@ -7629,7 +7808,8 @@ window.HX_PRODUCTS = [
       "2464610-BU"
     ],
     "source_page": 9,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 181,
@@ -7665,7 +7845,8 @@ window.HX_PRODUCTS = [
       "2464610-R"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 182,
@@ -7700,7 +7881,8 @@ window.HX_PRODUCTS = [
       "2464610-R"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 183,
@@ -7734,7 +7916,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 184,
@@ -7767,7 +7950,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 185,
@@ -7801,7 +7985,8 @@ window.HX_PRODUCTS = [
       "2456100R8-S"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 186,
@@ -7836,7 +8021,8 @@ window.HX_PRODUCTS = [
       "2456100R8-W"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 187,
@@ -7873,7 +8059,8 @@ window.HX_PRODUCTS = [
       "2456400-Blue"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 188,
@@ -7907,7 +8094,8 @@ window.HX_PRODUCTS = [
       "2456400-R"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 189,
@@ -7942,7 +8130,8 @@ window.HX_PRODUCTS = [
       "2456300-R"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 190,
@@ -7977,7 +8166,8 @@ window.HX_PRODUCTS = [
       "2456300-W"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 191,
@@ -8011,7 +8201,8 @@ window.HX_PRODUCTS = [
       "2456300-W"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 192,
@@ -8046,7 +8237,8 @@ window.HX_PRODUCTS = [
       "2439300-Y"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 193,
@@ -8081,7 +8273,8 @@ window.HX_PRODUCTS = [
       "2439300-O"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 194,
@@ -8118,7 +8311,8 @@ window.HX_PRODUCTS = [
       "32RMZMc-G"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 195,
@@ -8155,7 +8349,8 @@ window.HX_PRODUCTS = [
       "32RMZMc-G"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 196,
@@ -8193,7 +8388,8 @@ window.HX_PRODUCTS = [
       "32RMZMc-B"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 197,
@@ -8229,7 +8425,8 @@ window.HX_PRODUCTS = [
       "32RMZNI-B"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 198,
@@ -8261,7 +8458,8 @@ window.HX_PRODUCTS = [
       "32RMZNI-R"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 199,
@@ -8297,7 +8495,8 @@ window.HX_PRODUCTS = [
       "32RMZLAM-G"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 200,
@@ -8332,7 +8531,8 @@ window.HX_PRODUCTS = [
       "32RMZLAM-Y"
     ],
     "source_page": 10,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 201,
@@ -8367,7 +8567,8 @@ window.HX_PRODUCTS = [
       "32RMZLAM-O"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 202,
@@ -8405,7 +8606,8 @@ window.HX_PRODUCTS = [
       "32RMZLAM-R"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 203,
@@ -8441,7 +8643,8 @@ window.HX_PRODUCTS = [
       "32RMZLAM-R"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 204,
@@ -8476,7 +8679,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 205,
@@ -8513,7 +8717,8 @@ window.HX_PRODUCTS = [
       "32RMZPA-W"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 206,
@@ -8549,7 +8754,8 @@ window.HX_PRODUCTS = [
       "32RMZPA-Blue"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 207,
@@ -8582,7 +8788,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 208,
@@ -8619,7 +8826,8 @@ window.HX_PRODUCTS = [
       "32RMZMA-B"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 209,
@@ -8655,7 +8863,8 @@ window.HX_PRODUCTS = [
       "32RMZMA-Y"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 210,
@@ -8684,7 +8893,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 211,
@@ -8716,7 +8926,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 212,
@@ -8745,7 +8956,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 213,
@@ -8779,7 +8991,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 214,
@@ -8810,7 +9023,8 @@ window.HX_PRODUCTS = [
       "24WMc675-W"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 215,
@@ -8841,7 +9055,8 @@ window.HX_PRODUCTS = [
       "24WMc675-O"
     ],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 216,
@@ -8879,7 +9094,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 217,
@@ -8917,7 +9133,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 218,
@@ -8952,7 +9169,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 219,
@@ -8986,7 +9204,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 220,
@@ -9017,7 +9236,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 11,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 221,
@@ -9049,7 +9269,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 222,
@@ -9081,7 +9302,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 223,
@@ -9119,7 +9341,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 224,
@@ -9154,7 +9377,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 225,
@@ -9185,7 +9409,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 226,
@@ -9220,7 +9445,8 @@ window.HX_PRODUCTS = [
       "32JJ78LAM-AG"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 227,
@@ -9255,7 +9481,8 @@ window.HX_PRODUCTS = [
       "32JJ78LAM-R"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 228,
@@ -9290,7 +9517,8 @@ window.HX_PRODUCTS = [
       "32JJ90AM-Gree"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 229,
@@ -9325,7 +9553,8 @@ window.HX_PRODUCTS = [
       "32JJ90AM-Gree"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 230,
@@ -9360,7 +9589,8 @@ window.HX_PRODUCTS = [
       "32JJ90AM-G"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 231,
@@ -9389,7 +9619,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 232,
@@ -9425,7 +9656,8 @@ window.HX_PRODUCTS = [
       "32JJ275PMM-R"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 233,
@@ -9460,7 +9692,8 @@ window.HX_PRODUCTS = [
       "32JJ275PMM-R"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 234,
@@ -9495,7 +9728,8 @@ window.HX_PRODUCTS = [
       "32JJ275PMM-O"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 235,
@@ -9529,7 +9763,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 236,
@@ -9563,7 +9798,8 @@ window.HX_PRODUCTS = [
       "32JJ335BM-W"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 237,
@@ -9597,7 +9833,8 @@ window.HX_PRODUCTS = [
       "32JJ335BM-B"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 238,
@@ -9633,7 +9870,8 @@ window.HX_PRODUCTS = [
       "32JJ273PFS-W"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 239,
@@ -9668,7 +9906,8 @@ window.HX_PRODUCTS = [
       "32JJ273PFS-R"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 240,
@@ -9704,7 +9943,8 @@ window.HX_PRODUCTS = [
       "32JJ272TO-R"
     ],
     "source_page": 12,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 241,
@@ -9739,7 +9979,8 @@ window.HX_PRODUCTS = [
       "32JJ272TO-G"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 242,
@@ -9773,7 +10014,8 @@ window.HX_PRODUCTS = [
       "32JJ333MC-G"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 243,
@@ -9807,7 +10049,8 @@ window.HX_PRODUCTS = [
       "32JJ333MC-B"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 244,
@@ -9843,7 +10086,8 @@ window.HX_PRODUCTS = [
       "32JJ88MA-Y"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 245,
@@ -9879,7 +10123,8 @@ window.HX_PRODUCTS = [
       "32JJ88MA-Y"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 246,
@@ -9915,7 +10160,8 @@ window.HX_PRODUCTS = [
       "32JJ88MA-W"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 247,
@@ -9950,7 +10196,8 @@ window.HX_PRODUCTS = [
       "32JJ87RR-W"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 248,
@@ -9985,7 +10232,8 @@ window.HX_PRODUCTS = [
       "32JJ87RR-B"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 249,
@@ -10020,7 +10268,8 @@ window.HX_PRODUCTS = [
       "32JJ86KO-W"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 250,
@@ -10055,7 +10304,8 @@ window.HX_PRODUCTS = [
       "32JJ86KO-W"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 251,
@@ -10090,7 +10340,8 @@ window.HX_PRODUCTS = [
       "32JJ86KO-O"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 252,
@@ -10125,7 +10376,8 @@ window.HX_PRODUCTS = [
       "32JJ85POR-R"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 253,
@@ -10156,7 +10408,8 @@ window.HX_PRODUCTS = [
       "32JJ85POR-O"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 254,
@@ -10189,7 +10442,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 255,
@@ -10227,7 +10481,8 @@ window.HX_PRODUCTS = [
       "32JJ84FERRA-R"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 256,
@@ -10262,7 +10517,8 @@ window.HX_PRODUCTS = [
       "32JJ84FERRA-B"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 257,
@@ -10296,7 +10552,8 @@ window.HX_PRODUCTS = [
       "32JJ83BMW-W"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 258,
@@ -10331,7 +10588,8 @@ window.HX_PRODUCTS = [
       "32JJ83BMW-B"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 259,
@@ -10364,7 +10622,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 260,
@@ -10399,7 +10658,8 @@ window.HX_PRODUCTS = [
       "32JJ278MB-R"
     ],
     "source_page": 13,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 261,
@@ -10433,7 +10693,8 @@ window.HX_PRODUCTS = [
       "32JJ278MB-B"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 262,
@@ -10467,7 +10728,8 @@ window.HX_PRODUCTS = [
       "32JJ81AU-W"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 263,
@@ -10501,7 +10763,8 @@ window.HX_PRODUCTS = [
       "32JJ81AU-B"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 264,
@@ -10539,7 +10802,8 @@ window.HX_PRODUCTS = [
       "32JJ276BM-Y"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 265,
@@ -10577,7 +10841,8 @@ window.HX_PRODUCTS = [
       "32JJ276BM-Y"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 266,
@@ -10614,7 +10879,8 @@ window.HX_PRODUCTS = [
       "32JJ276BM-R"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 267,
@@ -10649,7 +10915,8 @@ window.HX_PRODUCTS = [
       "32JJ80HJR-Y"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 268,
@@ -10684,7 +10951,8 @@ window.HX_PRODUCTS = [
       "32JJ80HJR-W"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 269,
@@ -10720,7 +10988,8 @@ window.HX_PRODUCTS = [
       "32JJ274KG-Gy"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 270,
@@ -10755,7 +11024,8 @@ window.HX_PRODUCTS = [
       "32JJ274KG-Gy"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 271,
@@ -10790,7 +11060,8 @@ window.HX_PRODUCTS = [
       "32JJ274KG-G"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 272,
@@ -10825,7 +11096,8 @@ window.HX_PRODUCTS = [
       "32JJ79MB-W"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 273,
@@ -10859,7 +11131,8 @@ window.HX_PRODUCTS = [
       "32JJ79MB-B"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 274,
@@ -10895,7 +11168,8 @@ window.HX_PRODUCTS = [
       "32JJ340TE-W"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 275,
@@ -10931,7 +11205,8 @@ window.HX_PRODUCTS = [
       "32JJ340TE-W"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 276,
@@ -10968,7 +11243,8 @@ window.HX_PRODUCTS = [
       "32JJ340TE-BU"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 277,
@@ -11003,7 +11279,8 @@ window.HX_PRODUCTS = [
       "32JJ338MB-B"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 278,
@@ -11038,7 +11315,8 @@ window.HX_PRODUCTS = [
       "32JJ338MB-G"
     ],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 279,
@@ -11070,7 +11348,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 280,
@@ -11104,7 +11383,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 14,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 281,
@@ -11140,7 +11420,8 @@ window.HX_PRODUCTS = [
       "32JJ332MAS-Y"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 282,
@@ -11177,7 +11458,8 @@ window.HX_PRODUCTS = [
       "32JJ332MAS-Y"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 283,
@@ -11213,7 +11495,8 @@ window.HX_PRODUCTS = [
       "32JJ332MAS-W"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 284,
@@ -11247,7 +11530,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 285,
@@ -11278,7 +11562,8 @@ window.HX_PRODUCTS = [
       "32JJ207LR-W"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 286,
@@ -11314,7 +11599,8 @@ window.HX_PRODUCTS = [
       "32JJ207LR-R"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 287,
@@ -11349,7 +11635,8 @@ window.HX_PRODUCTS = [
       "32JJ240TC-Gr"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 288,
@@ -11386,7 +11673,8 @@ window.HX_PRODUCTS = [
       "32JJ240TC-Gr"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 289,
@@ -11418,7 +11706,8 @@ window.HX_PRODUCTS = [
       "32JJ240TC-G"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 290,
@@ -11454,7 +11743,8 @@ window.HX_PRODUCTS = [
       "32JJ245APP-O"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 291,
@@ -11490,7 +11780,8 @@ window.HX_PRODUCTS = [
       "32JJ245APP-R"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 292,
@@ -11527,7 +11818,8 @@ window.HX_PRODUCTS = [
       "32JJ245APP-R"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 293,
@@ -11563,7 +11855,8 @@ window.HX_PRODUCTS = [
       "32JJ277LA-Y"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 294,
@@ -11599,7 +11892,8 @@ window.HX_PRODUCTS = [
       "32JJ277LA-Y"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 295,
@@ -11635,7 +11929,8 @@ window.HX_PRODUCTS = [
       "32JJ277LA-R"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 296,
@@ -11670,7 +11965,8 @@ window.HX_PRODUCTS = [
       "32JJ242BU-W"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 297,
@@ -11705,7 +12001,8 @@ window.HX_PRODUCTS = [
       "32JJ242BU-R"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 298,
@@ -11745,7 +12042,8 @@ window.HX_PRODUCTS = [
       "32JJ284BM-W"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 299,
@@ -11783,7 +12081,8 @@ window.HX_PRODUCTS = [
       "32JJ284BM-W"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 300,
@@ -11822,7 +12121,8 @@ window.HX_PRODUCTS = [
       "32JJ284BM-R"
     ],
     "source_page": 15,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 301,
@@ -11858,7 +12158,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 302,
@@ -11895,7 +12196,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 303,
@@ -11933,7 +12235,8 @@ window.HX_PRODUCTS = [
       "32JJ290FF-W"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 304,
@@ -11972,7 +12275,8 @@ window.HX_PRODUCTS = [
       "32JJ290FF-W"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 305,
@@ -12012,7 +12316,8 @@ window.HX_PRODUCTS = [
       "32JJ290FF-R"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 306,
@@ -12050,7 +12355,8 @@ window.HX_PRODUCTS = [
       "32JJ287LS-BU"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 307,
@@ -12088,7 +12394,8 @@ window.HX_PRODUCTS = [
       "32JJ287LS-B"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 308,
@@ -12124,7 +12431,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 309,
@@ -12160,7 +12468,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 310,
@@ -12199,7 +12508,8 @@ window.HX_PRODUCTS = [
       "32JJ294Lam-BU"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 311,
@@ -12237,7 +12547,8 @@ window.HX_PRODUCTS = [
       "32JJ294Lam-B"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 312,
@@ -12273,7 +12584,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 313,
@@ -12315,7 +12627,8 @@ window.HX_PRODUCTS = [
       "32JJ78LAM-R"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 314,
@@ -12354,7 +12667,8 @@ window.HX_PRODUCTS = [
       "32JJ297MB-Y"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 315,
@@ -12390,7 +12704,8 @@ window.HX_PRODUCTS = [
       "32JJ297MB-Y"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 316,
@@ -12429,7 +12744,8 @@ window.HX_PRODUCTS = [
       "32JJ297MB-R"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 317,
@@ -12465,7 +12781,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 318,
@@ -12504,7 +12821,8 @@ window.HX_PRODUCTS = [
       "32JJ303PCD-P"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 319,
@@ -12542,7 +12860,8 @@ window.HX_PRODUCTS = [
       "32JJ303PCD-R"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 320,
@@ -12580,7 +12899,8 @@ window.HX_PRODUCTS = [
       "32JJ303PCD-R"
     ],
     "source_page": 16,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 321,
@@ -12618,7 +12938,8 @@ window.HX_PRODUCTS = [
       "32JJ280BYD-MY"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 322,
@@ -12651,7 +12972,8 @@ window.HX_PRODUCTS = [
       "32JJ280BYD-R"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 323,
@@ -12686,7 +13008,8 @@ window.HX_PRODUCTS = [
       "32JJ298PC-R"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 324,
@@ -12721,7 +13044,8 @@ window.HX_PRODUCTS = [
       "32JJ298PC-B"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 325,
@@ -12756,7 +13080,8 @@ window.HX_PRODUCTS = [
       "32JJ299MAG-Bu"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 326,
@@ -12794,7 +13119,8 @@ window.HX_PRODUCTS = [
       "32JJ299MAG-B"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 327,
@@ -12832,7 +13158,8 @@ window.HX_PRODUCTS = [
       "32JJ283MBG-W"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 328,
@@ -12871,7 +13198,8 @@ window.HX_PRODUCTS = [
       "32JJ283MBG-W"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 329,
@@ -12910,7 +13238,8 @@ window.HX_PRODUCTS = [
       "32JJ283MBG-R"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 330,
@@ -12949,7 +13278,8 @@ window.HX_PRODUCTS = [
       "32JJ285Ma-Y"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 331,
@@ -12985,7 +13315,8 @@ window.HX_PRODUCTS = [
       "32JJ285Ma-Y"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 332,
@@ -13024,7 +13355,8 @@ window.HX_PRODUCTS = [
       "32JJ285Ma-W"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 333,
@@ -13053,7 +13385,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 334,
@@ -13084,7 +13417,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 335,
@@ -13117,7 +13451,8 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 336,
@@ -13153,7 +13488,8 @@ window.HX_PRODUCTS = [
       "2456700-O"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 337,
@@ -13187,7 +13523,8 @@ window.HX_PRODUCTS = [
       "2456700-O"
     ],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   },
   {
     "id": 338,
@@ -13219,6 +13556,7 @@ window.HX_PRODUCTS = [
     "attributes": {},
     "upsells": [],
     "source_page": 17,
-    "featured": false
+    "featured": false,
+    "stock": 25
   }
 ];

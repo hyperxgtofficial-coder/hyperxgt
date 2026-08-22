@@ -1,4 +1,25 @@
-let P = window.HX_PRODUCTS || [];
+// PERSISTENT PRODUCTS DATABASE SYNCHRONIZER
+function loadProductsDB() {
+  try {
+    const local = localStorage.getItem("hx_products_db");
+    if (local) {
+      const parsed = JSON.parse(local);
+      if (parsed && parsed.length) return parsed;
+    }
+  } catch(e) {}
+  return window.HX_PRODUCTS || [];
+}
+
+function saveProductsDB(arr) {
+  window.HX_PRODUCTS = arr;
+  try {
+    localStorage.setItem("hx_products_db", JSON.stringify(arr));
+    // Broadcast live storage event across open tabs
+    window.dispatchEvent(new CustomEvent("hx_stock_update", { detail: arr }));
+  } catch(e) {}
+}
+
+let P = loadProductsDB();
 
 const $ = (q, r = document) => r.querySelector(q);
 const $$ = (q, r = document) => [...r.querySelectorAll(q)];
@@ -79,10 +100,11 @@ function acceptOrder(orderId) {
   (o.items || []).forEach(item => {
     const prod = P.find(p => p.id === item.id || p.sku === item.sku);
     if (prod) {
-      prod.stock = Math.max(0, (prod.stock || 25) - item.qty);
+      prod.stock = Math.max(0, (prod.stock !== undefined ? prod.stock : 25) - item.qty);
     }
   });
 
+  saveProductsDB(P);
   renderAdminProducts();
   renderAdminOrders();
 
@@ -695,7 +717,7 @@ function initImageUploadHandler() {
   }
 }
 
-// BULK CSV IMPORT & BATCH UPDATE ENGINE (WITH STOCK COLUMN)
+// BULK CSV IMPORT & BATCH UPDATE ENGINE (WITH PERSISTENT STOCK SYNC)
 function parseCSV(text) {
   const lines = [];
   let row = [], field = '', inQuotes = false;
@@ -805,7 +827,7 @@ function initCsvImportHandler() {
           }
         }
 
-        window.HX_PRODUCTS = P;
+        saveProductsDB(P);
         renderAdminProducts();
         populateAdminCatFilter();
         toast(`Bulk CSV Success! Updated ${updatedCount} products, added ${createdCount} new products ✓`);
@@ -866,7 +888,7 @@ async function saveProduct(e) {
   const name = $("#formName").value.trim();
   const sku = $("#formSku").value.trim();
   const category = $("#formCat").value;
-  const stock = Number($("#formStock").value) || 0;
+  const stock = Number($("#formStock").value);
   const taxMode = $("#formGstTaxType").value;
   const rawPrice = Number($("#formPrice").value) || 1999;
   const rawMrp = Number($("#formMrp").value) || Math.round(rawPrice * 1.25);
@@ -896,7 +918,7 @@ async function saveProduct(e) {
       p.name = name;
       p.sku = sku;
       p.category = category;
-      p.stock = stock;
+      p.stock = isNaN(stock) ? 25 : stock;
       p.taxMode = taxMode;
       p.price = price;
       p.mrp = mrp;
@@ -918,7 +940,7 @@ async function saveProduct(e) {
         });
       } catch(e) {}
       
-      toast(`Product #${p.id} (${p.sku}) saved! Stock: ${stock} units.`);
+      toast(`Product #${p.id} (${p.sku}) saved! Stock: ${p.stock} units.`);
     }
   } else {
     const newId = Math.max(0, ...P.map(x => x.id || 0)) + 1;
@@ -927,7 +949,7 @@ async function saveProduct(e) {
       sku: sku,
       name: name,
       category: category,
-      stock: stock,
+      stock: isNaN(stock) ? 25 : stock,
       taxMode: taxMode,
       price: price,
       mrp: mrp,
@@ -960,10 +982,10 @@ async function saveProduct(e) {
       });
     } catch(e) {}
 
-    toast(`New product #${newProd.id} (${newProd.sku}) added! Stock: ${stock} units.`);
+    toast(`New product #${newProd.id} (${newProd.sku}) added! Stock: ${newProd.stock} units.`);
   }
 
-  window.HX_PRODUCTS = P;
+  saveProductsDB(P);
   closeEl($("#productModal"));
   renderAdminProducts();
 }
@@ -975,7 +997,7 @@ async function deleteProduct(id) {
 
   if (confirm(`Are you sure you want to delete "${p.name}" (SKU: ${p.sku}) from the store database?`)) {
     P = P.filter(x => x.id !== id);
-    window.HX_PRODUCTS = P;
+    saveProductsDB(P);
 
     try {
       await fetch('/api/products-crud?id=' + id, {

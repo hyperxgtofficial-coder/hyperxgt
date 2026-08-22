@@ -1,4 +1,16 @@
-let P = window.HX_PRODUCTS || [];
+// PERSISTENT STOREFRONT PRODUCTS DATABASE SYNCHRONIZER
+function loadProductsDB() {
+  try {
+    const local = localStorage.getItem("hx_products_db");
+    if (local) {
+      const parsed = JSON.parse(local);
+      if (parsed && parsed.length) return parsed;
+    }
+  } catch(e) {}
+  return window.HX_PRODUCTS || [];
+}
+
+let P = loadProductsDB();
 
 const $ = (q, r = document) => r.querySelector(q);
 const $$ = (q, r = document) => [...r.querySelectorAll(q)];
@@ -14,6 +26,30 @@ function toast(msg) {
   t.classList.add("show");
   setTimeout(() => t.classList.remove("show"), 2400);
 }
+
+// REAL-TIME MULTI-TAB & STORAGE STOCK SYNCHRONIZER
+function reRenderAllStorefrontPages() {
+  P = loadProductsDB();
+  window.HX_PRODUCTS = P;
+  if (typeof homeInit === "function") homeInit();
+  if (typeof shopInit === "function") shopInit();
+  if (typeof productInit === "function") productInit();
+  if (typeof renderCartDrawer === "function") renderCartDrawer();
+}
+
+window.addEventListener("storage", (e) => {
+  if (e.key === "hx_products_db") {
+    reRenderAllStorefrontPages();
+  }
+});
+
+window.addEventListener("hx_stock_update", (e) => {
+  if (e.detail) {
+    P = e.detail;
+    window.HX_PRODUCTS = P;
+    reRenderAllStorefrontPages();
+  }
+});
 
 // LOCAL STORAGE STORAGE HELPERS
 const getCart = () => JSON.parse(localStorage.getItem("hx_cart") || "{}");
@@ -337,7 +373,6 @@ function productInit() {
   document.title = `${p.name} — HyperXGT`;
 
   const w = getWish().includes(p.id);
-  const savings = Math.max(0, p.mrp - p.price);
   const stock = p.stock !== undefined ? p.stock : 25;
 
   let stockStatusHTML = `<div style="margin: 14px 0 20px; font-size: 12px; color: #2e7d32; font-weight: 700; display: flex; align-items: center; gap: 6px;">
