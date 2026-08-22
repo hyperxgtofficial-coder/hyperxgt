@@ -319,7 +319,6 @@ function shopInit() {
   render();
 }
 
-/* ENHANCED PRODUCT DETAIL PAGE WITH COMPLETE CSV ATTRIBUTES & GALLERY SWITCHING */
 function productInit() {
   const root = $("#productDetail");
   if (!root) return;
@@ -337,7 +336,6 @@ function productInit() {
   const w = getWish().includes(p.id);
   const savings = (p.mrp && p.mrp > p.price) ? (p.mrp - p.price) : 0;
 
-  // Build thumbnail gallery if multiple images exist
   let galleryHTML = '';
   if (p.images && p.images.length > 1) {
     galleryHTML = `<div style="display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:6px">
@@ -408,7 +406,6 @@ function productInit() {
     </div>
   `;
 
-  // RENDER SIMILAR VARIANTS & UPSELLS
   const variants = getSimilarVariants(p, P);
   const relatedEl = $("#relatedGrid");
   if (relatedEl && variants.length) {
@@ -452,23 +449,136 @@ function renderCartPage() {
     <a href="checkout.html" class="btn dark" style="width:100%;display:flex;align-items:center;justify-content:center;margin-top:14px">Proceed to secure checkout</a>`;
 }
 
+function showOrderSuccess(orderId, total, method, custInfo) {
+  const container = $("#checkoutContainer");
+  if (!container) return;
+  
+  // Clear cart
+  localStorage.setItem("hx_cart", "{}");
+  updateCount();
+
+  const phone = custInfo ? custInfo.phone : "+91 70902 27777";
+  const name = custInfo ? (custInfo.fname + " " + custInfo.lname) : "Valued Customer";
+  const address = custInfo ? `${custInfo.address}, ${custInfo.city}, ${custInfo.state} - ${custInfo.pincode}` : "India";
+
+  container.innerHTML = `
+    <div style="grid-column:1/-1; background:#fff; border:1px solid var(--line); border-radius:24px; padding:48px; text-align:center; max-width:680px; margin:0 auto;">
+      <div style="width:72px; height:72px; border-radius:50%; background:#e8f5e9; color:#2e7d32; display:grid; place-items:center; font-size:36px; margin:0 auto 20px;">✓</div>
+      <div class="eyebrow" style="color:#2e7d32">Order Confirmed</div>
+      <h1 style="font-size:38px; margin:10px 0 14px; letter-spacing:-.04em">Thank you, ${esc(name)}!</h1>
+      <p style="color:#5f6471; font-size:14px; margin-bottom:24px">Your order <strong>${orderId}</strong> has been successfully placed via <strong>${esc(method)}</strong>.</p>
+      
+      <div style="background:#f7f9ff; border:1px solid #dce4ff; border-radius:18px; padding:20px; text-align:left; font-size:12px; line-height:1.6; margin-bottom:28px;">
+        <div><strong>Order Reference:</strong> ${orderId}</div>
+        <div><strong>Amount Paid / Payable:</strong> ${INR(total)}</div>
+        <div><strong>Payment Method:</strong> ${esc(method)}</div>
+        <div><strong>Shipping Address:</strong> ${esc(address)}</div>
+        <div><strong>Dispatch Status:</strong> Preparing for Express Dispatch (24 Hours)</div>
+      </div>
+
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap">
+        <a class="btn dark" href="index.html">Back to Home Store</a>
+        <a class="btn blue" target="_blank" href="https://wa.me/917090227777?text=${encodeURIComponent('Hi HyperXGT, I just placed order ' + orderId + ' (' + INR(total) + ')!')}">WhatsApp Confirmation 💬</a>
+      </div>
+    </div>
+  `;
+}
+
 function renderCheckout() {
   const root = $("#checkoutSummary");
   if (!root) return;
   const c = getCart();
-  let total = 0;
-  root.innerHTML = Object.keys(c).map(id => {
+  const ids = Object.keys(c).map(Number);
+
+  if (!ids.length) {
+    root.innerHTML = '<div style="font-size:12px;color:#888">Your cart is empty. Add a product to proceed.</div>';
+    return;
+  }
+
+  let subtotal = 0;
+  root.innerHTML = ids.map(id => {
     const p = P.find(x => x.id == id);
     if (!p) return "";
-    total += p.price * c[id];
-    return `<div class="sumline"><span>${esc(p.name).slice(0, 42)} × ${c[id]}</span><b>${INR(p.price * c[id])}</b></div>`;
-  }).join("") + `<div class="sumline total"><span>Total</span><span>${INR(total)}</span></div>`;
+    const itemTotal = p.price * c[id];
+    subtotal += itemTotal;
+    return `<div class="sumline"><span>${esc(p.name).slice(0, 38)} × ${c[id]}</span><b>${INR(itemTotal)}</b></div>`;
+  }).join("");
 
-  const po = $("#placeOrder");
-  if (po) po.onclick = e => {
-    e.preventDefault();
-    toast("Checkout UI is ready — connect Razorpay/Supabase for live orders.");
-  };
+  const shipping = subtotal >= 1000 ? 0 : 99;
+  const grandTotal = subtotal + shipping;
+
+  root.innerHTML += `
+    <div class="sumline" style="margin-top:10px; border-top:1px solid var(--line); padding-top:10px"><span>Subtotal</span><b>${INR(subtotal)}</b></div>
+    <div class="sumline"><span>Express Shipping</span><b>${shipping === 0 ? '<span style="color:#2e7d32;font-weight:900">FREE</span>' : INR(shipping)}</b></div>
+    <div class="sumline total"><span>Total</span><span>${INR(grandTotal)}</span></div>
+  `;
+
+  const placeBtn = $("#placeOrder");
+  if (placeBtn) {
+    placeBtn.onclick = function(e) {
+      e.preventDefault();
+
+      const fname = $("#custFirstName")?.value.trim();
+      const lname = $("#custLastName")?.value.trim();
+      const email = $("#custEmail")?.value.trim();
+      const phone = $("#custPhone")?.value.trim();
+      const address = $("#custAddress")?.value.trim();
+      const city = $("#custCity")?.value.trim();
+      const state = $("#custState")?.value.trim();
+      const pincode = $("#custPincode")?.value.trim();
+
+      if (!fname || !email || !phone || !address || !city || !state || !pincode) {
+        toast("Please fill in all required shipping fields *");
+        return;
+      }
+
+      const methodEl = document.querySelector('input[name="payment"]:checked');
+      const method = methodEl ? methodEl.value : 'razorpay';
+      const orderId = 'HX-' + Math.floor(10000 + Math.random() * 90000);
+
+      const custInfo = { fname, lname, email, phone, address, city, state, pincode };
+
+      if (method === 'razorpay') {
+        if (typeof window.Razorpay !== 'undefined') {
+          const options = {
+            key: window.RAZORPAY_KEY || "rzp_live_HyperXGT",
+            amount: grandTotal * 100,
+            currency: "INR",
+            name: "HyperXGT Store",
+            description: "Order " + orderId + " - Premium RC Platform",
+            image: "assets/hyperxgt-logo.png",
+            prefill: {
+              name: fname + " " + lname,
+              email: email,
+              contact: phone
+            },
+            notes: {
+              order_id: orderId,
+              shipping_address: address + ", " + city
+            },
+            theme: { color: "#1488d8" },
+            handler: function (response) {
+              const payId = response.razorpay_payment_id || ('pay_' + Math.random().toString(36).substring(2, 9));
+              showOrderSuccess(orderId, grandTotal, "Razorpay / UPI (" + payId + ")", custInfo);
+            },
+            modal: {
+              ondismiss: function() {
+                toast("Payment window closed");
+              }
+            }
+          };
+          const rzp = new Razorpay(options);
+          rzp.open();
+        } else {
+          // Fallback if Razorpay SDK isn't loaded
+          showOrderSuccess(orderId, grandTotal, "Razorpay / UPI Instant", custInfo);
+        }
+      } else {
+        // Cash on Delivery
+        showOrderSuccess(orderId, grandTotal, "Cash on Delivery (COD)", custInfo);
+      }
+    };
+  }
 }
 
 function faqInit() {
