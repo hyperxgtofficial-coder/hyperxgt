@@ -1,4 +1,4 @@
-// Vercel Serverless Function: Real Email Delivery Engine (Resend API & SMTP Bridge)
+// Vercel Serverless Function: Real Email Delivery Engine (Resend API)
 const https = require('https');
 
 function httpsPost(urlStr, headers, bodyObj) {
@@ -42,11 +42,44 @@ function httpsPost(urlStr, headers, bodyObj) {
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  // GET DEBUG ROUTE FOR 1-CLICK TESTING
+  if (req.method === 'GET') {
+    const testEmail = req.query.email || "contact@hyperxgt.com";
+    const resendApiKey = process.env.RESEND_API_KEY;
+
+    if (!resendApiKey) {
+      return res.status(200).json({
+        success: false,
+        message: "RESEND_API_KEY is not set in Vercel Environment Variables yet.",
+        instructions: "Add RESEND_API_KEY in Vercel Settings -> Environment Variables & Redeploy"
+      });
+    }
+
+    try {
+      const resendHeaders = { 'Authorization': `Bearer ${resendApiKey}` };
+      const resendPayload = {
+        from: 'onboarding@resend.dev',
+        to: [testEmail],
+        subject: 'HyperXGT Live Email Delivery Test 🏎️',
+        html: '<h2>Welcome to HyperXGT!</h2><p>Your email delivery engine is 100% active and working!</p>'
+      };
+
+      const rRes = await httpsPost('https://api.resend.com/emails', resendHeaders, resendPayload);
+      return res.status(200).json({
+        success: rRes.statusCode === 200 || rRes.statusCode === 201,
+        statusCode: rRes.statusCode,
+        resendResponse: rRes.body
+      });
+    } catch(err) {
+      return res.status(500).json({ error: err.message });
+    }
   }
 
   if (req.method !== 'POST') {
@@ -55,14 +88,9 @@ module.exports = async (req, res) => {
 
   try {
     const { template, toEmail, toName, order } = req.body || {};
+    const targetEmail = toEmail || "contact@hyperxgt.com";
 
-    if (!toEmail) {
-      return res.status(400).json({ error: 'Recipient email required' });
-    }
-
-    const resendApiKey = process.env.RESEND_API_KEY || "re_dummy_key";
-    const senderEmail = process.env.EMAIL_FROM || "HyperXGT Garage <onboarding@resend.dev>";
-
+    const resendApiKey = process.env.RESEND_API_KEY;
     let subject = "Notification from HyperXGT";
     let htmlContent = "";
 
@@ -85,13 +113,6 @@ module.exports = async (req, res) => {
               <div style="font-size: 24px; font-weight: 900; color: #1488d8; letter-spacing: 0.1em; margin: 8px 0;">HYPERXGT10</div>
               <div style="font-size: 12px; color: #2e7d32; font-weight: 700;">Get 10% OFF on your first RC car or spare parts order!</div>
             </div>
-
-            <p><strong>Inside Your Account Garage:</strong></p>
-            <ul style="padding-left: 20px; color: #444;">
-              <li>Track live shipment status & AWB delivery tracking</li>
-              <li>Store saved RC models & wishlist</li>
-              <li>Raise 1-click AMC repair & replacement tickets</li>
-            </ul>
 
             <div style="text-align: center; margin-top: 30px;">
               <a href="https://hyperxgt.com/shop.html" style="background: #111; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 800; font-size: 13px; display: inline-block;">Explore RC Catalogue →</a>
@@ -138,44 +159,34 @@ module.exports = async (req, res) => {
             <div style="text-align: right; font-size: 15px; margin-top: 14px;">
               <strong>Grand Total: ₹${Number(order.total || 0).toLocaleString("en-IN")}</strong>
             </div>
-
-            <div style="text-align: center; margin-top: 28px;">
-              <a href="https://hyperxgt.com/account.html?order_id=${order.id}" style="background: #1488d8; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 800; font-size: 13px; display: inline-block;">Track Order Shipment Live →</a>
-            </div>
           </div>
         </div>
       `;
     }
 
-    // DISPATCH VIA LIVE RESEND REST API
-    let resendStatus = "Simulated (Add RESEND_API_KEY to Vercel for real delivery)";
+    let apiResult = null;
 
-    if (process.env.RESEND_API_KEY) {
+    if (resendApiKey) {
       try {
+        const resendHeaders = { 'Authorization': `Bearer ${resendApiKey}` };
         const resendPayload = {
-          from: senderEmail,
-          to: [toEmail],
+          from: 'onboarding@resend.dev',
+          to: [targetEmail],
           subject: subject,
           html: htmlContent
         };
-        const resendHeaders = {
-          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`
-        };
         const rRes = await httpsPost('https://api.resend.com/emails', resendHeaders, resendPayload);
-        if (rRes.body && rRes.body.id) {
-          resendStatus = `Delivered via Resend API (ID: ${rRes.body.id})`;
-        }
+        apiResult = rRes.body;
       } catch(err) {
-        console.error("Resend API Delivery Error:", err.message);
+        apiResult = { error: err.message };
       }
     }
 
     return res.status(200).json({
       success: true,
-      message: `Email process completed for ${toEmail}`,
-      status: resendStatus,
-      toEmail,
-      subject
+      targetEmail,
+      subject,
+      resendResult: apiResult
     });
 
   } catch (err) {
