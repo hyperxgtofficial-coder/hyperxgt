@@ -1,4 +1,4 @@
-SKU,Product Name,Category,Price Tax Type,Sale Price,Regular MRP,GST Rate %,HSN Code,Scale,Top Speed,Drive System,Image URL,Short Description,Full Description
-HX-10482,1:10 Brushless High-Speed RC Rally Car,Racing Cars,Inclusive,6999,8749,18,95030090,1:10,60 KM/H,4WD,assets/products/H104020-R.webp,High speed 60km/h 4WD brushless rally platform,Built with precision oil-filled shocks and 2.4GHz transmitter system.
-HX-20590,1:16 SCY Brushless 4WD RC Drift Car,Drift Cars,Inclusive,4999,6249,18,95030090,1:16,45 KM/H,4WD,assets/products/H6401-P.webp,Precision gyro-assisted 4WD drift car,Includes interchangeable drift and racing tires with LED lights.
-HX-30912,1:10 Off-Road 4WD Rock Crawler,Off Road Crawlers,Exclusive,10999,13999,18,95030090,1:10,25 KM/H,4WD,assets/products/H104020-R.webp,High torque dual motor rock crawler,Heavy duty aluminum chassis with waterproof electronics.
+SKU,Name,Categories,Stock,Sale Price,Regular Price,GST Rate %,Price Tax Type,Scale,Speed,Drive,Images,Short Description
+MJX7303,1:7 Citroen C3 WRC Brushless Rally Car,Racing Cars,15,69999,79999,18,inclusive,1:7,100 KM/H,4WD,assets/products/MJX7303.webp,Professional 1:7 Scale WRC Brushless RC Car
+H104020,1:10 Off-Road 4WD Rock Crawler,Off Road Crawlers,25,32999,39999,18,inclusive,1:10,45 KM/H,4WD,assets/products/H104020-R.webp,Heavy Duty Off-Road Rock Crawler with Metallic Chassis
+H6401-P,1:64 FPV Mini RC Drift Car,Drift Cars,40,6248,7810,18,inclusive,1:64,25 KM/H,RWD,assets/products/H6401-P.webp,FPV Mini RC Drift Car with Real-Time Video Goggles

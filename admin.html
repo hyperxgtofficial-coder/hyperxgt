@@ -106,6 +106,7 @@
                 <th>SKU</th>
                 <th>Product Name</th>
                 <th>Category</th>
+                <th>Stock (Units)</th>
                 <th>Price Excl. GST</th>
                 <th>GST Rate</th>
                 <th>Price Incl. GST</th>
@@ -230,7 +231,7 @@
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:10px">
           <div>
             <label class="form-label">Category *</label>
             <select class="field" id="formCat">
@@ -242,6 +243,10 @@
               <option>Diecast Models</option>
               <option>Collectables</option>
             </select>
+          </div>
+          <div>
+            <label class="form-label">Stock Units *</label>
+            <input class="field" type="number" id="formStock" required placeholder="25" value="25" min="0">
           </div>
           <div>
             <label class="form-label">Pricing Tax Mode *</label>

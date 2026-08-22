@@ -67,7 +67,7 @@ window.HX_ORDERS = [
   }
 ];
 
-// ORDER ACCEPTANCE WORKFLOW BY ADMIN
+// ORDER ACCEPTANCE WORKFLOW BY ADMIN & STOCK DEDUCTION
 function acceptOrder(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
@@ -75,8 +75,18 @@ function acceptOrder(orderId) {
   o.fulfillmentStatus = "Processing";
   o.acceptedDate = new Date().toLocaleString("en-IN");
 
-  toast(`Order ${orderId} ACCEPTED by Admin! Status changed to Processing ✓`);
+  // Auto-deduct stock from inventory
+  (o.items || []).forEach(item => {
+    const prod = P.find(p => p.id === item.id || p.sku === item.sku);
+    if (prod) {
+      prod.stock = Math.max(0, (prod.stock || 25) - item.qty);
+    }
+  });
+
+  renderAdminProducts();
   renderAdminOrders();
+
+  toast(`Order ${orderId} ACCEPTED by Admin! Stock updated & status changed to Processing ✓`);
 
   const cleanPhone = o.customer.phone.replace(/[^0-9]/g, '');
   const msg = `Hi ${o.customer.name},\n\nGreat news! Your HyperXGT Order ${o.id} (${INR(o.total)}) has been ACCEPTED by store admin and is now in Processing for quality inspection & dispatch!\n\nTrack live status here: https://hyperxgt.com/account.html\n\nThank you for choosing HyperXGT! 🏎️`;
@@ -287,7 +297,7 @@ function populateAdminCatFilter() {
   select.innerHTML = '<option value="">All Categories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join("");
 }
 
-// RENDER ADMIN PRODUCT TABLE WITH GST COLUMNS
+// RENDER ADMIN PRODUCT TABLE WITH STOCK COUNT & GST COLUMNS
 function renderAdminProducts() {
   const tbody = $("#adminTableBody");
   if (!tbody) return;
@@ -308,7 +318,7 @@ function renderAdminProducts() {
   $("#metricValue").textContent = "₹" + (totalVal / 100000).toFixed(2) + " Lakh";
 
   if (!filtered.length) {
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:40px;color:#888">No matching products found in database.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:40px;color:#888">No matching products found in database.</td></tr>`;
     return;
   }
 
@@ -316,21 +326,30 @@ function renderAdminProducts() {
     const gstRate = p.gstRate || 18;
     const priceIncl = p.price || 0;
     const priceExcl = priceIncl / (1 + (gstRate / 100));
+    const stock = p.stock !== undefined ? p.stock : 25;
+
+    let stockBadge = `<span style="background:#e8f5e9;color:#2e7d32;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟢 ${stock} Units</span>`;
+    if (stock === 0) {
+      stockBadge = `<span style="background:#ffeeef;color:#ed1c24;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🔴 Out of Stock</span>`;
+    } else if (stock <= 5) {
+      stockBadge = `<span style="background:#fff8e1;color:#b78103;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟡 ${stock} Left</span>`;
+    }
 
     return `
     <tr>
       <td><strong>${p.id}</strong></td>
       <td><img src="${p.image}" alt="${esc(p.name)}"></td>
       <td><code style="background:#edf2f7;padding:3px 7px;border-radius:6px;font-size:11px">${esc(p.sku)}</code></td>
-      <td><strong style="color:#111;display:block;max-width:280px">${esc(p.name)}</strong></td>
+      <td><strong style="color:#111;display:block;max-width:260px">${esc(p.name)}</strong></td>
       <td><span style="background:#eef4ff;color:#1488d8;font-weight:800;padding:3px 8px;border-radius:6px;font-size:10px">${esc(p.category)}</span></td>
+      <td>${stockBadge}</td>
       <td><span style="color:#666;font-weight:700">₹${priceExcl.toFixed(2)}</span></td>
       <td><span style="background:#fff8e1;color:#b78103;font-weight:900;padding:3px 7px;border-radius:6px;font-size:10px">${gstRate}% GST</span></td>
       <td><strong style="color:#2e7d32">${INR(priceIncl)}</strong></td>
       <td>${esc(p.scale || '1:16')}</td>
       <td>
         <div style="display:flex;gap:6px">
-          <button class="btn-icon edit" title="Edit Product" onclick="openEditModal(${p.id})">✏️</button>
+          <button class="btn-icon edit" title="Edit Product Specs & Stock" onclick="openEditModal(${p.id})">✏️</button>
           <button class="btn-icon delete" title="Delete Product" onclick="deleteProduct(${p.id})">🗑️</button>
         </div>
       </td>
@@ -441,7 +460,7 @@ function openOrderModal(orderId) {
         <div style="margin-top:16px;background:#fff8e1;border:1px solid #ffe082;border-radius:12px;padding:14px">
           <strong style="font-size:12px;color:#b78103">🟡 ORDER IS PENDING ADMIN ACCEPTANCE</strong>
           <div style="font-size:11px;color:#795548;margin-top:4px">Review customer & inventory details above before accepting into processing.</div>
-          <button class="btn green" style="margin-top:10px;width:100%;height:40px;background:#2e7d32;color:#fff;font-weight:900" onclick="acceptOrder('${o.id}')">✅ Accept Order & Move to Processing</button>
+          <button class="btn green" style="margin-top:10px;width:100%;height:40px;background:#2e7d32;color:#fff;font-weight:900" onclick="acceptOrder('${o.id}')">✅ Accept Order & Deduct Inventory</button>
         </div>
         ` : ''}
 
@@ -676,7 +695,7 @@ function initImageUploadHandler() {
   }
 }
 
-// BULK CSV IMPORT & BATCH UPDATE ENGINE
+// BULK CSV IMPORT & BATCH UPDATE ENGINE (WITH STOCK COLUMN)
 function parseCSV(text) {
   const lines = [];
   let row = [], field = '', inQuotes = false;
@@ -721,6 +740,7 @@ function initCsvImportHandler() {
         const salePriceIdx = headers.findIndex(h => h === 'sale price' || h === 'price' || h === 'sale_price');
         const regPriceIdx = headers.findIndex(h => h === 'regular price' || h === 'mrp' || h === 'regular_price');
         const catIdx = headers.findIndex(h => h === 'categories' || h === 'category');
+        const stockIdx = headers.findIndex(h => h === 'stock' || h === 'quantity' || h === 'stock units' || h === 'inventory');
         const imgIdx = headers.findIndex(h => h === 'images' || h === 'image' || h === 'photo');
         const taxModeIdx = headers.findIndex(h => h === 'price tax type' || h === 'gst mode' || h === 'tax type');
         const gstRateIdx = headers.findIndex(h => h === 'gst rate %' || h === 'gst %' || h === 'gst rate');
@@ -738,6 +758,7 @@ function initCsvImportHandler() {
           let rawPrice = salePriceIdx !== -1 ? Number((row[salePriceIdx] || '').replace(/[^0-9.]/g, '')) || 0 : 0;
           let rawMrp = regPriceIdx !== -1 ? Number((row[regPriceIdx] || '').replace(/[^0-9.]/g, '')) || rawPrice : rawPrice;
           const cat = catIdx !== -1 ? (row[catIdx] || '').trim() : 'Racing Cars';
+          const stock = stockIdx !== -1 ? Number((row[stockIdx] || '').replace(/[^0-9]/g, '')) || 25 : 25;
           const img = imgIdx !== -1 ? (row[imgIdx] || '').split(',')[0].trim() : '';
           const taxMode = taxModeIdx !== -1 ? (row[taxModeIdx] || '').toLowerCase().trim() : 'inclusive';
           const gstRate = gstRateIdx !== -1 ? Number((row[gstRateIdx] || '').replace(/[^0-9.]/g, '')) || 18 : 18;
@@ -755,6 +776,7 @@ function initCsvImportHandler() {
             if (name) existing.name = name;
             if (finalPrice > 0) existing.price = finalPrice;
             if (finalMrp > 0) existing.mrp = finalMrp;
+            existing.stock = stock;
             existing.gstRate = gstRate;
             existing.taxMode = taxMode;
             if (cat) existing.category = cat;
@@ -769,6 +791,7 @@ function initCsvImportHandler() {
               category: cat || 'Racing Cars',
               price: finalPrice || 1999,
               mrp: finalMrp || 2499,
+              stock: stock,
               gstRate: gstRate,
               taxMode: taxMode,
               discount: 20,
@@ -799,6 +822,7 @@ function openAddModal() {
   $("#modalTitle").textContent = "Add New Product to Database";
   $("#formProdId").value = "";
   $("#productForm").reset();
+  $("#formStock").value = "25";
   $("#formGstTaxType").value = "inclusive";
   $("#formImgPreview").src = "assets/products/H104020-R.webp";
   calculateGstBreakdown();
@@ -815,6 +839,7 @@ function openEditModal(id) {
   $("#formName").value = p.name || "";
   $("#formSku").value = p.sku || "";
   $("#formCat").value = p.category || "Racing Cars";
+  $("#formStock").value = p.stock !== undefined ? p.stock : 25;
   $("#formGstTaxType").value = p.taxMode || "inclusive";
   $("#formPrice").value = p.price || "";
   $("#formMrp").value = p.mrp || "";
@@ -841,6 +866,7 @@ async function saveProduct(e) {
   const name = $("#formName").value.trim();
   const sku = $("#formSku").value.trim();
   const category = $("#formCat").value;
+  const stock = Number($("#formStock").value) || 0;
   const taxMode = $("#formGstTaxType").value;
   const rawPrice = Number($("#formPrice").value) || 1999;
   const rawMrp = Number($("#formMrp").value) || Math.round(rawPrice * 1.25);
@@ -870,6 +896,7 @@ async function saveProduct(e) {
       p.name = name;
       p.sku = sku;
       p.category = category;
+      p.stock = stock;
       p.taxMode = taxMode;
       p.price = price;
       p.mrp = mrp;
@@ -891,7 +918,7 @@ async function saveProduct(e) {
         });
       } catch(e) {}
       
-      toast(`Product #${p.id} (${p.sku}) saved (${taxMode.toUpperCase()} GST)!`);
+      toast(`Product #${p.id} (${p.sku}) saved! Stock: ${stock} units.`);
     }
   } else {
     const newId = Math.max(0, ...P.map(x => x.id || 0)) + 1;
@@ -900,6 +927,7 @@ async function saveProduct(e) {
       sku: sku,
       name: name,
       category: category,
+      stock: stock,
       taxMode: taxMode,
       price: price,
       mrp: mrp,
@@ -932,7 +960,7 @@ async function saveProduct(e) {
       });
     } catch(e) {}
 
-    toast(`New product #${newProd.id} (${newProd.sku}) added to database!`);
+    toast(`New product #${newProd.id} (${newProd.sku}) added! Stock: ${stock} units.`);
   }
 
   window.HX_PRODUCTS = P;
