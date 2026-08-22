@@ -22,6 +22,23 @@ const mimeTypes = {
 
 const server = http.createServer((req, res) => {
   let reqUrl = req.url.split('?')[0];
+
+  // API ROUTING FOR LOCAL SERVER & VERCEL PARITY
+  if (reqUrl.startsWith('/api/')) {
+    const apiName = reqUrl.replace('/api/', '');
+    const apiPath = path.join(PUBLIC_DIR, 'api', apiName + '.js');
+    if (fs.existsSync(apiPath)) {
+      try {
+        delete require.cache[require.resolve(apiPath)];
+        const handler = require(apiPath);
+        return handler(req, res);
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: err.message }));
+      }
+    }
+  }
+
   if (reqUrl === '/') reqUrl = '/index.html';
   
   const filePath = path.join(PUBLIC_DIR, decodeURIComponent(reqUrl));
@@ -36,7 +53,6 @@ const server = http.createServer((req, res) => {
     const ext = path.extname(filePath).toLowerCase();
     const contentType = mimeTypes[ext] || 'application/octet-stream';
 
-    // FORCE ZERO BROWSER CACHING HEADERS
     res.writeHead(200, {
       'Content-Type': contentType,
       'Content-Length': stats.size,
@@ -52,5 +68,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Zero-Cache Hyper X GT Server listening on http://localhost:${PORT}`);
+  console.log(`Zero-Cache Hyper X GT Server with API routes listening on http://localhost:${PORT}`);
 });
