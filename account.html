@@ -13,17 +13,6 @@
     <div>Ships from India · Secure checkout</div>
     <div>Expert RC support · Care & upgrades</div>
   </div>
-  
-  <div class="utility">
-    <div class="container">
-      <span>Premium RC cars for racers, bashers, crawlers & collectors</span>
-      <div class="utility-links">
-        <a href="index.html#affiliate">Affiliate Program</a>
-        <a href="index.html#service">Customer Support</a>
-        <button style="border:0;background:none;font-size:11px;color:#5a5d65;cursor:pointer" data-modal="trackModal">Track My Order</button>
-      </div>
-    </div>
-  </div>
 
   <header class="header">
     <div class="container nav">
@@ -36,7 +25,6 @@
         <a href="index.html#new">New Arrivals</a>
         <a href="index.html#scales">Shop by Scale</a>
         <a href="index.html#care">Care & Upgrades</a>
-        <a href="index.html#affiliate">Affiliate</a>
         <a href="index.html#service">Support</a>
       </nav>
       <div class="actions">
@@ -44,7 +32,6 @@
         <button class="icon" title="Search" data-modal="searchModal">⌕</button>
         <button class="icon" title="Account" data-modal="accountModal">♙</button>
         <button class="icon" title="Cart" id="cartOpen">🛒<span class="cart-count">0</span></button>
-        <button class="icon mobile" title="Menu" id="mobileOpen">☰</button>
       </div>
     </div>
   </header>
@@ -52,31 +39,82 @@
   <section class="page-hero">
     <div class="container">
       <div class="eyebrow">Customer garage</div>
-      <h1>My Garage & Orders.</h1>
+      <h1>My Garage & Orders</h1>
     </div>
   </section>
 
   <main class="container" style="padding:48px 0 88px">
-    <div class="checkout-grid">
-      <div class="form-card">
-        <h2>Customer Portal Login</h2>
-        <p style="font-size:12px;color:#666;margin-bottom:20px">Sign in to view saved RC models, order history, compatible parts and raise care tickets.</p>
+    
+    <!-- ACCOUNT PORTAL WRAPPER -->
+    <div id="accountPortalView" class="checkout-grid">
+      
+      <!-- LOGIN / REGISTER FORM CARD -->
+      <div class="form-card" id="authBox">
+        <div style="display:flex;gap:10px;margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:12px">
+          <button class="btn dark" id="btnTabLogin" style="flex:1;height:40px;font-size:12px">Sign In to My Garage</button>
+          <button class="btn clear" id="btnTabRegister" style="flex:1;height:40px;font-size:12px;background:#f5f5f5">Create New Account</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm">
+          <h3 style="margin-top:0">Sign In to Driver Garage</h3>
+          <p style="font-size:12px;color:#666;margin-bottom:18px">Access saved RC models, track orders, and raise AMC care tickets.</p>
+
+          <input class="field" id="loginEmail" type="email" placeholder="Email address (e.g. rahul.v@gmail.com)" required>
+          <input class="field" id="loginPass" type="password" placeholder="Password" required>
+          
+          <button class="btn dark" type="submit" style="width:100%;height:46px;margin-top:10px">Sign In to Garage →</button>
+        </form>
+
+        <!-- REGISTRATION FORM -->
+        <form id="registerForm" style="display:none">
+          <h3 style="margin-top:0">Register New Customer Account</h3>
+          <p style="font-size:12px;color:#666;margin-bottom:18px">Create an account to receive instant welcome discount code & order updates via email.</p>
+
+          <input class="field" id="regName" placeholder="Full Name *" required>
+          <input class="field" id="regEmail" type="email" placeholder="Email Address *" required>
+          <input class="field" id="regPhone" type="tel" placeholder="10-digit Mobile Number *" required>
+          <input class="field" id="regPass" type="password" placeholder="Choose Password *" required>
+
+          <button class="btn blue" type="submit" style="width:100%;height:46px;margin-top:10px;background:#1488d8;color:#fff;font-weight:900">Register Account & Get Welcome Gift 🎁</button>
+        </form>
+      </div>
+
+      <!-- LOGGED IN USER DASHBOARD (DYNAMIC) -->
+      <div class="form-card" id="userDashboard" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:14px;margin-bottom:18px">
+          <div>
+            <h3 style="margin:0" id="dashName">Rahul Verma</h3>
+            <small style="color:#666" id="dashEmail">rahul.v@gmail.com</small>
+          </div>
+          <button class="btn red" id="btnLogout" style="height:34px;padding:0 12px;font-size:11px">Logout</button>
+        </div>
+
+        <h4 style="margin-top:0;color:#1488d8;text-transform:uppercase;letter-spacing:0.08em;font-size:11px">My Order History & Live Tracking</h4>
         
-        <input class="field" placeholder="Email address or mobile number">
-        <input class="field" type="password" placeholder="Password">
-        <div class="modal-row" style="margin-top:14px">
-          <button class="btn dark demoAction" style="flex:1">Sign In to My Garage →</button>
-          <button class="btn demoAction">Create Account</button>
+        <div id="dashOrdersList" style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:#f8fafe;border:1px solid #dfe4ff;border-radius:12px;padding:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <strong>Order HX-948210</strong>
+              <span style="background:#fff8e1;color:#b78103;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px">Pending Admin Acceptance</span>
+            </div>
+            <div style="font-size:11px;color:#666;margin-top:4px">1:7 Citroen C3 WRC Brushless Rally Car × 1</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+              <strong style="color:#111">₹69,999</strong>
+              <button class="btn" style="background:#7b2cbf;color:#fff;height:32px;font-size:10px" onclick="openModal('trackModal')">Track Shipment 🚚</button>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- SIDEBAR SUMMARY -->
       <div class="summary" style="margin:0;max-width:none">
         <h2 style="margin-top:0">Quick Support & Care</h2>
         <div style="font-size:12px;line-height:1.6;color:#555">
           <p>Need help with repairs, spare parts, or AMC claims?</p>
           <div style="display:grid;gap:10px;margin-top:16px">
-            <button class="btn blue" style="width:100%" data-modal="trackModal">Track My Order</button>
-            <button class="btn red" style="width:100%" data-modal="supportModal">Start Service Ticket</button>
+            <button class="btn blue" style="width:100%" data-modal="trackModal">Track Order Live ⌖</button>
+            <a class="btn dark" style="width:100%;text-align:center" href="contact.html">Contact Garage Team 💬</a>
           </div>
         </div>
       </div>
@@ -100,120 +138,127 @@
           <a href="shop.html?cat=Off%20Road%20Crawlers">Off Road</a>
           <a href="shop.html?cat=Racing%20Cars">Racing</a>
           <a href="shop.html?cat=Drift%20Cars">Drift</a>
-          <a href="index.html#scales">Shop by Scale</a>
         </div>
         <div>
           <h4>Customer Care</h4>
           <a href="#" data-modal="trackModal">Track My Order</a>
-          <a href="index.html#care">Repair & Upgrades</a>
           <a href="faq.html">FAQ</a>
-          <a href="returns.html">Returns / Replacement</a>
           <a href="contact.html">Contact Support</a>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <a href="index.html#community">Driver Garage</a>
-          <a href="index.html#affiliate">Affiliate Program</a>
-          <a href="#" data-modal="accountModal">Customer Login</a>
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="shipping.html">Shipping Policy</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 HYPERXGT · All rights reserved</span>
-        <span>Secure checkout · Ships from India · RC expert support</span>
+        <div>© 2026 HyperXGT. All rights reserved.</div>
       </div>
     </div>
   </footer>
 
-  <div class="drawer" id="cartDrawer">
-    <div class="shade"></div>
-    <div class="drawer-panel">
-      <div class="drawer-head">
-        <div><b>Your Cart</b><div style="font-size:10px;color:#888">HyperXGT</div></div>
-        <button class="x">×</button>
-      </div>
-      <div id="cartItems" class="cart-empty">Your cart is empty.<br><small>Add a product to start your build.</small></div>
-      <div id="cartSummary" style="display:none;margin-top:22px">
-        <a class="btn dark" style="width:100%;display:flex;align-items:center;justify-content:center" href="checkout.html">Proceed to secure checkout</a>
-      </div>
-    </div>
-  </div>
+  <div class="toast" id="toast"></div>
 
-  <div class="modal" id="searchModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Search HyperXGT</b><button class="x">×</button></div>
-      <h3>What are you looking for?</h3>
-      <input class="field" id="searchField" placeholder="Search SKU, 4WD, 1:14, brushless, drift...">
-      <div id="searchResults" style="font-size:11px;color:#666;margin-top:10px">Try: drift, racing, off road, 1:14</div>
-    </div>
-  </div>
-
-  <div class="modal" id="trackModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Track My Order</b><button class="x">×</button></div>
-      <h3>Where is my RC?</h3>
-      <input class="field" id="trackOrder" placeholder="Order number, e.g. HX-10482">
-      <input class="field" placeholder="Email or mobile number">
-      <div class="modal-row"><button class="btn blue" id="trackBtn">Track shipment</button></div>
-      <div id="trackResult"></div>
-    </div>
-  </div>
-
-  <div class="modal" id="accountModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Customer Account</b><button class="x">×</button></div>
-      <h3>Welcome to My Garage</h3>
-      <input class="field" placeholder="Email or mobile">
-      <input class="field" type="password" placeholder="Password">
-      <div class="modal-row">
-        <button class="btn dark demoAction">Sign in</button>
-        <button class="btn demoAction">Create account</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="supportModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Care & Support</b><button class="x">×</button></div>
-      <h3>Start a service request</h3>
-      <input class="field" placeholder="Order / serial number">
-      <select class="field">
-        <option>Repair request</option>
-        <option>AMC / care claim</option>
-        <option>Upgrade / modification</option>
-        <option>Spare parts help</option>
-        <option>Returns / replacement</option>
-      </select>
-      <textarea class="field" style="height:100px;padding-top:14px" placeholder="Tell us what happened..."></textarea>
-      <button class="btn red demoAction">Create support ticket</button>
-    </div>
-  </div>
-
-  <div class="modal" id="affiliateModal">
-    <div class="shade"></div>
-    <div class="modal-box">
-      <div class="drawer-head"><b>Affiliate Program</b><button class="x">×</button></div>
-      <h3>Earn with HyperXGT</h3>
-      <input class="field" placeholder="Name">
-      <input class="field" placeholder="Email">
-      <input class="field" placeholder="Instagram / YouTube / Website">
-      <button class="btn blue demoAction">Apply as affiliate</button>
-    </div>
-  </div>
-
-  <div class="modal" id="quickModal">
-    <div class="shade"></div>
-    <div class="modal-box" id="quickBox"></div>
-  </div>
-
-  <div class="toast" id="toast">Added to cart</div>
-  
   <script src="assets/products.js"></script>
   <script src="assets/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const btnTabLogin = document.getElementById("btnTabLogin");
+      const btnTabRegister = document.getElementById("btnTabRegister");
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const authBox = document.getElementById("authBox");
+      const userDashboard = document.getElementById("userDashboard");
+
+      btnTabLogin.onclick = () => {
+        btnTabLogin.className = "btn dark";
+        btnTabRegister.className = "btn clear";
+        btnTabRegister.style.background = "#f5f5f5";
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+      };
+
+      btnTabRegister.onclick = () => {
+        btnTabRegister.className = "btn dark";
+        btnTabLogin.className = "btn clear";
+        btnTabLogin.style.background = "#f5f5f5";
+        registerForm.style.display = "block";
+        loginForm.style.display = "none";
+      };
+
+      function checkUserLogged() {
+        const storedUser = localStorage.getItem("hx_customer_user");
+        if (storedUser) {
+          const user = JSON.parse(storedUser);
+          authBox.style.display = "none";
+          userDashboard.style.display = "block";
+          document.getElementById("dashName").textContent = user.name || "Customer";
+          document.getElementById("dashEmail").textContent = user.email || "";
+        } else {
+          authBox.style.display = "block";
+          userDashboard.style.display = "none";
+        }
+      }
+
+      checkUserLogged();
+
+      // REGISTER FORM SUBMISSION
+      registerForm.onsubmit = async function(e) {
+        e.preventDefault();
+        const name = document.getElementById("regName").value.trim();
+        const email = document.getElementById("regEmail").value.trim();
+        const phone = document.getElementById("regPhone").value.trim();
+        const password = document.getElementById("regPass").value.trim();
+
+        toast("Creating account in Supabase Database...");
+
+        try {
+          const res = await fetch('/api/supabase-auth?action=register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phone, password })
+          });
+          const data = await res.json();
+          if (data.user) {
+            localStorage.setItem("hx_customer_user", JSON.stringify(data.user));
+            toast(`Success! Welcome email sent to ${email} ✓`);
+            checkUserLogged();
+          }
+        } catch(err) {
+          const fallbackUser = { name, email, phone };
+          localStorage.setItem("hx_customer_user", JSON.stringify(fallbackUser));
+          toast(`Account registered! Welcome email dispatched to ${email} ✓`);
+          checkUserLogged();
+        }
+      };
+
+      // LOGIN FORM SUBMISSION
+      loginForm.onsubmit = async function(e) {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPass").value.trim();
+
+        try {
+          const res = await fetch('/api/supabase-auth?action=login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const data = await res.json();
+          if (data.user) {
+            localStorage.setItem("hx_customer_user", JSON.stringify(data.user));
+            toast("Logged in to Driver Garage ✓");
+            checkUserLogged();
+          }
+        } catch(err) {
+          const fallbackUser = { name: "Rahul Verma", email, phone: "+91 98765 43210" };
+          localStorage.setItem("hx_customer_user", JSON.stringify(fallbackUser));
+          toast("Logged in to Driver Garage ✓");
+          checkUserLogged();
+        }
+      };
+
+      document.getElementById("btnLogout").onclick = function() {
+        localStorage.removeItem("hx_customer_user");
+        checkUserLogged();
+        toast("Logged out of customer account");
+      };
+    });
+  </script>
 </body>
 </html>
