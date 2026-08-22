@@ -132,12 +132,12 @@ async function pushOrderToShiprocketApi(orderId) {
   }
 }
 
-// CANCELLATION & CUSTOMER NOTIFICATION LOGIC
+// CANCELLATION & CUSTOMER NOTIFICATION LOGIC (EMPATHETIC BRAND TEMPLATE)
 function cancelOrder(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
 
-  const reasonSelect = $("#cancelReasonSelect")?.value || "Product Out of Stock / Unavailable";
+  const reasonSelect = $("#cancelReasonSelect")?.value || "Product Out of Stock";
   const customReason = $("#cancelCustomReason")?.value.trim();
   const finalReason = customReason ? `${reasonSelect} (${customReason})` : reasonSelect;
 
@@ -156,9 +156,9 @@ function sendCancellationEmail(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
 
-  const reason = o.cancellationReason || "Product Out of Stock / Unavailable";
-  const subject = `HyperXGT Order ${o.id} Cancellation Notice`;
-  const body = `Dear ${o.customer.name},\n\nWe regret to inform you that your HyperXGT Order ${o.id} (${INR(o.total)}) has been cancelled due to the following reason:\n\nReason: "${reason}"\n\nIf you paid online via Razorpay/UPI/Card, a 100% full refund of ${INR(o.total)} has been processed to your original payment method and will reflect within 3-5 business days.\n\nWe sincerely apologize for the inconvenience. For assistance or alternative model recommendations, please contact our support team at contact@hyperxgt.com or WhatsApp +91 70902 27777.\n\nBest regards,\nHyperXGT Customer Support`;
+  const reason = o.cancellationReason || "Product Out of Stock";
+  const subject = `HyperXGT Order ${o.id} Cancellation Update`;
+  const body = `Hi ${o.customer.name},\n\nYour HyperXGT Order ${o.id} (${INR(o.total)}) has been cancelled.\n\n📌 Reason: "${reason}"\n\nWe sincerely apologize for any inconvenience caused. We always strive to serve our customers' needs with the highest quality standards, but unfortunately, this model is currently unavailable.\n\nIf payment was debited from your account, your full refund will be initiated to your original payment source within 24 hours.\n\nFor any assistance or alternative model recommendations, please contact our support team at +91 70902 27777.\n\nBest regards,\nHyperXGT Team 🏎️`;
 
   window.open(`mailto:${o.customer.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank');
   toast(`Email client opened to notify ${o.customer.email} ✓`);
@@ -168,12 +168,13 @@ function sendCancellationWhatsapp(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
 
-  const reason = o.cancellationReason || "Product Out of Stock / Unavailable";
+  const reason = o.cancellationReason || "Product Out of Stock";
   const cleanPhone = o.customer.phone.replace(/[^0-9]/g, '');
-  const msg = `Hi ${o.customer.name}, your HyperXGT Order ${o.id} (${INR(o.total)}) has been cancelled. Reason: "${reason}". Full 100% refund has been initiated to your payment method. For support or queries, contact us at +91 70902 27777.`;
+  
+  const msg = `Hi ${o.customer.name},\n\nYour HyperXGT Order ${o.id} (${INR(o.total)}) has been cancelled.\n\n📌 Reason: "${reason}"\n\nWe sincerely apologize for any inconvenience caused. We always strive to serve our customers' needs with the highest quality standards, but unfortunately, this model is currently unavailable.\n\nIf payment was debited from your account, your full refund will be initiated to your original payment source within 24 hours.\n\nFor any assistance or alternative model recommendations, please contact our support team at +91 70902 27777.\n\nBest regards,\nHyperXGT Team 🏎️`;
 
   window.open(`https://wa.me/${cleanPhone.startsWith('91') ? cleanPhone : ('91' + cleanPhone)}?text=${encodeURIComponent(msg)}`, '_blank');
-  toast(`WhatsApp opened for ${o.customer.name} ✓`);
+  toast(`WhatsApp notification opened for ${o.customer.name} ✓`);
 }
 
 // INDIAN GST TAX CALCULATOR
@@ -472,7 +473,7 @@ function openOrderModal(orderId) {
           
           <label class="form-label" style="color:#ed1c24">Cancellation Reason *</label>
           <select class="field" id="cancelReasonSelect" style="margin:0 0 10px">
-            <option selected>Product Out of Stock / Unavailable</option>
+            <option selected>Product Out of Stock</option>
             <option>Defect / Damage Discovered During Inspection</option>
             <option>Delivery Pincode Unserviceable by Logistics</option>
             <option>Customer Requested Cancellation</option>
