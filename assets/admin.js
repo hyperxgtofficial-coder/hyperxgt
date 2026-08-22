@@ -15,7 +15,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
-// STORE ORDERS DATABASE (FEATURING CANCELLATION & SHIPROCKET INTEGRATION)
+// STORE ORDERS DATABASE (FEATURING ORDER ACCEPTANCE WORKFLOW & SHIPROCKET INTEGRATION)
 window.HX_ORDERS = [
   {
     id: "HX-948210",
@@ -30,7 +30,7 @@ window.HX_ORDERS = [
     paymentStatus: "Paid",
     courier: "Shiprocket Express (Bluedart)",
     awb: "SRK748291048",
-    fulfillmentStatus: "Processing",
+    fulfillmentStatus: "Pending Admin Acceptance",
     cancellationReason: ""
   },
   {
@@ -46,7 +46,7 @@ window.HX_ORDERS = [
     paymentStatus: "Paid",
     courier: "Shiprocket Express (Delhivery)",
     awb: "SRK991048201",
-    fulfillmentStatus: "Shipped",
+    fulfillmentStatus: "Processing",
     cancellationReason: ""
   },
   {
@@ -66,6 +66,23 @@ window.HX_ORDERS = [
     cancellationReason: ""
   }
 ];
+
+// ORDER ACCEPTANCE WORKFLOW BY ADMIN
+function acceptOrder(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  o.fulfillmentStatus = "Processing";
+  o.acceptedDate = new Date().toLocaleString("en-IN");
+
+  toast(`Order ${orderId} ACCEPTED by Admin! Status changed to Processing ✓`);
+  renderAdminOrders();
+
+  const cleanPhone = o.customer.phone.replace(/[^0-9]/g, '');
+  const msg = `Hi ${o.customer.name},\n\nGreat news! Your HyperXGT Order ${o.id} (${INR(o.total)}) has been ACCEPTED by store admin and is now in Processing for quality inspection & dispatch!\n\nTrack live status here: https://hyperxgt.com/account.html\n\nThank you for choosing HyperXGT! 🏎️`;
+
+  window.open(`https://wa.me/${cleanPhone.startsWith('91') ? cleanPhone : ('91' + cleanPhone)}?text=${encodeURIComponent(msg)}`, '_blank');
+}
 
 // SHIPROCKET API HANDLER
 function initShiprocketApiTest() {
@@ -322,7 +339,7 @@ function renderAdminProducts() {
   }).join("");
 }
 
-// RENDER ADMIN ORDERS & LOGISTICS TABLE (FEATURING SHIPROCKET)
+// RENDER ADMIN ORDERS & LOGISTICS TABLE (FEATURING ACCEPTANCE WORKFLOW)
 function renderAdminOrders() {
   const tbody = $("#adminOrdersBody");
   if (!tbody) return;
@@ -347,7 +364,9 @@ function renderAdminOrders() {
 
   tbody.innerHTML = filtered.map(o => {
     let statusColor = "#1488d8", statusBg = "#f4f6ff";
-    if (o.fulfillmentStatus === 'Shipped') { statusColor = "#2e7d32"; statusBg = "#e8f5e9"; }
+    if (o.fulfillmentStatus === 'Pending Admin Acceptance') { statusColor = "#b78103"; statusBg = "#fff8e1"; }
+    else if (o.fulfillmentStatus === 'Processing') { statusColor = "#1488d8"; statusBg = "#f4f6ff"; }
+    else if (o.fulfillmentStatus === 'Shipped') { statusColor = "#2e7d32"; statusBg = "#e8f5e9"; }
     else if (o.fulfillmentStatus === 'Delivered') { statusColor = "#1b5e20"; statusBg = "#c8e6c9"; }
     else if (o.fulfillmentStatus === 'Cancelled') { statusColor = "#ed1c24"; statusBg = "#ffeeef"; }
 
@@ -373,7 +392,12 @@ function renderAdminOrders() {
         ${o.cancellationReason ? `<div style="font-size:9px;color:#ed1c24;margin-top:2px">${esc(o.cancellationReason).slice(0, 24)}...</div>` : ''}
       </td>
       <td>
-        <button class="btn blue" style="height:34px;min-height:0;padding:0 12px;font-size:11px" onclick="openOrderModal('${o.id}')">Manage & Ship 🚚</button>
+        <div style="display:flex;gap:6px;flex-direction:column">
+          ${o.fulfillmentStatus === 'Pending Admin Acceptance' ? `
+            <button class="btn green" style="height:32px;min-height:0;padding:0 10px;font-size:11px;background:#2e7d32;color:#fff" onclick="acceptOrder('${o.id}')">✅ Accept Order</button>
+          ` : ''}
+          <button class="btn blue" style="height:32px;min-height:0;padding:0 10px;font-size:11px" onclick="openOrderModal('${o.id}')">Manage & Ship 🚚</button>
+        </div>
       </td>
     </tr>
   `;
@@ -385,7 +409,7 @@ function openOrderModal(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
 
-  $("#ordModalTitle").textContent = `Order Fulfillment & Cancellation Center — ${o.id}`;
+  $("#ordModalTitle").textContent = `Order Fulfillment & Acceptance Center — ${o.id}`;
 
   const itemsHTML = o.items.map(it => `
     <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:12px">
@@ -412,6 +436,15 @@ function openOrderModal(orderId) {
           Grand Total: ${INR(o.total)} (${esc(o.paymentMethod)})
         </div>
 
+        <!-- ACCEPTANCE BANNER IF PENDING -->
+        ${o.fulfillmentStatus === 'Pending Admin Acceptance' ? `
+        <div style="margin-top:16px;background:#fff8e1;border:1px solid #ffe082;border-radius:12px;padding:14px">
+          <strong style="font-size:12px;color:#b78103">🟡 ORDER IS PENDING ADMIN ACCEPTANCE</strong>
+          <div style="font-size:11px;color:#795548;margin-top:4px">Review customer & inventory details above before accepting into processing.</div>
+          <button class="btn green" style="margin-top:10px;width:100%;height:40px;background:#2e7d32;color:#fff;font-weight:900" onclick="acceptOrder('${o.id}')">✅ Accept Order & Move to Processing</button>
+        </div>
+        ` : ''}
+
         <!-- CANCELLATION NOTICE IF CANCELLED -->
         ${o.fulfillmentStatus === 'Cancelled' ? `
         <div style="margin-top:16px;background:#ffeeef;border:1px solid #ffb4b7;border-radius:12px;padding:14px;color:#ed1c24">
@@ -432,6 +465,7 @@ function openOrderModal(orderId) {
           <div style="margin-bottom:14px">
             <label class="form-label">Fulfillment Status *</label>
             <select class="field" id="ordStatus" style="margin:0">
+              <option ${o.fulfillmentStatus==='Pending Admin Acceptance'?'selected':''}>Pending Admin Acceptance</option>
               <option ${o.fulfillmentStatus==='Processing'?'selected':''}>Processing</option>
               <option ${o.fulfillmentStatus==='Packed'?'selected':''}>Packed</option>
               <option ${o.fulfillmentStatus==='Shipped'?'selected':''}>Shipped</option>

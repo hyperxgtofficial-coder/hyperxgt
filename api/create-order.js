@@ -34,8 +34,8 @@ module.exports = async (req, res) => {
       amount: amount || 0,
       paymentMethod: paymentMethod || 'razorpay',
       paymentStatus: paymentMethod === 'cod' ? 'COD Pending' : 'Payment Initiated',
-      fulfillmentStatus: 'Processing',
-      trackingNumber: `AWB${Math.floor(100000000 + Math.random() * 900000000)}`
+      fulfillmentStatus: 'Pending Admin Acceptance',
+      trackingNumber: `SRK${Math.floor(100000000 + Math.random() * 900000000)}`
     };
 
     // Return order details and Razorpay configuration
@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
       success: true,
       orderId: orderRecord.orderId,
       order: orderRecord,
-      message: paymentMethod === 'cod' ? 'COD order created successfully' : 'Payment order initialized'
+      message: 'Order placed successfully. Pending Store Admin Acceptance.'
     });
   } catch (err) {
     console.error('Create Order API Error:', err.message);

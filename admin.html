@@ -125,13 +125,15 @@
         <div class="admin-toolbar">
           <div style="display:flex;gap:12px;flex:1;max-width:640px">
             <input class="field" id="orderSearch" placeholder="Search Order ID, Customer Name, Phone, AWB..." style="margin:0">
-            <select class="field" id="orderStatusFilter" style="margin:0;width:200px">
+            <select class="field" id="orderStatusFilter" style="margin:0;width:230px">
               <option value="">All Fulfillment Statuses</option>
+              <option value="Pending Admin Acceptance">🟡 Pending Admin Acceptance</option>
               <option value="Processing">Processing</option>
               <option value="Packed">Packed</option>
               <option value="Shipped">Shipped</option>
               <option value="Out for Delivery">Out for Delivery</option>
               <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
             </select>
           </div>
           <div style="font-size:12px;color:#666;font-weight:700" id="orderCountText">Showing 5 orders</div>
