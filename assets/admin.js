@@ -12,10 +12,59 @@ function toast(msg) {
   if (!t) return;
   t.textContent = msg;
   t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2200);
+  setTimeout(() => t.classList.remove("show"), 2400);
 }
 
-// DYNAMIC INDIAN GST TAX CALCULATOR (INCLUSIVE vs EXCLUSIVE)
+// STORE ORDERS DATABASE
+window.HX_ORDERS = [
+  {
+    id: "HX-948210",
+    date: "2026-08-22 21:14",
+    customer: { name: "Rahul Verma", email: "rahul.v@gmail.com", phone: "+91 98765 43210", address: "Flat 402, Prestige Towers, M.G. Road", city: "Bangalore", state: "Karnataka", pincode: "560001" },
+    items: [{ id: 71, sku: "MJX7303", name: "1:7 Citroen C3 WRC Brushless Rally Car", qty: 1, price: 69999 }],
+    subtotal: 69999,
+    shipping: 0,
+    total: 69999,
+    paymentMethod: "Razorpay / UPI",
+    paymentId: "pay_N8zK1049281",
+    paymentStatus: "Paid",
+    courier: "Bluedart Express",
+    awb: "AWB748291048",
+    fulfillmentStatus: "Processing"
+  },
+  {
+    id: "HX-832104",
+    date: "2026-08-22 18:30",
+    customer: { name: "Vikram Sharma", email: "vikram.s@outlook.com", phone: "+91 98201 12345", address: "B-12, Green Park Society, Bandra West", city: "Mumbai", state: "Maharashtra", pincode: "400050" },
+    items: [{ id: 12, sku: "H104020", name: "1:10 Off-Road 4WD Rock Crawler", qty: 1, price: 32999 }],
+    subtotal: 32999,
+    shipping: 0,
+    total: 32999,
+    paymentMethod: "Razorpay / Cards",
+    paymentId: "pay_M9aP7721094",
+    paymentStatus: "Paid",
+    courier: "Delhivery",
+    awb: "AWB991048201",
+    fulfillmentStatus: "Shipped"
+  },
+  {
+    id: "HX-741092",
+    date: "2026-08-21 15:45",
+    customer: { name: "Anish Patel", email: "anish.patel@yahoo.com", phone: "+91 98110 56789", address: "House 45, Vasant Vihar", city: "New Delhi", state: "Delhi", pincode: "110057" },
+    items: [{ id: 1, sku: "H6401-P", name: "1:64 FPV Mini RC Drift Car", qty: 2, price: 6248 }],
+    subtotal: 12496,
+    shipping: 0,
+    total: 12496,
+    paymentMethod: "Cash on Delivery",
+    paymentId: "COD",
+    paymentStatus: "COD Pending",
+    courier: "DTDC Express",
+    awb: "DTDC882019",
+    fulfillmentStatus: "Delivered"
+  }
+];
+
+// INDIAN GST TAX CALCULATOR
 function calculateGstBreakdown() {
   const mode = $("#formGstTaxType")?.value || "inclusive";
   const inputPrice = Number($("#formPrice")?.value || 0);
@@ -42,15 +91,10 @@ function calculateGstBreakdown() {
     priceExcl = inputPrice / factor;
     gstAmount = inputPrice - priceExcl;
     finalPriceIncl = inputPrice;
-    if ($("#lblPriceExcl")) $("#lblPriceExcl").textContent = "Price Excl. GST (₹)";
-    if ($("#lblGstAmount")) $("#lblGstAmount").textContent = "GST Tax Amount (₹)";
   } else {
-    // EXCLUSIVE MODE
     priceExcl = inputPrice;
     gstAmount = inputPrice * (gstRate / 100);
     finalPriceIncl = inputPrice + gstAmount;
-    if ($("#lblPriceExcl")) $("#lblPriceExcl").textContent = "Base Price (Excl. GST)";
-    if ($("#lblGstAmount")) $("#lblGstAmount").textContent = "Final Price (Incl. GST)";
   }
 
   const halfGst = gstAmount / 2;
@@ -165,28 +209,250 @@ function renderAdminProducts() {
   }).join("");
 }
 
-// RENDER ADMIN ORDERS TABLE
+// RENDER ADMIN ORDERS & LOGISTICS TABLE
 function renderAdminOrders() {
   const tbody = $("#adminOrdersBody");
   if (!tbody) return;
 
-  const sampleOrders = [
-    { id: "HX-948210", cust: "Rahul Verma (Bangalore)", items: "1:7 Citroen WRC Rally Car × 1", total: 69999, method: "Razorpay / UPI", status: "Processing" },
-    { id: "HX-832104", cust: "Vikram Sharma (Mumbai)", items: "1:10 Rock Crawler 4WD × 1", total: 32999, method: "Razorpay / UPI", status: "Dispatched" },
-    { id: "HX-741092", cust: "Anish Patel (Delhi)", items: "1:16 SCY Brushless Drift Car × 2", total: 16998, method: "Cash on Delivery", status: "Delivered" }
-  ];
+  const q = ($("#orderSearch")?.value || "").toLowerCase().trim();
+  const statusFilter = $("#orderStatusFilter")?.value || "";
 
-  tbody.innerHTML = sampleOrders.map(o => `
+  let orders = window.HX_ORDERS || [];
+  let filtered = orders.filter(o => {
+    const textMatch = !q || (o.id + " " + o.customer.name + " " + o.customer.phone + " " + o.courier + " " + o.awb).toLowerCase().includes(q);
+    const statusMatch = !statusFilter || o.fulfillmentStatus === statusFilter;
+    return textMatch && statusMatch;
+  });
+
+  if ($("#orderCountText")) $("#orderCountText").textContent = `Showing ${filtered.length} of ${orders.length} store orders`;
+  if ($("#metricOrders")) $("#metricOrders").textContent = orders.length;
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:#888">No matching orders found.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(o => {
+    let statusColor = "#1488d8", statusBg = "#f4f6ff";
+    if (o.fulfillmentStatus === 'Shipped') { statusColor = "#2e7d32"; statusBg = "#e8f5e9"; }
+    else if (o.fulfillmentStatus === 'Delivered') { statusColor = "#1b5e20"; statusBg = "#c8e6c9"; }
+    else if (o.fulfillmentStatus === 'Cancelled') { statusColor = "#ed1c24"; statusBg = "#ffeeef"; }
+
+    const itemsSummary = o.items.map(it => `${esc(it.name).slice(0, 30)} × ${it.qty}`).join(", ");
+
+    return `
     <tr>
-      <td><strong>${o.id}</strong></td>
-      <td>${esc(o.cust)}</td>
-      <td>${esc(o.items)}</td>
-      <td><strong>${INR(o.total)}</strong></td>
-      <td><span style="background:#f4f6ff;color:#1488d8;font-weight:700;padding:3px 8px;border-radius:6px;font-size:10px">${esc(o.method)}</span></td>
-      <td><span style="background:${o.status==='Delivered'?'#e8f5e9':'#fff3e0'};color:${o.status==='Delivered'?'#2e7d32':'#e65100'};font-weight:800;padding:3px 8px;border-radius:6px;font-size:10px">${esc(o.status)}</span></td>
-      <td><button class="btn" style="height:32px;min-height:0;padding:0 10px;font-size:10px" onclick="toast('Order ${o.id} status updated')">Update</button></td>
+      <td><strong>${esc(o.id)}</strong></td>
+      <td><span style="font-size:11px;color:#666">${esc(o.date)}</span></td>
+      <td>
+        <strong style="color:#111;display:block">${esc(o.customer.name)}</strong>
+        <span style="font-size:11px;color:#666">${esc(o.customer.city)}, ${esc(o.customer.state)} · ${esc(o.customer.phone)}</span>
+      </td>
+      <td><span style="font-size:11px;color:#444">${itemsSummary}</span></td>
+      <td><strong style="color:#111">${INR(o.total)}</strong></td>
+      <td><span style="background:#f4f6ff;color:#1488d8;font-weight:800;padding:3px 8px;border-radius:6px;font-size:10px">${esc(o.paymentMethod)} (${o.paymentStatus})</span></td>
+      <td>
+        <div style="font-size:11px;font-weight:700;color:#333">${esc(o.courier || 'Pending Assign')}</div>
+        <code style="font-size:10px;color:#1488d8">${esc(o.awb || 'No AWB Yet')}</code>
+      </td>
+      <td><span style="background:${statusBg};color:${statusColor};font-weight:900;padding:4px 10px;border-radius:6px;font-size:11px">${esc(o.fulfillmentStatus)}</span></td>
+      <td>
+        <button class="btn blue" style="height:34px;min-height:0;padding:0 12px;font-size:11px" onclick="openOrderModal('${o.id}')">Manage & Ship 🚚</button>
+      </td>
     </tr>
+  `;
+  }).join("");
+}
+
+// OPEN ORDER FULFILLMENT & LOGISTICS TRACKING MODAL
+function openOrderModal(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  $("#ordModalTitle").textContent = `Order Fulfillment Center — ${o.id}`;
+
+  const itemsHTML = o.items.map(it => `
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:12px">
+      <div><strong>${esc(it.name)}</strong> <small style="color:#888">(SKU: ${esc(it.sku)})</small> × ${it.qty}</div>
+      <strong>${INR(it.price * it.qty)}</strong>
+    </div>
   `).join("");
+
+  $("#ordModalContent").innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <!-- CUSTOMER & ORDER DETAILS -->
+      <div style="background:#f8fafe;border:1px solid #dfe4ff;border-radius:14px;padding:18px">
+        <h4 style="margin-top:0;color:#1488d8;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">1. Customer & Shipping Address</h4>
+        <div style="font-size:12.5px;line-height:1.6;color:#333">
+          <div><strong>Name:</strong> ${esc(o.customer.name)}</div>
+          <div><strong>Mobile:</strong> ${esc(o.customer.phone)}</div>
+          <div><strong>Email:</strong> ${esc(o.customer.email)}</div>
+          <div style="margin-top:8px"><strong>Address:</strong><br>${esc(o.customer.address)}<br>${esc(o.customer.city)}, ${esc(o.customer.state)} - ${esc(o.customer.pincode)}</div>
+        </div>
+
+        <h4 style="margin-top:18px;color:#1488d8;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">2. Items & Payment Summary</h4>
+        ${itemsHTML}
+        <div style="margin-top:10px;text-align:right;font-size:13px;font-weight:900;color:#111">
+          Grand Total: ${INR(o.total)} (${esc(o.paymentMethod)})
+        </div>
+      </div>
+
+      <!-- LOGISTICS COURIER & FULFILLMENT UPDATE -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px">
+        <h4 style="margin-top:0;color:#111;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">3. Update Logistics & Shipment</h4>
+        
+        <form id="orderFulfillForm">
+          <input type="hidden" id="ordFormId" value="${o.id}">
+          
+          <div style="margin-bottom:14px">
+            <label class="form-label">Fulfillment Status *</label>
+            <select class="field" id="ordStatus" style="margin:0">
+              <option ${o.fulfillmentStatus==='Processing'?'selected':''}>Processing</option>
+              <option ${o.fulfillmentStatus==='Packed'?'selected':''}>Packed</option>
+              <option ${o.fulfillmentStatus==='Shipped'?'selected':''}>Shipped</option>
+              <option ${o.fulfillmentStatus==='Out for Delivery'?'selected':''}>Out for Delivery</option>
+              <option ${o.fulfillmentStatus==='Delivered'?'selected':''}>Delivered</option>
+              <option ${o.fulfillmentStatus==='Cancelled'?'selected':''}>Cancelled</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom:14px">
+            <label class="form-label">Logistics Courier Partner *</label>
+            <select class="field" id="ordCourier" style="margin:0">
+              <option ${o.courier==='Bluedart Express'?'selected':''}>Bluedart Express</option>
+              <option ${o.courier==='Delhivery'?'selected':''}>Delhivery</option>
+              <option ${o.courier==='DTDC Express'?'selected':''}>DTDC Express</option>
+              <option ${o.courier==='Ecom Express'?'selected':''}>Ecom Express</option>
+              <option ${o.courier==='Xpressbees'?'selected':''}>Xpressbees</option>
+              <option ${o.courier==='India Post Speedpost'?'selected':''}>India Post Speedpost</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom:16px">
+            <label class="form-label">AWB Airway Bill Tracking Number *</label>
+            <input class="field" id="ordAwb" value="${esc(o.awb || '')}" placeholder="e.g. AWB748291048" style="margin:0" required>
+          </div>
+
+          <button class="btn dark" type="submit" style="width:100%;height:46px">Update Order & Save Shipment Details ✓</button>
+        </form>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+          <button class="btn clear" style="height:42px;border:1px solid var(--line);font-size:11px" onclick="printTaxInvoice('${o.id}')">🖨️ Print Tax Invoice</button>
+          <button class="btn blue" style="height:42px;font-size:11px" onclick="sendWhatsappAlert('${o.id}')">💬 WhatsApp Customer</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  openModal("orderFulfillmentModal");
+
+  $("#orderFulfillForm").onsubmit = function(e) {
+    e.preventDefault();
+    const ordId = $("#ordFormId").value;
+    const targetOrd = window.HX_ORDERS.find(x => x.id === ordId);
+    if (targetOrd) {
+      targetOrd.fulfillmentStatus = $("#ordStatus").value;
+      targetOrd.courier = $("#ordCourier").value;
+      targetOrd.awb = $("#ordAwb").value.trim();
+      toast(`Order ${ordId} updated: Status = ${targetOrd.fulfillmentStatus}, AWB = ${targetOrd.awb}`);
+      renderAdminOrders();
+      closeEl($("#orderFulfillmentModal"));
+    }
+  };
+}
+
+// PRINT TAX INVOICE
+function printTaxInvoice(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  const win = window.open("", "_blank", "width=800,height=900");
+  win.document.write(`
+    <html>
+      <head>
+        <title>Tax Invoice — ${o.id} | HyperXGT</title>
+        <style>
+          body { font-family: system-ui, sans-serif; padding: 40px; color: #111; line-height: 1.5; }
+          .header { display: flex; justify-content: space-between; border-bottom: 2px solid #111; padding-bottom: 20px; }
+          .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 13px; }
+          th { background: #f5f5f5; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <h1 style="margin:0">HYPERXGT</h1>
+            <small>GSTIN: 29AAAAA0000A1Z5 · HSN: 95030090</small><br>
+            <small>Phone: +91 70902 27777 · Email: contact@hyperxgt.com</small>
+          </div>
+          <div style="text-align:right">
+            <h2 style="margin:0">TAX INVOICE</h2>
+            <strong>Order ID: ${o.id}</strong><br>
+            <small>Date: ${o.date}</small>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div>
+            <strong>Billed To / Shipping Address:</strong><br>
+            ${esc(o.customer.name)}<br>
+            ${esc(o.customer.address)}<br>
+            ${esc(o.customer.city)}, ${esc(o.customer.state)} - ${esc(o.customer.pincode)}<br>
+            Mobile: ${esc(o.customer.phone)}
+          </div>
+          <div>
+            <strong>Logistics & Payment:</strong><br>
+            Payment Method: ${esc(o.paymentMethod)} (${esc(o.paymentStatus)})<br>
+            Courier Partner: ${esc(o.courier)}<br>
+            AWB Number: ${esc(o.awb)}
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Item Description</th>
+              <th>SKU</th>
+              <th>Qty</th>
+              <th>Price (₹)</th>
+              <th>Total (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${o.items.map(it => `
+              <tr>
+                <td>${esc(it.name)}</td>
+                <td>${esc(it.sku)}</td>
+                <td>${it.qty}</td>
+                <td>₹${it.price.toLocaleString("en-IN")}</td>
+                <td>₹${(it.price * it.qty).toLocaleString("en-IN")}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+
+        <div style="text-align:right; margin-top:20px; font-size:14px">
+          <strong>Grand Total: ₹${o.total.toLocaleString("en-IN")}</strong><br>
+          <small>(Includes 18% GST · CGST 9% + SGST 9%)</small>
+        </div>
+
+        <script>window.print();</script>
+      </body>
+    </html>
+  `);
+}
+
+// SEND WHATSAPP DISPATCH ALERT
+function sendWhatsappAlert(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  const cleanPhone = o.customer.phone.replace(/[^0-9]/g, '');
+  const msg = `Hi ${o.customer.name}, your HyperXGT Order ${o.id} status is updated to "${o.fulfillmentStatus}" via ${o.courier} (AWB: ${o.awb}). Track live here: https://hyperxgt.com/account.html`;
+
+  window.open(`https://wa.me/${cleanPhone.startsWith('91') ? cleanPhone : ('91' + cleanPhone)}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 // DIRECT FILE UPLOAD & PREVIEW HANDLER
@@ -286,7 +552,6 @@ function initCsvImportHandler() {
           const taxMode = taxModeIdx !== -1 ? (row[taxModeIdx] || '').toLowerCase().trim() : 'inclusive';
           const gstRate = gstRateIdx !== -1 ? Number((row[gstRateIdx] || '').replace(/[^0-9.]/g, '')) || 18 : 18;
 
-          // Compute final store price if EXCLUSIVE
           let finalPrice = rawPrice;
           let finalMrp = rawMrp;
           if (taxMode === 'exclusive' && rawPrice > 0) {
@@ -409,7 +674,6 @@ async function saveProduct(e) {
   const discount = Math.max(5, Math.min(60, Math.round(((mrp - price) / mrp) * 100)));
 
   if (idVal) {
-    // UPDATE EXISTING PRODUCT
     const id = Number(idVal);
     const p = P.find(x => x.id === id);
     if (p) {
@@ -440,7 +704,6 @@ async function saveProduct(e) {
       toast(`Product #${p.id} (${p.sku}) saved (${taxMode.toUpperCase()} GST)!`);
     }
   } else {
-    // ADD NEW PRODUCT
     const newId = Math.max(0, ...P.map(x => x.id || 0)) + 1;
     const newProd = {
       id: newId,
@@ -535,6 +798,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#adminSearch")?.addEventListener("input", renderAdminProducts);
   $("#adminCatFilter")?.addEventListener("change", renderAdminProducts);
+  $("#orderSearch")?.addEventListener("input", renderAdminOrders);
+  $("#orderStatusFilter")?.addEventListener("change", renderAdminOrders);
+
   $("#btnOpenAddModal")?.addEventListener("click", openAddModal);
   $("#productForm")?.addEventListener("submit", saveProduct);
 });

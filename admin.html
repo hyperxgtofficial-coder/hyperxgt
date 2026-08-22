@@ -70,7 +70,7 @@
       <!-- TABS NAVBAR -->
       <div class="admin-tabs">
         <button class="admin-tab active" data-tab="products">Product Inventory & GST Manager</button>
-        <button class="admin-tab" data-tab="orders">Orders & Dispatch</button>
+        <button class="admin-tab" data-tab="orders">Orders & Logistics Center</button>
         <button class="admin-tab" data-tab="database">Database & API Logs</button>
       </div>
 
@@ -120,17 +120,34 @@
         </div>
       </section>
 
-      <!-- ORDERS SECTION -->
+      <!-- ORDERS & LOGISTICS FULFILLMENT SECTION -->
       <section id="tab-orders" class="tab-content">
-        <div class="table-wrap" style="margin-top:20px">
+        <div class="admin-toolbar">
+          <div style="display:flex;gap:12px;flex:1;max-width:640px">
+            <input class="field" id="orderSearch" placeholder="Search Order ID, Customer Name, Phone, AWB..." style="margin:0">
+            <select class="field" id="orderStatusFilter" style="margin:0;width:200px">
+              <option value="">All Fulfillment Statuses</option>
+              <option value="Processing">Processing</option>
+              <option value="Packed">Packed</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Out for Delivery">Out for Delivery</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+          <div style="font-size:12px;color:#666;font-weight:700" id="orderCountText">Showing 5 orders</div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:16px">
           <table class="admin-table">
             <thead>
               <tr>
                 <th>Order ID</th>
-                <th>Customer</th>
-                <th>Items</th>
-                <th>Total</th>
-                <th>Payment Method</th>
+                <th>Date & Time</th>
+                <th>Customer & Address</th>
+                <th>Order Items</th>
+                <th>Total (₹)</th>
+                <th>Payment Status</th>
+                <th>Logistics & AWB</th>
                 <th>Fulfillment Status</th>
                 <th>Action</th>
               </tr>
@@ -299,6 +316,21 @@
           <button class="btn" type="button" onclick="closeEl(this)">Cancel</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ORDER FULFILLMENT & LOGISTICS TRACKING MODAL -->
+  <div class="modal" id="orderFulfillmentModal">
+    <div class="shade"></div>
+    <div class="modal-box" style="width:min(760px,94vw);max-height:90vh">
+      <div class="drawer-head">
+        <b id="ordModalTitle">Order Fulfillment & Shipment Center</b>
+        <button class="x" onclick="closeEl(this)">×</button>
+      </div>
+
+      <div id="ordModalContent" style="margin-top:18px">
+        <!-- Rendered dynamically -->
+      </div>
     </div>
   </div>
 
