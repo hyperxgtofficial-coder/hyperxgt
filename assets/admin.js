@@ -15,6 +15,31 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 1800);
 }
 
+// INDIAN GST TAX CALCULATOR
+function calculateGstBreakdown() {
+  const priceIncl = Number($("#formPrice")?.value || 0);
+  const gstRate = Number($("#formGstRate")?.value || 18);
+
+  if (!priceIncl || priceIncl <= 0) {
+    if ($("#formPriceExcl")) $("#formPriceExcl").value = "₹0";
+    if ($("#formGstAmount")) $("#formGstAmount").value = "₹0";
+    if ($("#gstBreakdownText")) $("#gstBreakdownText").textContent = "Tax Breakdown: CGST 9% (₹0) + SGST 9% (₹0)";
+    return;
+  }
+
+  const factor = 1 + (gstRate / 100);
+  const priceExcl = priceIncl / factor;
+  const gstAmount = priceIncl - priceExcl;
+  const halfGst = gstAmount / 2;
+  const halfRate = gstRate / 2;
+
+  if ($("#formPriceExcl")) $("#formPriceExcl").value = "₹" + priceExcl.toFixed(2);
+  if ($("#formGstAmount")) $("#formGstAmount").value = "₹" + gstAmount.toFixed(2);
+  if ($("#gstBreakdownText")) {
+    $("#gstBreakdownText").textContent = `Tax Breakdown: Intra-State CGST ${halfRate}% (₹${halfGst.toFixed(2)}) + SGST ${halfRate}% (₹${halfGst.toFixed(2)}) | Inter-State IGST ${gstRate}% (₹${gstAmount.toFixed(2)})`;
+  }
+}
+
 // ADMIN AUTHENTICATION
 function checkAdminAuth() {
   const isLogged = localStorage.getItem("hx_admin_logged") === "true";
@@ -64,7 +89,7 @@ function populateAdminCatFilter() {
   select.innerHTML = '<option value="">All Categories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join("");
 }
 
-// RENDER ADMIN PRODUCT TABLE
+// RENDER ADMIN PRODUCT TABLE WITH GST COLUMNS
 function renderAdminProducts() {
   const tbody = $("#adminTableBody");
   if (!tbody) return;
@@ -85,19 +110,25 @@ function renderAdminProducts() {
   $("#metricValue").textContent = "₹" + (totalVal / 100000).toFixed(2) + " Lakh";
 
   if (!filtered.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:#888">No matching products found in database.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:40px;color:#888">No matching products found in database.</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = filtered.map(p => `
+  tbody.innerHTML = filtered.map(p => {
+    const gstRate = p.gstRate || 18;
+    const priceIncl = p.price || 0;
+    const priceExcl = priceIncl / (1 + (gstRate / 100));
+
+    return `
     <tr>
       <td><strong>${p.id}</strong></td>
       <td><img src="${p.image}" alt="${esc(p.name)}"></td>
       <td><code style="background:#edf2f7;padding:3px 7px;border-radius:6px;font-size:11px">${esc(p.sku)}</code></td>
-      <td><strong style="color:#111;display:block;max-width:320px">${esc(p.name)}</strong></td>
+      <td><strong style="color:#111;display:block;max-width:280px">${esc(p.name)}</strong></td>
       <td><span style="background:#eef4ff;color:#1488d8;font-weight:800;padding:3px 8px;border-radius:6px;font-size:10px">${esc(p.category)}</span></td>
-      <td><strong style="color:#2e7d32">${INR(p.price)}</strong></td>
-      <td><del style="color:#999">${INR(p.mrp)}</del></td>
+      <td><span style="color:#666;font-weight:700">₹${priceExcl.toFixed(2)}</span></td>
+      <td><span style="background:#fff8e1;color:#b78103;font-weight:900;padding:3px 7px;border-radius:6px;font-size:10px">${gstRate}% GST</span></td>
+      <td><strong style="color:#2e7d32">${INR(priceIncl)}</strong></td>
       <td>${esc(p.scale || '1:16')}</td>
       <td>
         <div style="display:flex;gap:6px">
@@ -106,7 +137,8 @@ function renderAdminProducts() {
         </div>
       </td>
     </tr>
-  `).join("");
+  `;
+  }).join("");
 }
 
 // RENDER ADMIN ORDERS TABLE
@@ -170,6 +202,7 @@ function openAddModal() {
   $("#formProdId").value = "";
   $("#productForm").reset();
   $("#formImgPreview").src = "assets/products/H104020-R.webp";
+  calculateGstBreakdown();
   openModal("productModal");
 }
 
@@ -185,6 +218,8 @@ function openEditModal(id) {
   $("#formCat").value = p.category || "Racing Cars";
   $("#formPrice").value = p.price || "";
   $("#formMrp").value = p.mrp || "";
+  $("#formGstRate").value = p.gstRate || 18;
+  $("#formHsn").value = p.hsn || "95030090";
   $("#formScale").value = p.scale || "1:16";
   $("#formSpeed").value = p.speed || "35 KM/H";
   $("#formDrive").value = p.drive || "4WD";
@@ -194,6 +229,7 @@ function openEditModal(id) {
   $("#formShortDesc").value = p.short_description || "";
   $("#formFullDesc").value = p.full_description || "";
 
+  calculateGstBreakdown();
   openModal("productModal");
 }
 
@@ -207,6 +243,8 @@ async function saveProduct(e) {
   const category = $("#formCat").value;
   const price = Number($("#formPrice").value) || 1999;
   const mrp = Number($("#formMrp").value) || Math.round(price * 1.25);
+  const gstRate = Number($("#formGstRate").value) || 18;
+  const hsn = $("#formHsn").value.trim() || "95030090";
   const scale = $("#formScale").value.trim() || "1:16";
   const speed = $("#formSpeed").value.trim() || "35 KM/H";
   const drive = $("#formDrive").value;
@@ -226,6 +264,8 @@ async function saveProduct(e) {
       p.category = category;
       p.price = price;
       p.mrp = mrp;
+      p.gstRate = gstRate;
+      p.hsn = hsn;
       p.discount = discount;
       p.scale = scale;
       p.speed = speed;
@@ -242,7 +282,7 @@ async function saveProduct(e) {
         });
       } catch(e) {}
       
-      toast(`Product #${p.id} (${p.sku}) updated successfully!`);
+      toast(`Product #${p.id} (${p.sku}) updated with ${gstRate}% GST!`);
     }
   } else {
     // ADD NEW PRODUCT
@@ -254,6 +294,8 @@ async function saveProduct(e) {
       category: category,
       price: price,
       mrp: mrp,
+      gstRate: gstRate,
+      hsn: hsn,
       discount: discount,
       scale: scale,
       speed: speed,
@@ -329,6 +371,9 @@ document.addEventListener("DOMContentLoaded", () => {
   populateAdminCatFilter();
   initAdminTabs();
   initImageUploadHandler();
+
+  $("#formPrice")?.addEventListener("input", calculateGstBreakdown);
+  $("#formGstRate")?.addEventListener("change", calculateGstBreakdown);
 
   $("#adminSearch")?.addEventListener("input", renderAdminProducts);
   $("#adminCatFilter")?.addEventListener("change", renderAdminProducts);

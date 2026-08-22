@@ -69,7 +69,7 @@
 
       <!-- TABS NAVBAR -->
       <div class="admin-tabs">
-        <button class="admin-tab active" data-tab="products">Product Inventory Manager</button>
+        <button class="admin-tab active" data-tab="products">Product Inventory & GST Manager</button>
         <button class="admin-tab" data-tab="orders">Orders & Dispatch</button>
         <button class="admin-tab" data-tab="database">Database & API Logs</button>
       </div>
@@ -97,8 +97,9 @@
                 <th>SKU</th>
                 <th>Product Name</th>
                 <th>Category</th>
-                <th>Price (₹)</th>
-                <th>MRP (₹)</th>
+                <th>Price Excl. GST</th>
+                <th>GST Rate</th>
+                <th>Price Incl. GST</th>
                 <th>Scale</th>
                 <th>Actions</th>
               </tr>
@@ -155,7 +156,7 @@
   <!-- ADD / EDIT PRODUCT MODAL -->
   <div class="modal" id="productModal">
     <div class="shade"></div>
-    <div class="modal-box" style="width:min(720px,94vw);max-height:88vh">
+    <div class="modal-box" style="width:min(760px,94vw);max-height:88vh">
       <div class="drawer-head">
         <b id="modalTitle">Add New Product</b>
         <button class="x" onclick="closeEl(this)">×</button>
@@ -189,16 +190,48 @@
             </select>
           </div>
           <div>
-            <label class="form-label">Sale Price (₹) *</label>
-            <input class="field" type="number" id="formPrice" required placeholder="6999">
+            <label class="form-label">Sale Price (Incl. GST) ₹ *</label>
+            <input class="field" type="number" id="formPrice" required placeholder="6248">
           </div>
           <div>
-            <label class="form-label">Regular MRP (₹) *</label>
-            <input class="field" type="number" id="formMrp" required placeholder="8749">
+            <label class="form-label">Regular MRP (Incl. GST) ₹ *</label>
+            <input class="field" type="number" id="formMrp" required placeholder="7810">
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <!-- INDIAN GST TAX & HSN COMPLIANCE SECTION -->
+        <div style="margin-top:14px; background:#fff8e1; border:1px solid #ffe082; border-radius:14px; padding:16px;">
+          <label class="form-label" style="color:#b78103">Indian GST Tax Breakdown & HSN Code Compliance *</label>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px">
+            <div>
+              <label class="form-label">GST Tax Rate %</label>
+              <select class="field" id="formGstRate" style="margin:0">
+                <option value="18" selected>18% GST (Standard)</option>
+                <option value="28">28% GST (Luxury RC)</option>
+                <option value="12">12% GST</option>
+                <option value="5">5% GST</option>
+                <option value="0">0% GST Exempt</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Price Excl. GST (₹)</label>
+              <input class="field" id="formPriceExcl" readonly style="margin:0; background:#fff; font-weight:900; color:#555">
+            </div>
+            <div>
+              <label class="form-label">GST Tax Amount (₹)</label>
+              <input class="field" id="formGstAmount" readonly style="margin:0; background:#fff; font-weight:900; color:#2e7d32">
+            </div>
+            <div>
+              <label class="form-label">HSN Code</label>
+              <input class="field" id="formHsn" placeholder="95030090" value="95030090" style="margin:0">
+            </div>
+          </div>
+          <div id="gstBreakdownText" style="font-size:11px; color:#795548; margin-top:10px; font-weight:700">
+            Tax Breakdown: CGST 9% (₹0) + SGST 9% (₹0)
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px">
           <div>
             <label class="form-label">Scale Factor</label>
             <input class="field" id="formScale" placeholder="e.g. 1:10">
