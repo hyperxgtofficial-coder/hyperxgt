@@ -71,7 +71,7 @@
       <div class="admin-tabs">
         <button class="admin-tab active" data-tab="products">Product Inventory & GST Manager</button>
         <button class="admin-tab" data-tab="orders">Orders & Logistics Center</button>
-        <button class="admin-tab" data-tab="database">Database & API Logs</button>
+        <button class="admin-tab" data-tab="database">Database & Shiprocket API Logs</button>
       </div>
 
       <!-- PRODUCTS MANAGER SECTION -->
@@ -161,12 +161,38 @@
 
       <!-- DATABASE & API LOGS SECTION -->
       <section id="tab-database" class="tab-content">
+        <!-- LIVE SHIPROCKET API CONNECTION PANEL -->
+        <div style="background:#fff; border:1px solid #7b2cbf; border-radius:18px; padding:24px; margin-top:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="color:#7b2cbf; margin:0; font-size:16px">🚀 Live Shiprocket API Connection Panel</h3>
+            <span style="background:#7b2cbf; color:#fff; font-weight:900; font-size:10px; padding:4px 10px; border-radius:8px">SHIPROCKET REST API v1</span>
+          </div>
+          <p style="font-size:12px; color:#666; margin:8px 0 16px">Enter your live Shiprocket credentials to automatically push store orders, allocate couriers, and generate AWB tracking numbers.</p>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px">
+            <div>
+              <label class="form-label">Shiprocket Email</label>
+              <input class="field" id="srkEmail" placeholder="contact@hyperxgt.com" value="contact@hyperxgt.com" style="margin:0">
+            </div>
+            <div>
+              <label class="form-label">Shiprocket Password / API Key</label>
+              <input class="field" type="password" id="srkPassword" placeholder="Enter Shiprocket password..." style="margin:0">
+            </div>
+          </div>
+
+          <div style="margin-top:14px; display:flex; gap:12px; align-items:center; flex-wrap:wrap">
+            <button class="btn" id="btnTestShiprocket" style="background:#7b2cbf; color:#fff; height:44px; min-height:0">Test Connection to Shiprocket API 🚀</button>
+            <div id="srkApiStatus" style="font-size:12px; font-weight:700; color:#2e7d32">✓ API Bridge Connected: Ready to push orders to Shiprocket</div>
+          </div>
+        </div>
+
         <div style="background:#0d0e11;color:#a6adc8;padding:24px;border-radius:18px;font-family:monospace;font-size:12px;margin-top:20px">
           <h3 style="color:#fff;margin-top:0">🗄️ Database Status & Connection Info</h3>
           <div>Database Engine: PostgreSQL / Vercel Serverless JSON KV Store</div>
           <div>Database Path: <code>/data/products.json</code> & Serverless API Routes</div>
           <div>REST API Endpoints:</div>
           <div style="color:#89b4fa;margin-left:14px">
+            - POST /api/shiprocket (Shiprocket Order Push & Tracking)<br>
             - GET /api/products-crud (Fetch Catalogue)<br>
             - POST /api/products-crud (Add Product)<br>
             - PUT /api/products-crud (Update Product)<br>
@@ -322,7 +348,7 @@
   <!-- ORDER FULFILLMENT & LOGISTICS TRACKING MODAL -->
   <div class="modal" id="orderFulfillmentModal">
     <div class="shade"></div>
-    <div class="modal-box" style="width:min(760px,94vw);max-height:90vh">
+    <div class="modal-box" style="width:min(780px,94vw);max-height:90vh">
       <div class="drawer-head">
         <b id="ordModalTitle">Order Fulfillment & Shipment Center</b>
         <button class="x" onclick="closeEl(this)">×</button>
