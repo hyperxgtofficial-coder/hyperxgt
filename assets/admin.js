@@ -15,7 +15,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
-// STORE ORDERS DATABASE (FEATURING SHIPROCKET INTEGRATION)
+// STORE ORDERS DATABASE (FEATURING CANCELLATION & SHIPROCKET INTEGRATION)
 window.HX_ORDERS = [
   {
     id: "HX-948210",
@@ -30,7 +30,8 @@ window.HX_ORDERS = [
     paymentStatus: "Paid",
     courier: "Shiprocket Express (Bluedart)",
     awb: "SRK748291048",
-    fulfillmentStatus: "Processing"
+    fulfillmentStatus: "Processing",
+    cancellationReason: ""
   },
   {
     id: "HX-832104",
@@ -45,7 +46,8 @@ window.HX_ORDERS = [
     paymentStatus: "Paid",
     courier: "Shiprocket Express (Delhivery)",
     awb: "SRK991048201",
-    fulfillmentStatus: "Shipped"
+    fulfillmentStatus: "Shipped",
+    cancellationReason: ""
   },
   {
     id: "HX-741092",
@@ -60,7 +62,8 @@ window.HX_ORDERS = [
     paymentStatus: "COD Pending",
     courier: "DTDC Express",
     awb: "DTDC882019",
-    fulfillmentStatus: "Delivered"
+    fulfillmentStatus: "Delivered",
+    cancellationReason: ""
   }
 ];
 
@@ -127,6 +130,50 @@ async function pushOrderToShiprocketApi(orderId) {
     closeEl($("#orderFulfillmentModal"));
     toast(`Pushed to Shiprocket! AWB Generated: ${o.awb} ✓`);
   }
+}
+
+// CANCELLATION & CUSTOMER NOTIFICATION LOGIC
+function cancelOrder(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  const reasonSelect = $("#cancelReasonSelect")?.value || "Product Out of Stock / Unavailable";
+  const customReason = $("#cancelCustomReason")?.value.trim();
+  const finalReason = customReason ? `${reasonSelect} (${customReason})` : reasonSelect;
+
+  if (confirm(`Are you sure you want to cancel Order ${orderId}?\nReason: ${finalReason}`)) {
+    o.fulfillmentStatus = "Cancelled";
+    o.cancellationReason = finalReason;
+    o.cancelDate = new Date().toLocaleString("en-IN");
+    
+    toast(`Order ${orderId} cancelled. Reason: "${finalReason}" saved.`);
+    renderAdminOrders();
+    openOrderModal(orderId);
+  }
+}
+
+function sendCancellationEmail(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  const reason = o.cancellationReason || "Product Out of Stock / Unavailable";
+  const subject = `HyperXGT Order ${o.id} Cancellation Notice`;
+  const body = `Dear ${o.customer.name},\n\nWe regret to inform you that your HyperXGT Order ${o.id} (${INR(o.total)}) has been cancelled due to the following reason:\n\nReason: "${reason}"\n\nIf you paid online via Razorpay/UPI/Card, a 100% full refund of ${INR(o.total)} has been processed to your original payment method and will reflect within 3-5 business days.\n\nWe sincerely apologize for the inconvenience. For assistance or alternative model recommendations, please contact our support team at contact@hyperxgt.com or WhatsApp +91 70902 27777.\n\nBest regards,\nHyperXGT Customer Support`;
+
+  window.open(`mailto:${o.customer.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank');
+  toast(`Email client opened to notify ${o.customer.email} ✓`);
+}
+
+function sendCancellationWhatsapp(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  const reason = o.cancellationReason || "Product Out of Stock / Unavailable";
+  const cleanPhone = o.customer.phone.replace(/[^0-9]/g, '');
+  const msg = `Hi ${o.customer.name}, your HyperXGT Order ${o.id} (${INR(o.total)}) has been cancelled. Reason: "${reason}". Full 100% refund has been initiated to your payment method. For support or queries, contact us at +91 70902 27777.`;
+
+  window.open(`https://wa.me/${cleanPhone.startsWith('91') ? cleanPhone : ('91' + cleanPhone)}?text=${encodeURIComponent(msg)}`, '_blank');
+  toast(`WhatsApp opened for ${o.customer.name} ✓`);
 }
 
 // INDIAN GST TAX CALCULATOR
@@ -320,7 +367,10 @@ function renderAdminOrders() {
         <div style="font-size:11px;font-weight:700;color:#7b2cbf">${esc(o.courier || 'Shiprocket Express')}</div>
         <code style="font-size:10px;color:#1488d8">${esc(o.awb || 'No AWB Yet')}</code>
       </td>
-      <td><span style="background:${statusBg};color:${statusColor};font-weight:900;padding:4px 10px;border-radius:6px;font-size:11px">${esc(o.fulfillmentStatus)}</span></td>
+      <td>
+        <span style="background:${statusBg};color:${statusColor};font-weight:900;padding:4px 10px;border-radius:6px;font-size:11px">${esc(o.fulfillmentStatus)}</span>
+        ${o.cancellationReason ? `<div style="font-size:9px;color:#ed1c24;margin-top:2px">${esc(o.cancellationReason).slice(0, 24)}...</div>` : ''}
+      </td>
       <td>
         <button class="btn blue" style="height:34px;min-height:0;padding:0 12px;font-size:11px" onclick="openOrderModal('${o.id}')">Manage & Ship 🚚</button>
       </td>
@@ -329,12 +379,12 @@ function renderAdminOrders() {
   }).join("");
 }
 
-// OPEN ORDER FULFILLMENT & SHIPROCKET LOGISTICS MODAL
+// OPEN ORDER FULFILLMENT & CANCELLATION MODAL
 function openOrderModal(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
 
-  $("#ordModalTitle").textContent = `Order Fulfillment & Shiprocket Center — ${o.id}`;
+  $("#ordModalTitle").textContent = `Order Fulfillment & Cancellation Center — ${o.id}`;
 
   const itemsHTML = o.items.map(it => `
     <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:12px">
@@ -360,11 +410,20 @@ function openOrderModal(orderId) {
         <div style="margin-top:10px;text-align:right;font-size:13px;font-weight:900;color:#111">
           Grand Total: ${INR(o.total)} (${esc(o.paymentMethod)})
         </div>
+
+        <!-- CANCELLATION NOTICE IF CANCELLED -->
+        ${o.fulfillmentStatus === 'Cancelled' ? `
+        <div style="margin-top:16px;background:#ffeeef;border:1px solid #ffb4b7;border-radius:12px;padding:14px;color:#ed1c24">
+          <strong style="font-size:12px">🚫 ORDER IS CANCELLED</strong>
+          <div style="font-size:11px;margin-top:4px">Reason: ${esc(o.cancellationReason || 'Product Out of Stock')}</div>
+          <div style="font-size:10px;color:#999;margin-top:2px">Cancelled on: ${esc(o.cancelDate || 'Recently')}</div>
+        </div>
+        ` : ''}
       </div>
 
-      <!-- LOGISTICS COURIER & FULFILLMENT UPDATE -->
+      <!-- LOGISTICS COURIER & CANCELLATION PANEL -->
       <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px">
-        <h4 style="margin-top:0;color:#7b2cbf;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">3. Shiprocket & Logistics Partner</h4>
+        <h4 style="margin-top:0;color:#7b2cbf;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">3. Logistics & Fulfillment Update</h4>
         
         <form id="orderFulfillForm">
           <input type="hidden" id="ordFormId" value="${o.id}">
@@ -398,18 +457,43 @@ function openOrderModal(orderId) {
 
           <div style="margin-bottom:16px">
             <label class="form-label">Shiprocket AWB Tracking Number *</label>
-            <input class="field" id="ordAwb" value="${esc(o.awb || '')}" placeholder="e.g. SRK748291048" style="margin:0" required>
+            <input class="field" id="ordAwb" value="${esc(o.awb || '')}" placeholder="e.g. SRK748291048" style="margin:0">
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
             <button class="btn dark" type="submit" style="height:44px">Save Status ✓</button>
             <button class="btn" type="button" style="background:#7b2cbf;color:#fff;height:44px;font-weight:900" onclick="pushOrderToShiprocketApi('${o.id}')">🚀 Push to Shiprocket API</button>
           </div>
         </form>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <!-- ORDER CANCELLATION PANEL FOR OUT OF STOCK PRODUCTS -->
+        <div style="border-top:1px solid var(--line);padding-top:16px;margin-top:16px;background:#fff5f5;border-radius:12px;padding:14px">
+          <h4 style="margin-top:0;color:#ed1c24;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">4. Product Unavailable / Order Cancellation</h4>
+          
+          <label class="form-label" style="color:#ed1c24">Cancellation Reason *</label>
+          <select class="field" id="cancelReasonSelect" style="margin:0 0 10px">
+            <option selected>Product Out of Stock / Unavailable</option>
+            <option>Defect / Damage Discovered During Inspection</option>
+            <option>Delivery Pincode Unserviceable by Logistics</option>
+            <option>Customer Requested Cancellation</option>
+            <option>Payment Verification Failure</option>
+            <option>Other / Custom Reason</option>
+          </select>
+
+          <input class="field" id="cancelCustomReason" placeholder="Additional notes for customer (e.g. Model discontinued by manufacturer)" style="margin:0 0 12px;font-size:11px">
+
+          <div style="display:grid;grid-template-columns:1fr;gap:8px">
+            <button class="btn red" style="height:42px;width:100%" onclick="cancelOrder('${o.id}')">🚫 Cancel Order & Update Database</button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+              <button class="btn" style="background:#111;color:#fff;height:38px;font-size:11px" onclick="sendCancellationEmail('${o.id}')">✉️ Email Cancellation Notice</button>
+              <button class="btn" style="background:#25d366;color:#fff;height:38px;font-size:11px" onclick="sendCancellationWhatsapp('${o.id}')">💬 WhatsApp Cancellation</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
           <button class="btn clear" style="height:42px;border:1px solid var(--line);font-size:11px" onclick="printTaxInvoice('${o.id}')">🖨️ Print Tax Invoice</button>
-          <button class="btn blue" style="height:42px;font-size:11px" onclick="sendWhatsappAlert('${o.id}')">💬 WhatsApp Customer</button>
+          <button class="btn blue" style="height:42px;font-size:11px" onclick="sendWhatsappAlert('${o.id}')">💬 Dispatch Alert WhatsApp</button>
         </div>
       </div>
     </div>
@@ -425,7 +509,7 @@ function openOrderModal(orderId) {
       targetOrd.fulfillmentStatus = $("#ordStatus").value;
       targetOrd.courier = $("#ordCourier").value;
       targetOrd.awb = $("#ordAwb").value.trim();
-      toast(`Order ${ordId} pushed to ${targetOrd.courier} (AWB: ${targetOrd.awb})`);
+      toast(`Order ${ordId} updated: Status = ${targetOrd.fulfillmentStatus}`);
       renderAdminOrders();
       closeEl($("#orderFulfillmentModal"));
     }
@@ -515,7 +599,7 @@ function printTaxInvoice(orderId) {
   `);
 }
 
-// SEND WHATSAPP DISPATCH ALERT (VIA SHIPROCKET)
+// SEND WHATSAPP DISPATCH ALERT
 function sendWhatsappAlert(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
