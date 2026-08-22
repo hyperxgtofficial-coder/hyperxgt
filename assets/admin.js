@@ -59,7 +59,6 @@ function initAdminLogin() {
 // CATEGORY OPTIONS POPULATION
 function populateAdminCatFilter() {
   const select = $("#adminCatFilter");
-  const formCat = $("#formCat");
   if (!select) return;
   const cats = [...new Set(P.map(p => p.category))].sort();
   select.innerHTML = '<option value="">All Categories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join("");
@@ -134,11 +133,43 @@ function renderAdminOrders() {
   `).join("");
 }
 
+// DIRECT FILE UPLOAD & PREVIEW HANDLER
+function initImageUploadHandler() {
+  const fileInput = $("#formFileInput");
+  const imgInput = $("#formImage");
+  const preview = $("#formImgPreview");
+
+  if (fileInput) {
+    fileInput.onchange = function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const dataUrl = evt.target.result;
+          imgInput.value = dataUrl;
+          if (preview) preview.src = dataUrl;
+          toast("Photo uploaded & previewed ✓");
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  }
+
+  if (imgInput) {
+    imgInput.oninput = function() {
+      if (preview && imgInput.value.trim()) {
+        preview.src = imgInput.value.trim();
+      }
+    };
+  }
+}
+
 // OPEN ADD MODAL
 function openAddModal() {
   $("#modalTitle").textContent = "Add New Product to Database";
   $("#formProdId").value = "";
   $("#productForm").reset();
+  $("#formImgPreview").src = "assets/products/H104020-R.webp";
   openModal("productModal");
 }
 
@@ -158,6 +189,8 @@ function openEditModal(id) {
   $("#formSpeed").value = p.speed || "35 KM/H";
   $("#formDrive").value = p.drive || "4WD";
   $("#formImage").value = p.image || "";
+  if ($("#formImgPreview")) $("#formImgPreview").src = p.image || "";
+
   $("#formShortDesc").value = p.short_description || "";
   $("#formFullDesc").value = p.full_description || "";
 
@@ -201,7 +234,6 @@ async function saveProduct(e) {
       p.short_description = short_description;
       p.full_description = full_description;
 
-      // Sync with Vercel API
       try {
         await fetch('/api/products-crud', {
           method: 'PUT',
@@ -241,7 +273,6 @@ async function saveProduct(e) {
 
     P.unshift(newProd);
 
-    // Sync with Vercel API
     try {
       await fetch('/api/products-crud', {
         method: 'POST',
@@ -253,7 +284,6 @@ async function saveProduct(e) {
     toast(`New product #${newProd.id} (${newProd.sku}) added to database!`);
   }
 
-  // Save local state
   window.HX_PRODUCTS = P;
   closeEl($("#productModal"));
   renderAdminProducts();
@@ -268,7 +298,6 @@ async function deleteProduct(id) {
     P = P.filter(x => x.id !== id);
     window.HX_PRODUCTS = P;
 
-    // Sync with Vercel API
     try {
       await fetch('/api/products-crud?id=' + id, {
         method: 'DELETE'
@@ -299,6 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAdminAuth();
   populateAdminCatFilter();
   initAdminTabs();
+  initImageUploadHandler();
 
   $("#adminSearch")?.addEventListener("input", renderAdminProducts);
   $("#adminCatFilter")?.addEventListener("change", renderAdminProducts);

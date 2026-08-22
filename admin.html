@@ -218,9 +218,21 @@
           </div>
         </div>
 
-        <div style="margin-top:10px">
-          <label class="form-label">Image URL / Local Asset Path *</label>
-          <input class="field" id="formImage" required placeholder="assets/products/H104020-R.webp">
+        <!-- DIRECT FILE UPLOAD + URL FALLBACK -->
+        <div style="margin-top:14px; background:#f7f9ff; border:1px solid #dce4ff; border-radius:14px; padding:16px;">
+          <label class="form-label" style="color:#1488d8">Product Photo (Upload File or URL) *</label>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <label style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;background:#1488d8;color:#fff;border-radius:10px;font-weight:900;font-size:12px;cursor:pointer">
+              <span>📁 Choose Image File from Device...</span>
+              <input type="file" id="formFileInput" accept="image/*" style="display:none">
+            </label>
+            <span style="font-size:11px;color:#888">or image URL / path:</span>
+            <input class="field" id="formImage" required placeholder="assets/products/H6401-P.webp" style="margin:0;flex:1;min-width:200px">
+          </div>
+          <div id="imgPreviewWrap" style="margin-top:12px;display:flex;align-items:center;gap:12px">
+            <img id="formImgPreview" src="assets/products/H6401-P.webp" style="width:72px;height:60px;object-fit:contain;background:#fff;border-radius:8px;border:1px solid var(--line);padding:4px">
+            <span style="font-size:11px;color:#2e7d32;font-weight:800">✓ Image Preview Loaded</span>
+          </div>
         </div>
 
         <div style="margin-top:10px">
