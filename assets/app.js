@@ -27,10 +27,22 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
+// ASYNC LIVE BACKEND SERVER DATABASE FETCH
+async function fetchLiveBackendProducts() {
+  try {
+    const res = await fetch('/api/products-crud');
+    const data = await res.json();
+    if (data && data.products && Array.isArray(data.products) && data.products.length > 0) {
+      P = data.products;
+      window.HX_PRODUCTS = P;
+      localStorage.setItem("hx_products_db", JSON.stringify(P));
+      reRenderAllStorefrontPages();
+    }
+  } catch(e) {}
+}
+
 // REAL-TIME MULTI-TAB & STORAGE STOCK SYNCHRONIZER
 function reRenderAllStorefrontPages() {
-  P = loadProductsDB();
-  window.HX_PRODUCTS = P;
   if (typeof homeInit === "function") homeInit();
   if (typeof shopInit === "function") shopInit();
   if (typeof productInit === "function") productInit();
@@ -39,6 +51,8 @@ function reRenderAllStorefrontPages() {
 
 window.addEventListener("storage", (e) => {
   if (e.key === "hx_products_db") {
+    P = loadProductsDB();
+    window.HX_PRODUCTS = P;
     reRenderAllStorefrontPages();
   }
 });
@@ -51,7 +65,7 @@ window.addEventListener("hx_stock_update", (e) => {
   }
 });
 
-// LOCAL STORAGE STORAGE HELPERS
+// LOCAL STORAGE HELPERS
 const getCart = () => JSON.parse(localStorage.getItem("hx_cart") || "{}");
 const setCart = c => localStorage.setItem("hx_cart", JSON.stringify(c));
 const getWish = () => JSON.parse(localStorage.getItem("hx_wish") || "[]");
@@ -169,37 +183,6 @@ function productCard(p) {
       </div>
     </div>
   </article>`;
-}
-
-/* SMART SIMILAR VARIANTS MATCHING ALGORITHM */
-function getSimilarVariants(p, allProducts) {
-  if (!p || !allProducts) return [];
-  
-  const upsellsList = [];
-  if (p.upsells && p.upsells.length) {
-    p.upsells.forEach(uSku => {
-      const match = allProducts.find(x => x.id !== p.id && (x.sku || '').toUpperCase() === uSku.toUpperCase());
-      if (match) upsellsList.push(match);
-    });
-  }
-
-  const pool = allProducts.filter(x => x.id !== p.id && !upsellsList.some(u => u.id === x.id));
-  const rawSku = (p.sku || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const modelFamily = rawSku.replace(/[-_].*$/, '').slice(0, 5);
-
-  const scored = pool.map(item => {
-    let score = 0;
-    const itemSku = (item.sku || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-
-    if (modelFamily && modelFamily.length >= 3 && itemSku.includes(modelFamily)) score += 100;
-    if (item.category === p.category && item.scale && p.scale && item.scale === p.scale) score += 50;
-    else if (item.category === p.category) score += 30;
-
-    return { item, score };
-  });
-
-  const algorithmMatches = scored.filter(s => s.score > 0).sort((a, b) => b.score - a.score).map(s => s.item);
-  return [...upsellsList, ...algorithmMatches].slice(0, 8);
 }
 
 function renderFullSpecGrid(p) {
@@ -439,4 +422,5 @@ document.addEventListener("DOMContentLoaded", () => {
   homeInit();
   shopInit();
   productInit();
+  fetchLiveBackendProducts();
 });
