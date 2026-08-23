@@ -52,26 +52,10 @@ window.HX_ORDERS = [
     awb: "SRK748291048",
     fulfillmentStatus: "Pending Admin Acceptance",
     cancellationReason: ""
-  },
-  {
-    id: "HX-832104",
-    date: "2026-08-22 18:30",
-    customer: { name: "Vikram Sharma", email: "vikram.s@outlook.com", phone: "+91 98201 12345", address: "B-12, Green Park Society, Bandra West", city: "Mumbai", state: "Maharashtra", pincode: "400050" },
-    items: [{ id: 12, sku: "H104020", name: "1:10 Off-Road 4WD Rock Crawler", qty: 1, price: 32999 }],
-    subtotal: 32999,
-    shipping: 0,
-    total: 32999,
-    paymentMethod: "Razorpay / Cards",
-    paymentId: "pay_M9aP7721094",
-    paymentStatus: "Paid",
-    courier: "Shiprocket Express (Delhivery)",
-    awb: "SRK991048201",
-    fulfillmentStatus: "Processing",
-    cancellationReason: ""
   }
 ];
 
-// MULTI-PHOTO UPLOAD & GALLERY PREVIEW MANAGER
+// MULTI-PHOTO UPLOAD & GALLERY PREVIEW MANAGER WITH SUPABASE STORAGE API
 function renderAdminGalleryPreview(urlsList, heroUrl) {
   const previewBox = $("#formGalleryPreview");
   if (!previewBox) return;
@@ -108,32 +92,56 @@ function initImageUploadHandler() {
   const galleryTextarea = $("#formImagesList");
 
   if (fileInput) {
-    fileInput.onchange = function(e) {
+    fileInput.onchange = async function(e) {
       const files = [...e.target.files];
       if (!files.length) return;
 
-      const loadedUrls = [];
-      let readCount = 0;
+      toast(`Uploading ${files.length} photos to Supabase Storage...`);
 
-      files.forEach(f => {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          loadedUrls.push(evt.target.result);
-          readCount++;
-          if (readCount === files.length) {
-            if (!imgInput.value.trim() || imgInput.value.includes("H104020-R.webp")) {
-              imgInput.value = loadedUrls[0];
-            }
-            const existingExtra = galleryTextarea.value.trim() ? galleryTextarea.value.trim().split(',').map(x => x.trim()).filter(Boolean) : [];
-            const combined = [...new Set([...loadedUrls, ...existingExtra])];
-            galleryTextarea.value = combined.join(', ');
+      const uploadedPublicUrls = [];
 
-            renderAdminGalleryPreview(combined, imgInput.value.trim());
-            toast(`Uploaded ${files.length} images! Multi-angle gallery updated ✓`);
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        try {
+          const base64 = await new Promise((res, rej) => {
+            const reader = new FileReader();
+            reader.onload = () => res(reader.result);
+            reader.onerror = rej;
+            reader.readAsDataURL(file);
+          });
+
+          // Upload via Serverless API to Supabase Storage Bucket
+          const apiRes = await fetch('/api/upload-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              base64,
+              filename: file.name,
+              contentType: file.type || 'image/jpeg'
+            })
+          });
+          const data = await apiRes.json();
+          if (data && data.url) {
+            uploadedPublicUrls.push(data.url);
+          } else {
+            uploadedPublicUrls.push(base64);
           }
-        };
-        reader.readAsDataURL(f);
-      });
+        } catch(err) {
+          console.error("Upload error:", err.message);
+        }
+      }
+
+      if (uploadedPublicUrls.length) {
+        if (!imgInput.value.trim() || imgInput.value.includes("H104020-R.webp")) {
+          imgInput.value = uploadedPublicUrls[0];
+        }
+        const existingExtra = galleryTextarea.value.trim() ? galleryTextarea.value.trim().split(',').map(x => x.trim()).filter(Boolean) : [];
+        const combined = [...new Set([...uploadedPublicUrls, ...existingExtra])];
+        galleryTextarea.value = combined.join(', ');
+
+        renderAdminGalleryPreview(combined, imgInput.value.trim());
+        toast(`Uploaded ${uploadedPublicUrls.length} images to Supabase CDN! Hero & gallery updated ✓`);
+      }
     };
   }
 
