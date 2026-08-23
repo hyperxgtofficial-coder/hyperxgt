@@ -347,7 +347,7 @@ function ensureGlobalModalsAndDrawers() {
           <a href="why.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Why HyperXGT</a>
           <a href="shop.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Shop Catalogue (338 Rigs)</a>
           <a href="upgrades.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Upgrades & Parts</a>
-          <a href="club.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Join HyperXGT Club</a>
+          <a href="club.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Join the movement</a>
           <a href="contact.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Care & Support</a>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
             <button class="btn blue" onclick="closeEl(this); openModal('trackModal')">⌖ Track Order</button>
