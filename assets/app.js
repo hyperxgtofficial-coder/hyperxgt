@@ -956,7 +956,36 @@ function productInit() {
 
     </div>
   `;
+
+  // RENDER SIMILAR VARIANTS CATALOGUE RECOMMENDATIONS GRID
+  renderRelatedProducts(p);
 }
+
+function renderRelatedProducts(currentProduct) {
+  const grid = $("#relatedGrid");
+  if (!grid) return;
+
+  const all = getProducts();
+  let related = all.filter(x => x.id !== currentProduct.id && x.category === currentProduct.category);
+  
+  if (related.length < 4) {
+    const sameScale = all.filter(x => x.id !== currentProduct.id && x.scale === currentProduct.scale && !related.includes(x));
+    related = [...related, ...sameScale];
+  }
+
+  if (related.length < 4) {
+    const remaining = all.filter(x => x.id !== currentProduct.id && !related.includes(x));
+    related = [...related, ...remaining];
+  }
+
+  const top4 = related.slice(0, 4);
+  if (!top4.length) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1;text-align:center;padding:24px;color:#888">No related variants found.</div>';
+  } else {
+    grid.innerHTML = top4.map(productCard).join("");
+  }
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
   initChrome();
