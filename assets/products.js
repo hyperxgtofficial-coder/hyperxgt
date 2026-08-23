@@ -3707,7 +3707,7 @@ window.HX_PRODUCTS = [
   {
     "id": 81,
     "sku": "HA6601B",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -3731,8 +3731,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/7-12.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/9-13.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HC18801C",
@@ -3754,7 +3754,7 @@ window.HX_PRODUCTS = [
   {
     "id": 82,
     "sku": "HC18801C",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -3783,8 +3783,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/10-24.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/11-10.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -3806,7 +3806,7 @@ window.HX_PRODUCTS = [
   {
     "id": 83,
     "sku": "HC18801B",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -3834,8 +3834,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/9-35.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/10-23.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -3857,7 +3857,7 @@ window.HX_PRODUCTS = [
   {
     "id": 84,
     "sku": "HC18801A",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -3885,8 +3885,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/9-34.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/10-14.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -3908,7 +3908,7 @@ window.HX_PRODUCTS = [
   {
     "id": 85,
     "sku": "HC15501A",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -3935,8 +3935,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/9-31.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/10-12.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -3958,7 +3958,7 @@ window.HX_PRODUCTS = [
   {
     "id": 86,
     "sku": "HC16601A",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -3987,8 +3987,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/10-13.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/11-9.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -4010,7 +4010,7 @@ window.HX_PRODUCTS = [
   {
     "id": 87,
     "sku": "HC15501C",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -4036,8 +4036,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/8-16.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/9-32.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -4059,7 +4059,7 @@ window.HX_PRODUCTS = [
   {
     "id": 88,
     "sku": "HA5501A",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -4083,8 +4083,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/7-11.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/8-11.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -4106,7 +4106,7 @@ window.HX_PRODUCTS = [
   {
     "id": 89,
     "sku": "HA6601A",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -4134,8 +4134,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/10-11.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/11-8.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -4157,7 +4157,7 @@ window.HX_PRODUCTS = [
   {
     "id": 90,
     "sku": "HA8801B",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -4183,8 +4183,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/8-14.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/9-14.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -4206,7 +4206,7 @@ window.HX_PRODUCTS = [
   {
     "id": 91,
     "sku": "HA8801A",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -4231,8 +4231,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/12-7.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/13-6.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",
@@ -4300,7 +4300,7 @@ window.HX_PRODUCTS = [
   {
     "id": 93,
     "sku": "XLGM92334",
-    "name": "1:6 Oversized Ducati Panigale V4 Spray Alloy Motorcycle Model Diecast OEM Unisex Toy for Car Enthusiast Collection",
+    "name": "1:6 Oversized Ducati Panigale V4 Spray Alloy Motorcycle Model Mini RC OEM Unisex Toy for Car Enthusiast Collection",
     "brand": "HXGT",
     "category": "Collectables",
     "price": 11873,
@@ -4369,7 +4369,7 @@ window.HX_PRODUCTS = [
   {
     "id": 95,
     "sku": "BA8502C",
-    "name": "1:18 Officially Licensed Batmobile Diecast Alloy Model Disply Boys Gift Alloy Racing Car Toys",
+    "name": "1:18 Officially Licensed Batmobile Mini RC Alloy Model Disply Boys Gift Alloy Racing Car Toys",
     "brand": "HXGT",
     "category": "Collectables",
     "price": 8748,
@@ -4403,7 +4403,7 @@ window.HX_PRODUCTS = [
   {
     "id": 96,
     "sku": "C0211005",
-    "name": "1:18 Officially Licensed Classic Movie Sports Car Alloy Die-Cast Toy - Collectible Model Racing Car Display for Birthday Gifts",
+    "name": "1:18 Officially Licensed Classic Movie Sports Car Alloy Mini RC Toy - Collectible Model Racing Car Display for Birthday Gifts",
     "brand": "HXGT",
     "category": "Collectables",
     "price": 8748,
@@ -4436,7 +4436,7 @@ window.HX_PRODUCTS = [
   {
     "id": 97,
     "sku": "C0211008",
-    "name": "1:18 Officially Licensed Batmobile Tumbler Classic Sentiment Series Diecast Metal Alloy Collectibles Model Car Holiday Gifts With Boyfriend",
+    "name": "1:18 Officially Licensed Batmobile Tumbler Classic Sentiment Series Mini RC Metal Alloy Collectibles Model Car Holiday Gifts With Boyfriend",
     "brand": "HXGT",
     "category": "Collectables",
     "price": 8748,
@@ -4818,7 +4818,7 @@ window.HX_PRODUCTS = [
   {
     "id": 106,
     "sku": "HHG487-Y",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -4838,8 +4838,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/1-18.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/2-32.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {
       "Colours": "Black, Blue, Pink, Red, White, Yellow"
     },
@@ -4857,7 +4857,7 @@ window.HX_PRODUCTS = [
   {
     "id": 107,
     "sku": "HHG493-LB",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -4880,8 +4880,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/4-25.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/5-20.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {
       "Colours": "Black, Blue, Pink, Red, White, Yellow"
     },
@@ -4899,7 +4899,7 @@ window.HX_PRODUCTS = [
   {
     "id": 108,
     "sku": "HHG485-Bu",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -4922,8 +4922,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/4-24.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/2-30.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {
       "Colours": "Black, Blue, Light Blue, Pink, White, Yellow"
     },
@@ -4941,7 +4941,7 @@ window.HX_PRODUCTS = [
   {
     "id": 109,
     "sku": "HHG4156-Y",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -4962,8 +4962,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/2-28.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/5-23.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4156-Bu",
@@ -4979,7 +4979,7 @@ window.HX_PRODUCTS = [
   {
     "id": 110,
     "sku": "HHG4155-SR",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5000,8 +5000,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/2-27.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/5-22.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {
       "Colours": "Black, Blue, Pink, Red, Silver, White"
     },
@@ -5019,7 +5019,7 @@ window.HX_PRODUCTS = [
   {
     "id": 111,
     "sku": "HHG4126-B",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5040,8 +5040,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/4-26.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/5-21.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {
       "Colours": "Black, Blue, Pink, Red, Silver, White"
     },
@@ -5059,7 +5059,7 @@ window.HX_PRODUCTS = [
   {
     "id": 112,
     "sku": "HHG4129-Y",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5079,8 +5079,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/1-16.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/2-29.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4129-Bu",
@@ -5096,7 +5096,7 @@ window.HX_PRODUCTS = [
   {
     "id": 113,
     "sku": "HHG4129-DBu",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5116,8 +5116,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/1-33.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-56.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4129-Bu",
@@ -5133,7 +5133,7 @@ window.HX_PRODUCTS = [
   {
     "id": 114,
     "sku": "HHG4129-Bu",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5153,8 +5153,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/1-32.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-55.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4129-DBu",
@@ -5170,7 +5170,7 @@ window.HX_PRODUCTS = [
   {
     "id": 115,
     "sku": "HHG4129-LB",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5190,8 +5190,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/1-31.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-54.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4129-Bu",
@@ -5207,7 +5207,7 @@ window.HX_PRODUCTS = [
   {
     "id": 116,
     "sku": "HHG4129-P",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5227,8 +5227,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/1-29.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-52.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4129-Bu",
@@ -5244,7 +5244,7 @@ window.HX_PRODUCTS = [
   {
     "id": 117,
     "sku": "HHG4129-R",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5264,8 +5264,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/1-30.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-53.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4129-Bu",
@@ -5281,7 +5281,7 @@ window.HX_PRODUCTS = [
   {
     "id": 118,
     "sku": "HHG4126-R",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5302,8 +5302,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-42.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-40.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4126-B",
@@ -5319,7 +5319,7 @@ window.HX_PRODUCTS = [
   {
     "id": 119,
     "sku": "HHG4126-SR",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5340,8 +5340,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-41.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-39.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4126-B",
@@ -5357,7 +5357,7 @@ window.HX_PRODUCTS = [
   {
     "id": 120,
     "sku": "HHG4126-P",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5378,8 +5378,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-40.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-38.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4126-B",
@@ -5395,7 +5395,7 @@ window.HX_PRODUCTS = [
   {
     "id": 121,
     "sku": "HHG4126-W",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5416,8 +5416,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-39.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-37.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4126-B",
@@ -5433,7 +5433,7 @@ window.HX_PRODUCTS = [
   {
     "id": 122,
     "sku": "HHG4126-BU",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5454,8 +5454,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-38.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-36.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4126-B",
@@ -5471,7 +5471,7 @@ window.HX_PRODUCTS = [
   {
     "id": 123,
     "sku": "HHG4155-W",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5492,8 +5492,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-39.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-41.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4155-B",
@@ -5509,7 +5509,7 @@ window.HX_PRODUCTS = [
   {
     "id": 124,
     "sku": "HHG4155-R",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5530,8 +5530,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-40.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-42.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4155-B",
@@ -5547,7 +5547,7 @@ window.HX_PRODUCTS = [
   {
     "id": 125,
     "sku": "HHG4155-P",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5568,8 +5568,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-41.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-43.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4155-B",
@@ -5585,7 +5585,7 @@ window.HX_PRODUCTS = [
   {
     "id": 126,
     "sku": "HHG4155-B",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5606,8 +5606,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-42.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-44.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4155-Bu",
@@ -5623,7 +5623,7 @@ window.HX_PRODUCTS = [
   {
     "id": 127,
     "sku": "HHG4155-Bu",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5644,8 +5644,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-43.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-46.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4155-B",
@@ -5661,7 +5661,7 @@ window.HX_PRODUCTS = [
   {
     "id": 128,
     "sku": "HHG4156-LB",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5682,8 +5682,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-44.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-47.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4156-Bu",
@@ -5699,7 +5699,7 @@ window.HX_PRODUCTS = [
   {
     "id": 129,
     "sku": "HHG4156-P",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5720,8 +5720,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-45.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-48.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4156-Bu",
@@ -5737,7 +5737,7 @@ window.HX_PRODUCTS = [
   {
     "id": 130,
     "sku": "HHG4156-R",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5758,8 +5758,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-46.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-49.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4156-Bu",
@@ -5775,7 +5775,7 @@ window.HX_PRODUCTS = [
   {
     "id": 131,
     "sku": "HHG4156-Bu",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5796,8 +5796,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-47.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-50.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4156-LB",
@@ -5813,7 +5813,7 @@ window.HX_PRODUCTS = [
   {
     "id": 132,
     "sku": "HHG4156-LBu",
-    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Die-Cast Remote Portable Racer Car",
+    "name": "1:64 Scale Mini Metal RC Drift Car – 2.4GHz 4CH Alloy Mini RC Remote Portable Racer Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5834,8 +5834,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-47.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-50.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG4156-Bu",
@@ -5851,7 +5851,7 @@ window.HX_PRODUCTS = [
   {
     "id": 133,
     "sku": "HHG485-B",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5874,8 +5874,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-25.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-23.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG485-Bu",
@@ -5891,7 +5891,7 @@ window.HX_PRODUCTS = [
   {
     "id": 134,
     "sku": "HHG485-P",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5914,8 +5914,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-26.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-24.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG485-B",
@@ -5931,7 +5931,7 @@ window.HX_PRODUCTS = [
   {
     "id": 135,
     "sku": "HHG485-W",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5954,8 +5954,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-27.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-25.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG485-B",
@@ -5971,7 +5971,7 @@ window.HX_PRODUCTS = [
   {
     "id": 136,
     "sku": "HHG485-Y",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -5994,8 +5994,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-28.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-26.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG485-B",
@@ -6011,7 +6011,7 @@ window.HX_PRODUCTS = [
   {
     "id": 137,
     "sku": "HHG485-LB",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6034,8 +6034,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/4-24.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/10/5-19.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG485-B",
@@ -6051,7 +6051,7 @@ window.HX_PRODUCTS = [
   {
     "id": 138,
     "sku": "HHG493-B",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6074,8 +6074,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-34.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-32.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG493-LB",
@@ -6091,7 +6091,7 @@ window.HX_PRODUCTS = [
   {
     "id": 139,
     "sku": "HHG493-R",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6114,8 +6114,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-35.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-33.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG493-B",
@@ -6131,7 +6131,7 @@ window.HX_PRODUCTS = [
   {
     "id": 140,
     "sku": "HHG493-P",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6151,8 +6151,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/1-34.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/2-57.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG493-B",
@@ -6168,7 +6168,7 @@ window.HX_PRODUCTS = [
   {
     "id": 141,
     "sku": "HHG493-W",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6191,8 +6191,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-36.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-34.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG493-B",
@@ -6208,7 +6208,7 @@ window.HX_PRODUCTS = [
   {
     "id": 142,
     "sku": "HHG493-Y",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6231,8 +6231,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-37.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-35.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG493-B",
@@ -6248,7 +6248,7 @@ window.HX_PRODUCTS = [
   {
     "id": 143,
     "sku": "HHG487-B",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6271,8 +6271,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-29.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-27.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG487-Bu",
@@ -6288,7 +6288,7 @@ window.HX_PRODUCTS = [
   {
     "id": 144,
     "sku": "HHG487-W",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6311,8 +6311,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-30.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-28.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG487-B",
@@ -6328,7 +6328,7 @@ window.HX_PRODUCTS = [
   {
     "id": 145,
     "sku": "HHG487-R",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6351,8 +6351,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-32.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-30.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG487-B",
@@ -6368,7 +6368,7 @@ window.HX_PRODUCTS = [
   {
     "id": 146,
     "sku": "HHG487-P",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6391,8 +6391,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-31.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-29.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG487-B",
@@ -6408,7 +6408,7 @@ window.HX_PRODUCTS = [
   {
     "id": 147,
     "sku": "HHG487-Bu",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2999,
@@ -6431,8 +6431,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/4-33.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/12/5-31.png"
     ],
-    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
-    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy die-cast body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "short_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
+    "full_description": "Enjoy exciting drifting with this 1:64 Scale Mini Metal RC Drift Car featuring a strong alloy Mini RC body and 2.4GHz 4CH remote control for smooth handling. Its portable mini design makes it perfect for desk racing, indoor play, and collectors who love realistic drift action in a compact RC car",
     "attributes": {},
     "upsells": [
       "HHG487-B",
@@ -7685,7 +7685,7 @@ window.HX_PRODUCTS = [
   {
     "id": 178,
     "sku": "HA5501B",
-    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Die-cast Remote Control Rc Drift Car",
+    "name": "1:64 Scale 2.4G Portable Mini RC 4CH Metal Mini Alloy Mini RC Remote Control Rc Drift Car",
     "brand": "HXGT",
     "category": "Racing Cars",
     "price": 2499,
@@ -7712,8 +7712,8 @@ window.HX_PRODUCTS = [
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2026/01/9-1.png",
       "https://hxgt.blr1.cdn.digitaloceanspaces.com/2026/01/11.png"
     ],
-    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
-    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy die-cast body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "short_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
+    "full_description": "Enjoy thrilling drifting with this 1:64 Scale 2.4G Portable Mini RC Drift Car featuring a durable metal alloy Mini RC body and 4-channel control for smooth handling. Its compact design makes it perfect for desk racing and indoor play, delivering realistic drift action, stable control, and fun driving for collectors and RC enthusiasts",
     "attributes": {},
     "upsells": [
       "HA6601B",

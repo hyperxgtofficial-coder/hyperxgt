@@ -1,4 +1,4 @@
-// Master Application Logic for HYPER X GT Web Portal - OGMini Diecast & RC Motorsport UI/UX
+// Master Application Logic for HYPER X GT Web Portal - OGMini Mini RC & RC Motorsport UI/UX
 (function() {
   const products = window.HYPERXGT_PRODUCTS || [];
   const categories = window.HYPERXGT_CATEGORIES || [];

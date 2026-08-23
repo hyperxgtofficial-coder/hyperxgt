@@ -97,7 +97,6 @@ function initImageUploadHandler() {
       if (!files.length) return;
 
       toast(`Uploading ${files.length} photos to Supabase Storage...`);
-
       const uploadedPublicUrls = [];
 
       for (let i = 0; i < files.length; i++) {
@@ -110,7 +109,6 @@ function initImageUploadHandler() {
             reader.readAsDataURL(file);
           });
 
-          // Upload via Serverless API to Supabase Storage Bucket
           const apiRes = await fetch('/api/upload-image', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -144,23 +142,167 @@ function initImageUploadHandler() {
       }
     };
   }
+}
 
-  if (imgInput) {
-    imgInput.oninput = function() {
-      const main = imgInput.value.trim();
-      const rawList = galleryTextarea?.value || "";
-      const urls = rawList ? rawList.split(',').map(x => x.trim()).filter(Boolean) : [main];
-      renderAdminGalleryPreview(urls, main);
-    };
+// CUSTOMER REVIEWS & UNBOXING APPROVALS (REQUIREMENT 5)
+async function renderAdminReviews() {
+  const tbody = $("#adminReviewsBody");
+  if (!tbody) return;
+
+  try {
+    const res = await fetch('/api/submit-review');
+    const data = await res.json();
+    const reviews = (data && data.reviews) ? data.reviews : [];
+
+    if (!reviews.length) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:#888">No customer reviews submitted yet.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = reviews.map(r => {
+      let statusBadge = `<span style="background:#fff8e1;color:#b78103;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟡 ${r.status}</span>`;
+      if (r.status === "Approved") statusBadge = `<span style="background:#e8f5e9;color:#2e7d32;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟢 Approved</span>`;
+      else if (r.status === "Rejected") statusBadge = `<span style="background:#ffeeef;color:#ed1c24;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🔴 Rejected</span>`;
+
+      return `
+        <tr>
+          <td><strong>${r.id}</strong></td>
+          <td><strong>${esc(r.name)}</strong><br><small style="color:#666">${esc(r.email)}</small></td>
+          <td><code>${esc(r.orderId)}</code></td>
+          <td>
+            <div style="color:#b78103;font-weight:900">⭐ ${r.rating}/5</div>
+            <p style="font-size:11px;color:#444;margin:4px 0 0;max-width:220px">${esc(r.text)}</p>
+          </td>
+          <td>
+            ${r.mediaUrl ? `<a href="${r.mediaUrl}" target="_blank" style="color:#1488d8;font-weight:800;font-size:11px">📁 View ${r.mediaType || 'Media'}</a>` : '<span style="color:#aaa;font-size:10px">No Media</span>'}
+          </td>
+          <td>${statusBadge}</td>
+          <td>${r.couponCode ? `<code style="background:#eef4ff;color:#1488d8;padding:3px 6px;border-radius:6px;font-weight:900">${r.couponCode} (10% OFF)</code>` : '<span style="color:#888;font-size:10px">Pending</span>'}</td>
+          <td>
+            <div style="display:flex;gap:6px">
+              ${r.status !== 'Approved' ? `<button class="btn blue" style="height:30px;padding:0 8px;font-size:10px" onclick="approveReview('${r.id}')">Approve & Send Coupon 📧</button>` : ''}
+              ${r.status !== 'Rejected' ? `<button class="btn red" style="height:30px;padding:0 8px;font-size:10px;background:#666" onclick="rejectReview('${r.id}')">Reject</button>` : ''}
+              <button class="btn clear" style="height:30px;padding:0 8px;font-size:10px" onclick="deleteReview('${r.id}')">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  } catch(e) {}
+}
+
+async function approveReview(id) {
+  try {
+    const res = await fetch('/api/submit-review', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, action: 'approve' })
+    });
+    const data = await res.json();
+    if (data.success && data.review) {
+      toast(`Review ${id} Approved! Issued Coupon ${data.review.couponCode} ✓`);
+      renderAdminReviews();
+    }
+  } catch(e) {}
+}
+
+async function rejectReview(id) {
+  try {
+    await fetch('/api/submit-review', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, action: 'reject' })
+    });
+    toast(`Review ${id} Rejected`);
+    renderAdminReviews();
+  } catch(e) {}
+}
+
+async function deleteReview(id) {
+  if (confirm(`Delete review ${id}?`)) {
+    try {
+      await fetch('/api/submit-review?id=' + id, { method: 'DELETE' });
+      toast(`Review ${id} deleted`);
+      renderAdminReviews();
+    } catch(e) {}
   }
+}
 
-  if (galleryTextarea) {
-    galleryTextarea.oninput = function() {
-      const main = imgInput?.value.trim() || "";
-      const rawList = galleryTextarea.value;
-      const urls = rawList ? rawList.split(',').map(x => x.trim()).filter(Boolean) : [main];
-      renderAdminGalleryPreview(urls, main);
-    };
+// BRAND COLLABORATIONS MANAGER (REQUIREMENT 12)
+async function renderAdminCollaborations() {
+  const tbody = $("#adminCollabBody");
+  if (!tbody) return;
+
+  try {
+    const res = await fetch('/api/collaborations');
+    const data = await res.json();
+    const collabs = (data && data.collaborations) ? data.collaborations : [];
+
+    if (!collabs.length) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:#888">No brand collaborations added.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = collabs.map((c, idx) => `
+      <tr>
+        <td><strong>#${c.order || idx + 1}</strong></td>
+        <td><img src="${c.logo}" style="width:40px;height:40px;object-fit:contain;background:#fff;border-radius:6px;padding:2px"></td>
+        <td><strong>${esc(c.name)}</strong></td>
+        <td><a href="${c.link || '#'}" target="_blank" style="color:#1488d8;font-size:11px">${esc(c.link || 'https://hyperxgt.com')}</a></td>
+        <td><span style="background:${c.active ? '#e8f5e9' : '#ffeeef'};color:${c.active ? '#2e7d32' : '#ed1c24'};font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">${c.active ? 'Active' : 'Disabled'}</span></td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <button class="btn blue" style="height:30px;padding:0 8px;font-size:10px" onclick="toggleCollabActive(${c.id})">${c.active ? 'Disable' : 'Enable'}</button>
+            <button class="btn red" style="height:30px;padding:0 8px;font-size:10px" onclick="deleteCollaboration(${c.id})">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  } catch(e) {}
+}
+
+async function addCollaboration() {
+  const name = prompt("Enter Brand Partner Name (e.g. Citroen Racing WRC):");
+  if (!name) return;
+  const logo = prompt("Enter Logo Image URL or path (e.g. assets/products/M-JX7303.webp):") || "assets/products/M-JX7303.webp";
+  const link = prompt("Enter Partner Website Link:") || "https://hyperxgt.com";
+
+  try {
+    await fetch('/api/collaborations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, logo, link, order: Date.now(), active: true })
+    });
+    toast(`Brand Partner "${name}" added ✓`);
+    renderAdminCollaborations();
+  } catch(e) {}
+}
+
+async function toggleCollabActive(id) {
+  try {
+    const res = await fetch('/api/collaborations');
+    const data = await res.json();
+    const collab = (data.collaborations || []).find(c => c.id === id);
+    if (collab) {
+      collab.active = !collab.active;
+      await fetch('/api/collaborations', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(collab)
+      });
+      toast(`Collaboration updated ✓`);
+      renderAdminCollaborations();
+    }
+  } catch(e) {}
+}
+
+async function deleteCollaboration(id) {
+  if (confirm(`Delete brand collaboration?`)) {
+    try {
+      await fetch('/api/collaborations?id=' + id, { method: 'DELETE' });
+      toast(`Collaboration deleted`);
+      renderAdminCollaborations();
+    } catch(e) {}
   }
 }
 
@@ -300,6 +442,8 @@ function checkAdminAuth() {
     $("#adminPortal").style.display = "block";
     renderAdminProducts();
     renderAdminOrders();
+    renderAdminReviews();
+    renderAdminCollaborations();
     initSocialPublisher();
   } else {
     $("#adminLoginOverlay").style.display = "grid";
@@ -605,6 +749,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initAdminTabs();
   initImageUploadHandler();
   initShiprocketApiTest();
+
+  if ($("#btnAddCollab")) $("#btnAddCollab").onclick = addCollaboration;
 
   $("#formGstTaxType")?.addEventListener("change", calculateGstBreakdown);
   $("#formPrice")?.addEventListener("input", calculateGstBreakdown);

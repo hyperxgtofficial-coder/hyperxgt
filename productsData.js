@@ -11,7 +11,7 @@ window.HYPERXGT_CATEGORIES = [
 window.HYPERXGT_BRANDS = [
   { name: 'HYPER X GT', logo: 'hyperxgt_logo.png' },
   { name: 'MINI GT', tag: '1:64 Scale' },
-  { name: 'INNO64', tag: 'Detail Diecast' },
+  { name: 'INNO64', tag: 'Detail Mini RC' },
   { name: 'POP RACE', tag: 'JDM Legend' },
   { name: 'TARMAC WORKS', tag: 'Motorsport' },
   { name: 'HOT WHEELS PREMIUM', tag: 'Collector' }
@@ -69,7 +69,7 @@ window.HYPERXGT_PRODUCTS = [
   {
     id: 14697,
     sku: 'MGT-64-GT3RS',
-    name: 'MINI GT 1:64 Porsche 911 GT3 RS Guards Red Diecast',
+    name: 'MINI GT 1:64 Porsche 911 GT3 RS Guards Red Mini RC',
     brand: 'MINI GT',
     category: 'Collectables',
     scale: '1:64',
@@ -79,7 +79,7 @@ window.HYPERXGT_PRODUCTS = [
     battery: 'Static Collector Model',
     control: 'Display Base Included',
     dimensions: '7.2cm × 3.1cm × 2.2cm',
-    material: 'Die-Cast Zinc Alloy Body, Rubber Tires',
+    material: 'Mini RC Zinc Alloy Body, Rubber Tires',
     weight: '0.12 kg',
     age: '14+ Years',
     sale_price: 1499,
@@ -88,7 +88,7 @@ window.HYPERXGT_PRODUCTS = [
     rating: 5.0,
     main_image: 'images/1-15.png',
     status: 'PRE-ORDER',
-    short_description: 'Official licensed Mini GT 1:64 scale diecast replica of the Porsche 911 GT3 RS in Guards Red with detailed interior, real rubber tires, and acrylic case.'
+    short_description: 'Official licensed Mini GT 1:64 scale Mini RC replica of the Porsche 911 GT3 RS in Guards Red with detailed interior, real rubber tires, and acrylic case.'
   },
   {
     id: 14698,
@@ -103,7 +103,7 @@ window.HYPERXGT_PRODUCTS = [
     battery: 'Static Collector Model',
     control: 'Display Base Included',
     dimensions: '7.1cm × 3.0cm × 2.1cm',
-    material: 'Die-Cast Metal, Photo-Etched Parts',
+    material: 'Mini RC Metal, Photo-Etched Parts',
     weight: '0.14 kg',
     age: '14+ Years',
     sale_price: 2199,
@@ -112,7 +112,7 @@ window.HYPERXGT_PRODUCTS = [
     rating: 4.9,
     main_image: 'images/1-20.png',
     status: 'IN STOCK',
-    short_description: 'Premium INNO64 1:64 scale diecast collector model of the Nismo GT-R R34 Z-Tune with photo-etched disc brakes, realistic carbon hood, and display pedestal.'
+    short_description: 'Premium INNO64 1:64 scale Mini RC collector model of the Nismo GT-R R34 Z-Tune with photo-etched disc brakes, realistic carbon hood, and display pedestal.'
   },
   {
     id: 14699,
@@ -127,7 +127,7 @@ window.HYPERXGT_PRODUCTS = [
     battery: 'Static Collector Model',
     control: 'Display Base Included',
     dimensions: '7.0cm × 3.0cm × 2.2cm',
-    material: 'Die-Cast Alloy, Opening Engine Hood',
+    material: 'Mini RC Alloy, Opening Engine Hood',
     weight: '0.13 kg',
     age: '14+ Years',
     sale_price: 1899,
@@ -136,7 +136,7 @@ window.HYPERXGT_PRODUCTS = [
     rating: 4.9,
     main_image: 'images/1-11.png',
     status: 'IN STOCK',
-    short_description: 'Pop Race 1:64 diecast replica of the legendary Evo VI Rally Edition featuring opening bonnet with detailed 4G63 engine bay.'
+    short_description: 'Pop Race 1:64 Mini RC replica of the legendary Evo VI Rally Edition featuring opening bonnet with detailed 4G63 engine bay.'
   },
   {
     id: 14700,
@@ -175,7 +175,7 @@ window.HYPERXGT_PRODUCTS = [
     battery: 'Static Collector Model',
     control: 'Display Base Included',
     dimensions: '7.3cm × 3.2cm × 2.1cm',
-    material: 'Die-Cast Zinc, Carbon Fiber Livery',
+    material: 'Mini RC Zinc, Carbon Fiber Livery',
     weight: '0.12 kg',
     age: '14+ Years',
     sale_price: 1999,

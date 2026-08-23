@@ -71,6 +71,8 @@
       <div class="admin-tabs">
         <button class="admin-tab active" data-tab="products">Product Inventory & GST Manager</button>
         <button class="admin-tab" data-tab="orders">Orders & Logistics Center</button>
+        <button class="admin-tab" data-tab="reviews">💬 Reviews & Unboxing Approvals</button>
+        <button class="admin-tab" data-tab="collaborations">🤝 Brand Collaborations</button>
         <button class="admin-tab" data-tab="integrations">🔌 Integrations & Social Publisher</button>
         <button class="admin-tab" data-tab="database">Database & Shiprocket API Logs</button>
       </div>
@@ -160,6 +162,68 @@
               <!-- Orders list -->
             </tbody>
           </table>
+        </div>
+      <!-- CUSTOMER REVIEWS & UNBOXINGS APPROVAL SECTION -->
+      <section id="tab-reviews" class="tab-content">
+        <div style="background:#fff;border:1px solid #2e7d32;border-radius:18px;padding:24px;margin-top:20px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <h3 style="margin:0;color:#2e7d32">💬 Customer Reviews, Unboxings & 10% Coupon Management</h3>
+              <p style="font-size:12px;color:#666;margin:4px 0 0">Review submitted unboxing videos & photos. Upon approving a submission, an automated 10% coupon code is generated and emailed to the customer!</p>
+            </div>
+            <span style="background:#e8f5e9;color:#2e7d32;font-size:11px;font-weight:900;padding:6px 12px;border-radius:8px">AUTOMATED COUPON DISPATCH</span>
+          </div>
+
+          <div class="table-wrap" style="margin-top:20px">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer Info</th>
+                  <th>Order Ref</th>
+                  <th>Rating & Review</th>
+                  <th>Unboxing Media</th>
+                  <th>Status</th>
+                  <th>10% Coupon</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminReviewsBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- BRAND COLLABORATIONS MANAGER SECTION -->
+      <section id="tab-collaborations" class="tab-content">
+        <div style="background:#fff;border:1px solid #1488d8;border-radius:18px;padding:24px;margin-top:20px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+            <div>
+              <h3 style="margin:0;color:#1488d8">🤝 Official Brand Collaborations Manager</h3>
+              <p style="font-size:12px;color:#666;margin:4px 0 0">Manage partner logos scrolling in the homepage brand collaborations ticker.</p>
+            </div>
+            <button class="btn blue" id="btnAddCollab">+ Add New Brand Partner</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Logo</th>
+                  <th>Brand Name</th>
+                  <th>Website Link</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminCollabBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -336,7 +400,7 @@
               <option>Monster Trucks</option>
               <option>Off Road Crawlers</option>
               <option>Buggies & Truggies</option>
-              <option>Diecast Models</option>
+              <option>Mini RC</option>
               <option>Collectables</option>
             </select>
           </div>

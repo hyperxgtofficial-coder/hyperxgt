@@ -27,7 +27,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
-// ROBUST MULTI-IMAGE GALLERY PARSER (HANDLES ARRAYS, JSON STRINGS & COMMA-SEPARATED STRINGS)
+// ROBUST MULTI-IMAGE GALLERY PARSER
 function parseImagesArray(p) {
   let list = [];
   if (Array.isArray(p.images) && p.images.length) {
@@ -50,7 +50,7 @@ function parseImagesArray(p) {
   return cleanList.length ? cleanList : [p.image || 'assets/products/H104020-R.webp'];
 }
 
-// INTERACTIVE HERO IMAGE SWITCHER FOR MULTI-ANGLE GALLERY
+// INTERACTIVE HERO IMAGE SWITCHER
 window.switchHeroImage = function(src, el) {
   const main = document.getElementById("mainProdImg");
   if (main) {
@@ -88,6 +88,7 @@ function reRenderAllStorefrontPages() {
   if (typeof shopInit === "function") shopInit();
   if (typeof productInit === "function") productInit();
   if (typeof renderCartDrawer === "function") renderCartDrawer();
+  if (typeof renderCategoryCarousels === "function") renderCategoryCarousels();
 }
 
 window.addEventListener("storage", (e) => {
@@ -344,6 +345,184 @@ function initChrome() {
   };
 }
 
+// CATEGORY PRODUCT CAROUSELS (REQUIREMENT 4)
+function renderCategoryCarousels() {
+  const container = $("#categoryCarousels");
+  if (!container) return;
+
+  const categories = ["Racing Cars", "Drift Cars", "Monster Trucks", "Off Road Crawlers", "Buggies & Truggies", "Mini RC"];
+
+  container.innerHTML = categories.map(cat => {
+    const catProducts = P.filter(p => p.category === cat).slice(0, 10);
+    if (!catProducts.length) return "";
+
+    const cardsHTML = catProducts.map(p => {
+      const stock = p.stock !== undefined ? p.stock : 25;
+      return `
+        <div class="carousel-card" style="flex:0 0 270px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:space-between">
+          <a href="product.html?id=${p.id}">
+            <img src="${p.image}" alt="${esc(p.name)}" style="width:100%;height:165px;object-fit:contain;background:#f8f9fa;border-radius:12px;padding:10px">
+            <div style="font-size:9px;font-weight:900;color:#1488d8;margin-top:10px">${esc(p.category)} · ${esc(p.sku)}</div>
+            <h4 style="font-size:13px;line-height:1.3;margin:4px 0 8px;color:#111;min-height:34px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(p.name)}</h4>
+          </a>
+          <div>
+            <div style="font-size:10px;font-weight:900;color:${stock > 0 ? '#2e7d32' : '#ed1c24'}">${stock > 0 ? `🟢 In Stock (${stock})` : '🔴 Out of Stock'}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+              <strong style="font-size:15px;color:#111">${INR(p.price)}</strong>
+              <button class="mini-btn solid" onclick="addCart(${p.id})" style="height:32px;padding:0 12px">Add 🛒</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    const carouselId = "car_" + cat.replace(/[^a-zA-Z]/g, "");
+
+    return `
+      <div style="margin-bottom:48px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px">
+          <div>
+            <div class="eyebrow">${esc(cat)} Collection</div>
+            <h3 style="font-size:24px;font-weight:900;margin-top:4px">${esc(cat)}</h3>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button onclick="scrollCarousel('${carouselId}', -300)" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer">‹</button>
+            <button onclick="scrollCarousel('${carouselId}', 300)" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer">›</button>
+            <a href="shop.html?cat=${encodeURIComponent(cat)}" class="btn clear" style="height:36px;padding:0 14px;display:inline-flex;align-items:center;background:#f0f2f5;color:#111;font-size:11px">View All (${P.filter(p=>p.category===cat).length}) →</a>
+          </div>
+        </div>
+        <div id="${carouselId}" style="display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:12px;-webkit-overflow-scrolling:touch">
+          ${cardsHTML}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+window.scrollCarousel = function(id, offset) {
+  const el = document.getElementById(id);
+  if (el) el.scrollBy({ left: offset, behavior: 'smooth' });
+};
+
+// BRAND COLLABORATIONS CAROUSEL (REQUIREMENT 12)
+async function renderCollaborationsRail() {
+  const container = $("#collaborationsRail");
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/collaborations');
+    const data = await res.json();
+    const collabs = (data && data.collaborations) ? data.collaborations.filter(c => c.active) : [];
+
+    if (collabs.length) {
+      container.innerHTML = collabs.map(c => `
+        <a href="${c.link || 'index.html'}" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;background:#fff;border:1px solid var(--line);border-radius:14px;white-space:nowrap;font-weight:800;font-size:12px;color:#111">
+          <img src="${c.logo}" style="width:32px;height:32px;object-fit:contain">
+          <span>${esc(c.name)}</span>
+        </a>
+      `).join("");
+    }
+  } catch(e) {}
+}
+
+// SHOP FILTERING & DYNAMIC PAGINATION (REQUIREMENT 1 & 11)
+let currentPage = 1;
+const itemsPerPage = 16;
+
+function shopInit() {
+  const grid = $("#shopGrid");
+  if (!grid) return;
+
+  const qs = new URLSearchParams(location.search);
+  const searchInput = $("#searchFilter");
+  const catSelect = $("#catFilter");
+  const scaleSelect = $("#scaleFilter");
+  const priceSelect = $("#priceFilter");
+  const sortSelect = $("#sortFilter");
+
+  if (catSelect && !catSelect.children.length) {
+    const cats = ["All Categories", "Racing Cars", "Drift Cars", "Monster Trucks", "Off Road Crawlers", "Buggies & Truggies", "Mini RC", "Collectables"];
+    catSelect.innerHTML = cats.map(c => `<option value="${c === 'All Categories' ? '' : c}">${c}</option>`).join("");
+    if (qs.get("cat")) catSelect.value = qs.get("cat");
+  }
+
+  if (scaleSelect && !scaleSelect.children.length) {
+    const scales = ["All Scales", "1:7", "1:8", "1:10", "1:12", "1:14", "1:16", "1:32", "1:64"];
+    scaleSelect.innerHTML = scales.map(s => `<option value="${s === 'All Scales' ? '' : s}">${s}</option>`).join("");
+    if (qs.get("scale")) scaleSelect.value = qs.get("scale");
+  }
+
+  if (searchInput && qs.get("q")) searchInput.value = qs.get("q");
+
+  function render() {
+    let a = [...P];
+
+    const q = (searchInput?.value || "").toLowerCase().trim();
+    if (q) a = a.filter(p => (p.name + " " + p.sku + " " + p.category + " " + (p.scale || '')).toLowerCase().includes(q));
+
+    const cat = catSelect?.value || "";
+    if (cat) a = a.filter(p => p.category === cat);
+
+    const scale = scaleSelect?.value || "";
+    if (scale) a = a.filter(p => p.scale === scale);
+
+    const maxPrice = Number(priceSelect?.value || 0);
+    if (maxPrice > 0) a = a.filter(p => p.price <= maxPrice);
+
+    const sort = sortSelect?.value || "";
+    if (sort === "low") a.sort((x, y) => x.price - y.price);
+    else if (sort === "high") a.sort((x, y) => y.price - x.price);
+    else if (sort === "discount") a.sort((x, y) => (y.discount || 0) - (x.discount || 0));
+
+    if ($("#resultCount")) $("#resultCount").textContent = `${a.length} Products Found`;
+    if ($("#shopCount")) $("#shopCount").textContent = `${a.length} Products Found`;
+
+    const totalPages = Math.max(1, Math.ceil(a.length / itemsPerPage));
+    if (currentPage > totalPages) currentPage = 1;
+
+    const startIdx = (currentPage - 1) * itemsPerPage;
+    const pageProducts = a.slice(startIdx, startIdx + itemsPerPage);
+
+    if (!pageProducts.length) {
+      grid.innerHTML = '<div class="empty" style="grid-column:1/-1;text-align:center;padding:48px;color:#888">No matching models found. Try clearing filters.</div>';
+    } else {
+      grid.innerHTML = pageProducts.map(productCard).join("");
+    }
+
+    const pager = $("#pager");
+    if (pager) {
+      if (totalPages <= 1) {
+        pager.innerHTML = "";
+      } else {
+        let pagerHTML = "";
+        if (currentPage > 1) {
+          pagerHTML += `<button class="pill" onclick="goToShopPage(${currentPage - 1})">‹ Prev</button>`;
+        }
+        for (let i = 1; i <= totalPages; i++) {
+          pagerHTML += `<button class="pill ${i === currentPage ? 'active' : ''}" onclick="goToShopPage(${i})">${i}</button>`;
+        }
+        if (currentPage < totalPages) {
+          pagerHTML += `<button class="pill" onclick="goToShopPage(${currentPage + 1})">Next ›</button>`;
+        }
+        pager.innerHTML = pagerHTML;
+      }
+    }
+  }
+
+  window.goToShopPage = function(pNum) {
+    currentPage = pNum;
+    render();
+    window.scrollTo({ top: grid.offsetTop - 120, behavior: 'smooth' });
+  };
+
+  [searchInput, catSelect, scaleSelect, priceSelect, sortSelect].forEach(el => {
+    if (el) el.addEventListener("change", () => { currentPage = 1; render(); });
+    if (el && el.tagName === "INPUT") el.addEventListener("input", () => { currentPage = 1; render(); });
+  });
+
+  render();
+}
+
 function homeInit() {
   const root = $("#homeProducts");
   if (!root) return;
@@ -359,24 +538,6 @@ function homeInit() {
     b.classList.add("active");
     show(b.dataset.homeFilter);
   });
-}
-
-function shopInit() {
-  if (!$("#shopGrid")) return;
-  const qs = new URLSearchParams(location.search);
-  $("#searchFilter").value = qs.get("q") || "";
-
-  function render() {
-    let a = [...P];
-    const q = $("#searchFilter").value.toLowerCase().trim();
-    if (q) a = a.filter(p => (p.name + " " + p.sku + " " + p.category).toLowerCase().includes(q));
-
-    $("#shopCount").textContent = `${a.length} products found`;
-    $("#shopGrid").innerHTML = a.map(productCard).join("");
-  }
-
-  $("#searchFilter").addEventListener("input", render);
-  render();
 }
 
 function productInit() {
@@ -475,5 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
   homeInit();
   shopInit();
   productInit();
+  renderCategoryCarousels();
+  renderCollaborationsRail();
   fetchLiveBackendProducts();
 });

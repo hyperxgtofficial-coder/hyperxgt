@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>HyperXGT — Premium RC Cars, Racing, Drift & Crawlers India</title>
-  <meta name="description" content="HyperXGT premier store for authentic RC cars, 1:7 rally machines, 1:10 crawlers, 1:16 drift cars, monster trucks and scale diecast collectables in India.">
+  <meta name="description" content="HyperXGT premier store for authentic RC cars, 1:7 rally machines, 1:10 crawlers, 1:16 drift cars, monster trucks and scale Mini RC collectables in India.">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -18,7 +18,6 @@
     <div class="container">
       <span>Premium RC cars for racers, bashers, crawlers & collectors</span>
       <div class="utility-links">
-        <a href="index.html#affiliate">Affiliate Program</a>
         <a href="index.html#service">Customer Support</a>
         <button style="border:0;background:none;font-size:11px;color:#5a5d65;cursor:pointer" data-modal="trackModal">Track My Order</button>
       </div>
@@ -32,12 +31,12 @@
         <div><small>RC PERFORMANCE · STORE · CLUB</small></div>
       </a>
       <nav class="navlinks">
+        <a href="index.html#scales">Why HyperXGT</a>
         <a href="shop.html">Shop</a>
-        <a href="index.html#new">New Arrivals</a>
-        <a href="index.html#scales">Shop by Scale</a>
-        <a href="index.html#care">Care & Upgrades</a>
-        <a href="index.html#affiliate">Affiliate</a>
-        <a href="index.html#service">Support</a>
+        <a href="index.html#care">Care</a>
+        <a href="index.html#upgrades">Upgrades</a>
+        <a href="index.html#club">Join HyperXGT Club</a>
+        <a href="contact.html">Support</a>
       </nav>
       <div class="actions">
         <button class="icon trackIcon" title="Track order" data-modal="trackModal">⌖</button>
@@ -56,12 +55,8 @@
         <div class="hero-main ambassador-hero">
           <img class="hero-bg-car" src="assets/products/M-JX7303.webp" alt="1:7 Hyper Go Professional 4WD RC Rally Car 60KM/H Brushless WRC Citroen C3 Remote Control Drift Car 2.4Ghz 4X4 RTR">
           
-          <div class="ambassador-layer" aria-label="HyperXGT brand ambassador">
-            <img src="assets/hyperxgt-brand-ambassador.png" alt="HyperXGT brand ambassador holding an RC rally car">
-            <div class="ambassador-badge">
-              <span>HYPERXGT</span>
-              <strong>BRAND AMBASSADOR</strong>
-            </div>
+          <div class="ambassador-layer" aria-label="HyperXGT showcase">
+            <img src="assets/hyperxgt-brand-ambassador.png" alt="HyperXGT showcase holding an RC rally car">
           </div>
 
           <div class="hero-copy">
@@ -132,7 +127,7 @@
         <a class="cat" href="shop.html?cat=Monster%20Trucks"><div class="dot">🛞</div><b>Monster Trucks</b><small>19 models</small></a>
         <a class="cat" href="shop.html?cat=Off%20Road%20Crawlers"><div class="dot">⛰</div><b>Off Road Crawlers</b><small>21 models</small></a>
         <a class="cat" href="shop.html?cat=Buggies%20%26%20Truggies"><div class="dot">⚡</div><b>Buggies & Truggies</b><small>4 models</small></a>
-        <a class="cat" href="shop.html?cat=Diecast%20Models"><div class="dot">🏎</div><b>Diecast Models</b><small>2 models</small></a>
+        <a class="cat" href="shop.html?cat=Mini RC%20Models"><div class="dot">🏎</div><b>Mini RC</b><small>2 models</small></a>
         <a class="cat" href="shop.html?cat=Collectables"><div class="dot">★</div><b>Collectables</b><small>199 models</small></a>
       </div>
     </div>
@@ -198,9 +193,32 @@
         <span>DRIFT</span>
         <span>OFF ROAD</span>
         <span>CRAWLERS</span>
-        <span>DIECAST</span>
+        <span>Mini RC</span>
       </div>
     </div>
+
+    <!-- CATEGORY PRODUCT CAROUSELS SECTION -->
+    <section class="section" id="categorySections">
+      <div class="container">
+        <div id="categoryCarousels"></div>
+      </div>
+    </section>
+
+    <!-- BRAND COLLABORATIONS SCROLLING SECTION -->
+    <section class="section alt" id="brandCollaborations">
+      <div class="container">
+        <div class="section-head" style="margin-bottom:20px">
+          <div>
+            <div class="eyebrow">Industry Partnerships</div>
+            <h2>Official Brand Collaborations</h2>
+          </div>
+          <p>We work directly with premier RC engineering manufacturers and rally racing teams.</p>
+        </div>
+        <div style="display:flex;gap:16px;overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch" id="collaborationsRail">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
 
     <!-- CARE & UPGRADES -->
     <section class="section alt" id="care">
@@ -353,7 +371,6 @@
         <div>
           <h4>Company</h4>
           <a href="index.html#community">Driver Garage</a>
-          <a href="index.html#affiliate">Affiliate Program</a>
           <a href="#" data-modal="accountModal">Customer Login</a>
           <a href="privacy.html">Privacy Policy</a>
           <a href="shipping.html">Shipping Policy</a>
@@ -449,6 +466,62 @@
   <div class="modal" id="quickModal">
     <div class="shade"></div>
     <div class="modal-box" id="quickBox"></div>
+  </div>
+
+  <!-- CUSTOMER REVIEW & UNBOXING SUBMISSION MODAL (WITH 10% COUPON) -->
+  <div class="modal" id="reviewModal">
+    <div class="shade"></div>
+    <div class="modal-box" style="width:min(600px,92vw)">
+      <div class="drawer-head">
+        <b>Submit Review & Unboxing Content</b>
+        <button class="x" onclick="closeEl(this)">×</button>
+      </div>
+
+      <div style="background:#e8f5e9;border:1px solid #a5d6a7;padding:14px;border-radius:12px;margin:16px 0;font-size:12px;color:#1b5e20;font-weight:700">
+        🎉 Submit your review, testimonial, or product unboxing video/photo and get a <strong>10% OFF Coupon</strong> on your next purchase upon admin approval!
+      </div>
+
+      <form id="reviewSubmissionForm">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label class="form-label">Full Name *</label>
+            <input class="field" id="revName" required placeholder="Aman Sharma">
+          </div>
+          <div>
+            <label class="form-label">Email Address *</label>
+            <input class="field" type="email" id="revEmail" required placeholder="aman@gmail.com">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+          <div>
+            <label class="form-label">Order ID / Ref Number</label>
+            <input class="field" id="revOrder" placeholder="HX-10482">
+          </div>
+          <div>
+            <label class="form-label">Rating (1 to 5 Stars) *</label>
+            <select class="field" id="revRating">
+              <option value="5" selected>⭐⭐⭐⭐⭐ (5/5 Stars)</option>
+              <option value="4">⭐⭐⭐⭐ (4/5 Stars)</option>
+              <option value="3">⭐⭐⭐ (3/5 Stars)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="form-label">Review / Testimonial Text *</label>
+          <textarea class="field" id="revText" required style="height:90px;padding-top:10px" placeholder="Share your experience driving or unboxing your model..."></textarea>
+        </div>
+
+        <div style="margin-top:10px;background:#f8f9fa;border:1px solid var(--line);padding:14px;border-radius:12px">
+          <label class="form-label" style="color:#1488d8">Upload Unboxing Photo or Video File</label>
+          <input type="file" id="revMediaFile" accept="image/*,video/*" style="font-size:12px">
+          <div style="font-size:10px;color:#777;margin-top:4px">Max size: 5MB for images, 25MB for videos (MP4, MOV, JPG, PNG).</div>
+        </div>
+
+        <button class="btn dark" type="submit" style="width:100%;height:48px;margin-top:16px">Submit Review & Claim 10% OFF →</button>
+      </form>
+    </div>
   </div>
 
   <div class="toast" id="toast">Added to cart</div>
