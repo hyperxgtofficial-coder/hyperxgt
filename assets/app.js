@@ -1027,13 +1027,105 @@ function renderRelatedProducts(currentProduct) {
   }
 }
 
+function cartPageInit() {
+  const itemsContainer = $("#cartPageItems");
+  const summaryContainer = $("#cartPageSummary");
+  if (!itemsContainer || !summaryContainer) return;
+
+  const cart = getCart();
+  const ids = Object.keys(cart).map(Number);
+  const products = getProducts();
+
+  if (!ids.length) {
+    itemsContainer.innerHTML = `
+      <div style="text-align:center;padding:60px 20px;background:#fff;border-radius:24px;border:1px solid var(--line);box-shadow:var(--shadow)">
+        <div style="font-size:48px;margin-bottom:12px">🛒</div>
+        <h2 style="font-size:24px;color:#111;margin-bottom:8px">Your Cart is Currently Empty</h2>
+        <p style="font-size:14px;color:#666;max-width:400px;margin:0 auto 24px">Explore our catalogue of 338 pro-grade RC racing cars, crawlers, drift cars, and bashers.</p>
+        <a class="btn blue" href="shop.html" style="height:48px;padding:0 28px;display:inline-flex;align-items:center">Shop Catalogue (338 Models) →</a>
+      </div>
+    `;
+    summaryContainer.innerHTML = "";
+    return;
+  }
+
+  let subtotal = 0;
+  let itemsHTML = ids.map(id => {
+    const p = products.find(x => x.id === id);
+    if (!p) return "";
+    const qty = cart[id];
+    const itemTotal = p.price * qty;
+    subtotal += itemTotal;
+
+    return `
+      <div style="display:grid;grid-template-columns:100px 1fr 140px 100px;gap:20px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)">
+        <img src="${p.image}" alt="${esc(p.name)}" style="width:100px;height:80px;object-fit:contain;background:#f8f9fa;border-radius:12px;padding:4px">
+        <div>
+          <span style="font-size:11px;color:#1488d8;font-weight:900">${esc(p.category)} · SKU: ${esc(p.sku)}</span>
+          <h3 style="font-size:16px;margin:4px 0 6px;color:#111"><a href="product.html?id=${p.id}" style="color:inherit">${esc(p.name)}</a></h3>
+          <div style="font-size:12px;color:#666">${esc(p.scale || '1:16')} · ${esc(p.drive || '4WD')}</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;background:#f0f4ff;border-radius:10px;padding:4px 8px;width:fit-content">
+          <button style="border:0;background:none;font-weight:900;font-size:16px;cursor:pointer;width:24px;height:24px" onclick="updateQty(${p.id}, ${qty - 1})">-</button>
+          <span style="font-weight:900;font-size:14px;min-width:20px;text-align:center">${qty}</span>
+          <button style="border:0;background:none;font-weight:900;font-size:16px;cursor:pointer;width:24px;height:24px" onclick="updateQty(${p.id}, ${qty + 1})">+</button>
+        </div>
+
+        <div style="text-align:right">
+          <strong style="font-size:16px;color:#2e7d32;display:block">${INR(itemTotal)}</strong>
+          <button style="border:0;background:none;color:#ed1c24;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px" onclick="removeCartItem(${p.id})">Remove 🗑️</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  itemsContainer.innerHTML = itemsHTML;
+
+  summaryContainer.innerHTML = `
+    <div style="background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)">
+      <h3 style="font-size:20px;margin-top:0;margin-bottom:18px;color:#111">Order Summary</h3>
+      <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px">
+        <span style="color:#666">Subtotal (${ids.reduce((a,b)=>a+cart[b],0)} items)</span>
+        <strong>${INR(subtotal)}</strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px">
+        <span style="color:#666">Express Courier Delivery</span>
+        <strong style="color:#2e7d32">FREE (Orders > ₹999)</strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #eee">
+        <span style="color:#666">GST & Taxes</span>
+        <span style="color:#666">Included in price (18%)</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:18px;margin-bottom:24px">
+        <strong style="color:#111">Total Amount</strong>
+        <strong style="color:#2e7d32;font-size:22px">${INR(subtotal)}</strong>
+      </div>
+
+      <a class="btn blue" href="checkout.html" style="width:100%;height:52px;font-size:14px;display:flex;align-items:center;justify-content:center">Proceed to Secure Checkout 🔒</a>
+      <a class="btn dark" href="shop.html" style="width:100%;height:44px;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:12px">← Continue Shopping</a>
+    </div>
+  `;
+}
+
+window.removeCartItem = function(id) {
+  const c = getCart();
+  delete c[id];
+  setCart(c);
+  updateCount();
+  renderCartDrawer();
+  cartPageInit();
+  toast("Removed item from cart");
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   initChrome();
   homeInit();
   shopInit();
   productInit();
+  cartPageInit();
   renderCategoryCarousels();
   renderCollaborationsRail();
   fetchLiveBackendProducts();
 });
+
