@@ -330,34 +330,205 @@ function renderCartDrawer() {
   if ($("#cartSubtotal")) $("#cartSubtotal").textContent = INR(subtotal);
 }
 
+// DYNAMIC GLOBAL MODALS & DRAWERS INJECTOR
+function ensureGlobalModalsAndDrawers() {
+  if (!$("#mobileDrawer")) {
+    const div = document.createElement("div");
+    div.className = "drawer";
+    div.id = "mobileDrawer";
+    div.innerHTML = `
+      <div class="shade"></div>
+      <div class="drawer-panel" style="width:min(360px,88vw)">
+        <div class="drawer-head">
+          <div><b style="color:#ed1c24;font-size:16px">HYPERXGT</b> <span style="font-size:10px;color:#888">Store Menu</span></div>
+          <button class="x">×</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;padding:24px 0">
+          <a href="why.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Why HyperXGT</a>
+          <a href="shop.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Shop Catalogue (338 Rigs)</a>
+          <a href="upgrades.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Upgrades & Parts</a>
+          <a href="club.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Join HyperXGT Club</a>
+          <a href="contact.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Care & Support</a>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+            <button class="btn blue" onclick="closeEl(this); openModal('trackModal')">⌖ Track Order</button>
+            <button class="btn dark" onclick="closeEl(this); openModal('accountModal')">♙ My Garage</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(div);
+  }
+
+  if (!$("#trackModal")) {
+    const div = document.createElement("div");
+    div.className = "modal";
+    div.id = "trackModal";
+    div.innerHTML = `
+      <div class="shade"></div>
+      <div class="modal-box">
+        <div class="drawer-head"><b>Track My Order</b><button class="x">×</button></div>
+        <h3 style="font-size:22px;margin:12px 0 16px">Where is my RC?</h3>
+        <input class="field" id="trackOrder" placeholder="Order number, e.g. HX-10482">
+        <div class="modal-row"><button class="btn blue" id="trackBtn">Track shipment</button></div>
+        <div id="trackResult"></div>
+      </div>
+    `;
+    document.body.appendChild(div);
+  }
+
+  if (!$("#searchModal")) {
+    const div = document.createElement("div");
+    div.className = "modal";
+    div.id = "searchModal";
+    div.innerHTML = `
+      <div class="shade"></div>
+      <div class="modal-box">
+        <div class="drawer-head"><b>Search HyperXGT</b><button class="x">×</button></div>
+        <h3 style="font-size:22px;margin:12px 0 16px">What are you looking for?</h3>
+        <input class="field" id="searchField" placeholder="Search SKU, 4WD, 1:14, brushless, drift...">
+        <div id="searchResults" style="font-size:11px;color:#666;margin-top:10px">Try: drift, racing, off road, 1:14</div>
+      </div>
+    `;
+    document.body.appendChild(div);
+  }
+
+  if (!$("#accountModal")) {
+    const div = document.createElement("div");
+    div.className = "modal";
+    div.id = "accountModal";
+    div.innerHTML = `
+      <div class="shade"></div>
+      <div class="modal-box">
+        <div class="drawer-head"><b>Customer Account</b><button class="x">×</button></div>
+        <h3 style="font-size:22px;margin:12px 0 16px">Welcome to My Garage</h3>
+        <input class="field" placeholder="Email or mobile number">
+        <input class="field" type="password" placeholder="Password">
+        <div class="modal-row" style="margin-top:14px">
+          <button class="btn dark" onclick="toast('Signed in to My Garage ✓'); closeEl(this)">Sign in</button>
+          <button class="btn" onclick="toast('Account created ✓'); closeEl(this)">Create account</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(div);
+  }
+
+  if (!$("#cartDrawer")) {
+    const div = document.createElement("div");
+    div.className = "drawer";
+    div.id = "cartDrawer";
+    div.innerHTML = `
+      <div class="shade"></div>
+      <div class="drawer-panel">
+        <div class="drawer-head">
+          <div><b>Your Cart</b><div style="font-size:10px;color:#888">HyperXGT Store</div></div>
+          <button class="x">×</button>
+        </div>
+        <div id="cartItems" class="cart-empty">Your cart is empty.</div>
+        <div id="cartSummary" style="display:none;margin-top:22px">
+          <a class="btn dark" style="width:100%;display:flex;align-items:center;justify-content:center" href="checkout.html">Proceed to secure checkout</a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(div);
+  }
+}
+
 function initChrome() {
+  ensureGlobalModalsAndDrawers();
   updateCount();
   renderCartDrawer();
-  $$("[data-modal]").forEach(b => b.addEventListener("click", e => {
-    e.preventDefault();
-    openModal(b.dataset.modal);
-  }));
-  $$(".modal .shade,.drawer .shade,.x").forEach(el => el.addEventListener("click", () => closeEl(el)));
-  const co = $("#cartOpen");
-  if (co) co.onclick = () => $("#cartDrawer").classList.add("open");
 
-  const tb = $("#trackBtn");
-  if (tb) tb.onclick = async () => {
-    const o = $("#trackOrder")?.value.trim() || "HX-10482";
-    $("#trackResult").innerHTML = '<div style="margin-top:14px;font-size:11px;color:#888">Fetching live tracking status...</div>';
-    try {
-      const res = await fetch('/api/track-order?orderId=' + encodeURIComponent(o));
-      const data = await res.json();
-      if (data.success && data.tracking) {
-        const t = data.tracking;
-        $("#trackResult").innerHTML = `<div style="margin-top:18px;padding:18px;border-radius:16px;background:#f4f6ff;border:1px solid #dfe4ff;text-align:left">
-          <div style="font-size:12px;font-weight:900;color:#1488d8">Order ${esc(t.orderId)} · ${esc(t.courier)}</div>
-          <div style="font-size:11px;color:#555;margin-top:4px">AWB Tracking: <strong>${esc(t.trackingNumber)}</strong></div>
-          <div style="font-size:11px;color:#2e7d32;font-weight:800;margin-top:4px">Est. Delivery: ${esc(t.estimatedDelivery)}</div>
-        </div>`;
+  // BIND ALL ACTION BUTTONS & MODALS
+  $$("[data-modal]").forEach(b => {
+    b.onclick = (e) => {
+      e.preventDefault();
+      openModal(b.dataset.modal);
+    };
+  });
+
+  // Track Icon Button (⌖)
+  $$(".trackIcon").forEach(b => {
+    b.onclick = (e) => {
+      e.preventDefault();
+      openModal("trackModal");
+    };
+  });
+
+  // Mobile Menu ☰ (#mobileOpen)
+  const mobBtn = $("#mobileOpen");
+  if (mobBtn) {
+    mobBtn.onclick = (e) => {
+      e.preventDefault();
+      openModal("mobileDrawer");
+    };
+  }
+
+  // Cart Open 🛒 (#cartOpen)
+  const cartBtn = $("#cartOpen");
+  if (cartBtn) {
+    cartBtn.onclick = (e) => {
+      e.preventDefault();
+      renderCartDrawer();
+      openModal("cartDrawer");
+    };
+  }
+
+  // Search Input live filtering in modal
+  const searchInput = $("#searchField");
+  if (searchInput) {
+    searchInput.oninput = function() {
+      const q = searchInput.value.toLowerCase().trim();
+      const resultsDiv = $("#searchResults");
+      if (!resultsDiv) return;
+      if (!q) {
+        resultsDiv.innerHTML = 'Try: drift, racing, off road, 1:14';
+        return;
       }
-    } catch(err) {}
-  };
+      const matches = getProducts().filter(p => (p.name + " " + p.sku + " " + p.category).toLowerCase().includes(q)).slice(0, 5);
+      if (!matches.length) {
+        resultsDiv.innerHTML = '<div style="color:#999;padding:10px 0">No matching models found.</div>';
+      } else {
+        resultsDiv.innerHTML = matches.map(p => `
+          <a href="product.html?id=${p.id}" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eee">
+            <img src="${p.image}" style="width:36px;height:30px;object-fit:contain">
+            <div>
+              <strong style="color:#111;font-size:12px">${esc(p.name)}</strong>
+              <div style="font-size:10px;color:#1488d8">${esc(p.sku)} · ${INR(p.price)}</div>
+            </div>
+          </a>
+        `).join("");
+      }
+    };
+  }
+
+  // Track AWB Order Handler
+  const tb = $("#trackBtn");
+  if (tb) {
+    tb.onclick = async () => {
+      const o = $("#trackOrder")?.value.trim() || "HX-10482";
+      $("#trackResult").innerHTML = '<div style="margin-top:14px;font-size:11px;color:#888">Fetching live tracking status...</div>';
+      try {
+        const res = await fetch('/api/track-order?orderId=' + encodeURIComponent(o));
+        const data = await res.json();
+        if (data.success && data.tracking) {
+          const t = data.tracking;
+          $("#trackResult").innerHTML = `<div style="margin-top:18px;padding:18px;border-radius:16px;background:#f4f6ff;border:1px solid #dfe4ff;text-align:left">
+            <div style="font-size:12px;font-weight:900;color:#1488d8">Order ${esc(t.orderId)} · ${esc(t.courier)}</div>
+            <div style="font-size:11px;color:#555;margin-top:4px">AWB Tracking: <strong>${esc(t.trackingNumber)}</strong></div>
+            <div style="font-size:11px;color:#2e7d32;font-weight:800;margin-top:4px">Est. Delivery: ${esc(t.estimatedDelivery)}</div>
+          </div>`;
+        }
+      } catch(err) {}
+    };
+  }
+
+  // Global Close Click Delegate
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("shade") || e.target.classList.contains("x")) {
+      const parent = e.target.closest(".modal,.drawer");
+      if (parent) parent.classList.remove("open");
+    }
+  });
 }
 
 // CATEGORY PRODUCT CAROUSELS
