@@ -744,9 +744,16 @@ async function saveProduct(e) {
   const scale = $("#formScale").value.trim() || "1:16";
   const speed = $("#formSpeed").value.trim() || "35 KM/H";
   const drive = $("#formDrive").value;
-  const image = $("#formImage").value.trim() || "assets/products/H104020-R.webp";
   const rawGallery = $("#formImagesList").value.trim();
-  const images = rawGallery ? rawGallery.split(',').map(x => x.trim()).filter(Boolean) : [image];
+  const images = rawGallery ? rawGallery.split(',').map(x => x.trim()).filter(Boolean) : [];
+  let image = $("#formImage").value.trim();
+  if (images.length > 0 && (!image || !images.includes(image))) {
+    image = images[0];
+  }
+  if (!image && images.length === 0) {
+    image = "assets/products/H104020-R.webp";
+    images.push(image);
+  }
   const video = $("#formVideoUrl") ? $("#formVideoUrl").value.trim() : "";
 
   const short_description = $("#formShortDesc").value.trim();

@@ -45,19 +45,19 @@ function toast(msg) {
 function parseImagesArray(p) {
   let list = [];
   if (Array.isArray(p.images) && p.images.length) {
-    list = p.images;
+    list = p.images.map(x => String(x).trim()).filter(Boolean);
   } else if (typeof p.images === "string" && p.images.trim()) {
     try {
       const parsed = JSON.parse(p.images);
-      if (Array.isArray(parsed) && parsed.length) list = parsed;
+      if (Array.isArray(parsed) && parsed.length) list = parsed.map(x => String(x).trim()).filter(Boolean);
       else list = p.images.split(',').map(x => x.trim()).filter(Boolean);
     } catch(e) {
       list = p.images.split(',').map(x => x.trim()).filter(Boolean);
     }
   }
 
-  if (p.image && !list.includes(p.image)) {
-    list.unshift(p.image);
+  if (!list.length && p.image) {
+    list = [p.image.trim()];
   }
 
   const cleanList = [...new Set(list)].filter(x => x && x.length > 5);
@@ -749,7 +749,7 @@ function productInit() {
   const savings = Math.max(0, (p.mrp || 0) - (p.price || 0));
 
   const imagesList = parseImagesArray(p);
-  const heroImage = p.image || imagesList[0];
+  const heroImage = (p.image && imagesList.includes(p.image)) ? p.image : (imagesList[0] || 'assets/products/H104020-R.webp');
 
   const galleryThumbnailsHTML = imagesList.map((img, idx) => {
     const isHero = img.trim() === heroImage.trim() || idx === 0;
