@@ -27,6 +27,29 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
+// ROBUST MULTI-IMAGE GALLERY PARSER (HANDLES ARRAYS, JSON STRINGS & COMMA-SEPARATED STRINGS)
+function parseImagesArray(p) {
+  let list = [];
+  if (Array.isArray(p.images) && p.images.length) {
+    list = p.images;
+  } else if (typeof p.images === "string" && p.images.trim()) {
+    try {
+      const parsed = JSON.parse(p.images);
+      if (Array.isArray(parsed) && parsed.length) list = parsed;
+      else list = p.images.split(',').map(x => x.trim()).filter(Boolean);
+    } catch(e) {
+      list = p.images.split(',').map(x => x.trim()).filter(Boolean);
+    }
+  }
+
+  if (p.image && !list.includes(p.image)) {
+    list.unshift(p.image);
+  }
+
+  const cleanList = [...new Set(list)].filter(x => x && x.length > 5);
+  return cleanList.length ? cleanList : [p.image || 'assets/products/H104020-R.webp'];
+}
+
 // INTERACTIVE HERO IMAGE SWITCHER FOR MULTI-ANGLE GALLERY
 window.switchHeroImage = function(src, el) {
   const main = document.getElementById("mainProdImg");
@@ -35,7 +58,7 @@ window.switchHeroImage = function(src, el) {
     setTimeout(() => {
       main.src = src;
       main.style.opacity = "1";
-    }, 150);
+    }, 120);
   }
   const parent = el.parentElement;
   if (parent) {
@@ -374,7 +397,7 @@ function productInit() {
   const w = getWish().includes(p.id);
   const stock = p.stock !== undefined ? p.stock : 25;
 
-  const imagesList = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : ['assets/products/H104020-R.webp']);
+  const imagesList = parseImagesArray(p);
   const heroImage = p.image || imagesList[0];
 
   const galleryThumbnailsHTML = imagesList.map((img, idx) => {
