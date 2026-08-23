@@ -84,7 +84,7 @@ function initAdminAuth() {
   }
 }
 
-// ADMIN TABS NAVIGATION
+// ADMIN TABS NAVIGATION CONTROLLER
 function initAdminTabs() {
   $$(".admin-tab").forEach(tab => {
     tab.onclick = function() {
@@ -114,6 +114,22 @@ window.HX_ORDERS = [
     courier: "Shiprocket Express (Bluedart)",
     awb: "SRK748291048",
     fulfillmentStatus: "Pending Admin Acceptance",
+    cancellationReason: ""
+  },
+  {
+    id: "HX-948211",
+    date: "2026-08-23 14:20",
+    customer: { name: "Aman Gupta", email: "aman.g@gmail.com", phone: "+91 99887 76655", address: "H.No 12, Sector 15", city: "Gurgaon", state: "Haryana", pincode: "122001" },
+    items: [{ id: 72, sku: "MJX7304", name: "1:14 Brushless 4WD Drift Car", qty: 1, price: 14999 }],
+    subtotal: 14999,
+    shipping: 0,
+    total: 14999,
+    paymentMethod: "Partial COD",
+    paymentId: "pay_N8zK9921102",
+    paymentStatus: "Partial Paid",
+    courier: "Delhivery Surface",
+    awb: "DEL882190412",
+    fulfillmentStatus: "Processing",
     cancellationReason: ""
   }
 ];
@@ -362,7 +378,7 @@ async function deleteReview(id) {
 
 // BRAND COLLABORATIONS MANAGER
 async function renderAdminCollaborations() {
-  const tbody = $("#adminCollaborationsBody");
+  const tbody = $("#adminCollabBody");
   if (!tbody) return;
 
   try {
@@ -420,26 +436,25 @@ async function deleteCollab(id) {
 }
 
 function initCollabForm() {
-  const form = $("#collabForm");
-  if (!form) return;
+  const btn = $("#btnAddCollab");
+  if (btn) {
+    btn.onclick = function() {
+      const name = prompt("Enter Brand Partner Name (e.g. Traxxas India):");
+      if (!name) return;
+      const logo = prompt("Enter Brand Logo URL:", "assets/hyperxgt-logo.png");
+      if (!logo) return;
+      const link = prompt("Enter Brand Website / Catalog Link:", "index.html");
 
-  form.onsubmit = async function(e) {
-    e.preventDefault();
-    const name = $("#collabName").value.trim();
-    const logo = $("#collabLogo").value.trim();
-    const link = $("#collabLink").value.trim() || "#";
-
-    try {
-      await fetch('/api/collaborations', {
+      fetch('/api/collaborations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, logo, link, active: true })
+      }).then(() => {
+        toast(`Added Brand Partner "${name}" ✓`);
+        renderAdminCollaborations();
       });
-      toast(`Added collaboration "${name}" ✓`);
-      form.reset();
-      renderAdminCollaborations();
-    } catch(e) {}
-  };
+    };
+  }
 }
 
 // BULK CSV PRODUCT UPLOADER
@@ -496,23 +511,150 @@ function initCsvBulkUploader() {
   };
 }
 
-// INTEGRATIONS & SOCIAL PUBLISHER
+// INTEGRATIONS & SOCIAL PUBLISHER AI CAPTION GENERATOR
 function initSocialPublisher() {
-  const form = $("#socialPublishForm");
-  if (!form) return;
+  const form = $("#socialPublisherForm");
+  const btnAuto = $("#btnAutoCaption");
+  const prodSelect = $("#socialProdSelect");
+  const captionArea = $("#socialCaption");
 
-  form.onsubmit = function(e) {
-    e.preventDefault();
-    const channels = $$("input[name='channel']:checked").map(c => c.value);
-    if (!channels.length) {
-      alert("Please select at least one social media channel.");
-      return;
-    }
-    toast(`Success! Published post to ${channels.join(", ")} ✓`);
-  };
+  if (prodSelect) {
+    prodSelect.innerHTML = P.map(p => `<option value="${p.id}">${esc(p.name)} (${esc(p.sku)}) — ${INR(p.price)}</option>`).join("");
+  }
+
+  if (btnAuto && prodSelect && captionArea) {
+    btnAuto.onclick = function() {
+      const pId = Number(prodSelect.value);
+      const p = P.find(x => x.id === pId) || P[0];
+      if (!p) return;
+
+      captionArea.value = `🏁 NEW DROP ALERT: ${p.name} (SKU: ${p.sku})!\n\n` +
+        `⚡ High-performance ${p.scale} ${p.category} with ${p.drive} drivetrain & ${p.speed} top speed.\n` +
+        `🔥 Official Price: ${INR(p.price)} (Ships within 24 Hours across India)\n\n` +
+        `📲 Order now at hyperxgt.com or WhatsApp +91 70902 27777!\n\n` +
+        `#HyperXGT #RCCars #RCIndia #Brushless #RCRacing #HobbyGrade #${p.category.replace(/[^a-zA-Z]/g,'')}`;
+
+      toast("Generated AI Social Caption ✨");
+    };
+  }
+
+  if (form) {
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      const channels = [];
+      if ($("#chkInsta")?.checked) channels.push("Instagram");
+      if ($("#chkFb")?.checked) channels.push("Facebook");
+      if ($("#chkWa")?.checked) channels.push("WhatsApp Broadcast");
+      if ($("#chkYt")?.checked) channels.push("YouTube Shorts");
+
+      if (!channels.length) {
+        alert("Please select at least one social media channel.");
+        return;
+      }
+      toast(`Published post to ${channels.join(", ")} ✓`);
+    };
+  }
 }
 
-// ORDER ACCEPTANCE WORKFLOW BY ADMIN & STOCK DEDUCTION
+// ORDER FULFILLMENT & LOGISTICS TRACKING CONTROLLER
+window.openOrderModal = function(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  $("#ordModalTitle").textContent = `Fulfillment & Logistics Hub — Order ${o.id}`;
+
+  const content = $("#ordModalContent");
+  if (content) {
+    content.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+        <div style="background:#f8f9fa;border:1px solid var(--line);border-radius:14px;padding:18px">
+          <strong style="font-size:13px;color:#111;display:block;margin-bottom:8px">👤 Customer Info & Address</strong>
+          <div style="font-size:12px;color:#444;line-height:1.6">
+            <strong>${esc(o.customer.name)}</strong><br>
+            Phone: ${esc(o.customer.phone)}<br>
+            Email: ${esc(o.customer.email)}<br>
+            Address: ${esc(o.customer.address)}, ${esc(o.customer.city)}, ${esc(o.customer.state)} - ${esc(o.customer.pincode)}
+          </div>
+        </div>
+
+        <div style="background:#f8f9fa;border:1px solid var(--line);border-radius:14px;padding:18px">
+          <strong style="font-size:13px;color:#111;display:block;margin-bottom:8px">💳 Payment & Order Details</strong>
+          <div style="font-size:12px;color:#444;line-height:1.6">
+            Date: ${esc(o.date)}<br>
+            Total Amount: <strong style="color:#2e7d32">${INR(o.total)}</strong><br>
+            Payment Mode: ${esc(o.paymentMethod)} (${esc(o.paymentStatus)})<br>
+            Transaction Ref: <code>${esc(o.paymentId || 'N/A')}</code>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:20px">
+        <strong style="font-size:13px;color:#111;display:block;margin-bottom:10px">🛒 Ordered Items:</strong>
+        ${(o.items || []).map(it => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee;font-size:12px">
+            <div>
+              <strong>${esc(it.name)}</strong> (SKU: ${esc(it.sku)})
+            </div>
+            <div>
+              ${it.qty} × ${INR(it.price)} = <strong>${INR(it.qty * it.price)}</strong>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+
+      <!-- LOGISTICS & SHIPMENT CONTROLLER -->
+      <div style="background:#f4f6ff;border:1px solid #cce0ff;border-radius:16px;padding:20px">
+        <h4 style="margin:0 0 12px;color:#1488d8">🚚 Shiprocket Courier & Tracking Controller</h4>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+          <div>
+            <label class="form-label">Fulfillment Status</label>
+            <select class="field" id="ordStatus" style="margin:0">
+              <option value="Pending Admin Acceptance" ${o.fulfillmentStatus === 'Pending Admin Acceptance' ? 'selected' : ''}>🟡 Pending Acceptance</option>
+              <option value="Processing" ${o.fulfillmentStatus === 'Processing' ? 'selected' : ''}>⚙️ Processing</option>
+              <option value="Packed" ${o.fulfillmentStatus === 'Packed' ? 'selected' : ''}>📦 Packed</option>
+              <option value="Shipped" ${o.fulfillmentStatus === 'Shipped' ? 'selected' : ''}>🚚 Shipped</option>
+              <option value="Out for Delivery" ${o.fulfillmentStatus === 'Out for Delivery' ? 'selected' : ''}>🛵 Out for Delivery</option>
+              <option value="Delivered" ${o.fulfillmentStatus === 'Delivered' ? 'selected' : ''}>🟢 Delivered</option>
+              <option value="Cancelled" ${o.fulfillmentStatus === 'Cancelled' ? 'selected' : ''}>🔴 Cancelled</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label">Courier Service</label>
+            <input class="field" id="ordCourier" value="${esc(o.courier || 'Shiprocket Express (Bluedart)')}" style="margin:0">
+          </div>
+
+          <div>
+            <label class="form-label">AWB Tracking Number</label>
+            <input class="field" id="ordAwb" value="${esc(o.awb || 'SRK' + Math.floor(10000000 + Math.random() * 90000000))}" style="margin:0">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px">
+          <button class="btn blue" onclick="updateOrderStatus('${o.id}')" style="height:44px">Update Order Status & Dispatch AWB ✓</button>
+          ${o.fulfillmentStatus === 'Pending Admin Acceptance' ? `<button class="btn dark" onclick="acceptOrder('${o.id}'); closeEl($('#orderFulfillmentModal'))" style="height:44px">Accept Order & Deduct Stock 📦</button>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  openModal("orderFulfillmentModal");
+};
+
+window.updateOrderStatus = function(orderId) {
+  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  if (!o) return;
+
+  o.fulfillmentStatus = $("#ordStatus")?.value || o.fulfillmentStatus;
+  o.courier = $("#ordCourier")?.value || o.courier;
+  o.awb = $("#ordAwb")?.value || o.awb;
+
+  renderAdminOrders();
+  closeEl($("#orderFulfillmentModal"));
+  toast(`Updated Order ${orderId} status to "${o.fulfillmentStatus}" ✓`);
+};
+
 function acceptOrder(orderId) {
   const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
   if (!o) return;
