@@ -35,6 +35,69 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
+// ADMIN AUTHENTICATION CONTROLLER
+function checkAdminAuth() {
+  const overlay = $("#adminLoginOverlay");
+  const portal = $("#adminPortal");
+  const isLogged = localStorage.getItem("hx_admin_logged") === "true";
+
+  if (isLogged) {
+    if (overlay) overlay.style.display = "none";
+    if (portal) portal.style.display = "block";
+  } else {
+    if (overlay) overlay.style.display = "flex";
+    if (portal) portal.style.display = "none";
+  }
+}
+
+function initAdminAuth() {
+  checkAdminAuth();
+
+  const loginForm = $("#adminLoginForm");
+  if (loginForm) {
+    loginForm.onsubmit = function(e) {
+      e.preventDefault();
+      const email = ($("#adminEmail")?.value || "").trim().toLowerCase();
+      const pass = ($("#adminPass")?.value || "").trim();
+
+      if ((email === "admin@hyperxgt.com" || email === "contact@hyperxgt.com") && (pass === "hyperxgt2026" || pass === "admin123")) {
+        localStorage.setItem("hx_admin_logged", "true");
+        if ($("#adminLoginErr")) $("#adminLoginErr").style.display = "none";
+        checkAdminAuth();
+        toast("Welcome back, Store Admin! 🌟");
+      } else {
+        if ($("#adminLoginErr")) {
+          $("#adminLoginErr").style.display = "block";
+          $("#adminLoginErr").textContent = "Invalid credentials. Use admin@hyperxgt.com / hyperxgt2026";
+        }
+      }
+    };
+  }
+
+  const logoutBtn = $("#adminLogout");
+  if (logoutBtn) {
+    logoutBtn.onclick = function() {
+      localStorage.removeItem("hx_admin_logged");
+      checkAdminAuth();
+      toast("Logged out of Admin Portal.");
+    };
+  }
+}
+
+// ADMIN TABS NAVIGATION
+function initAdminTabs() {
+  $$(".admin-tab").forEach(tab => {
+    tab.onclick = function() {
+      const target = tab.dataset.tab;
+      $$(".admin-tab").forEach(t => t.classList.remove("active"));
+      $$(".tab-content").forEach(c => c.classList.remove("active"));
+      tab.classList.add("active");
+      const targetEl = $("#tab-" + target);
+      if (targetEl) targetEl.classList.add("active");
+    };
+  });
+}
+
 // STORE ORDERS DATABASE
 window.HX_ORDERS = [
   {
@@ -55,7 +118,7 @@ window.HX_ORDERS = [
   }
 ];
 
-// MULTI-PHOTO UPLOAD & GALLERY PREVIEW MANAGER WITH DELETE OPTION
+// MULTI-PHOTO UPLOAD & GALLERY PREVIEW MANAGER WITH INDEX-BASED DELETE
 function renderAdminGalleryPreview(urlsList, heroUrl) {
   const previewBox = $("#formGalleryPreview");
   if (!previewBox) return;
@@ -70,16 +133,16 @@ function renderAdminGalleryPreview(urlsList, heroUrl) {
   previewBox.innerHTML = urlsList.map((url, idx) => {
     const isHero = url.trim() === currentHero.trim() || idx === 0;
     return `
-      <div style="position:relative;display:inline-block;margin-right:8px;margin-bottom:8px">
-        <img src="${url.trim()}" title="Click to set as Main Hero Image" onclick="setAsHeroImage('${url.trim()}')" style="width:72px;height:60px;object-fit:contain;background:#fff;border-radius:8px;border:${isHero ? '2.5px solid #1488d8' : '1px solid #ccc'};padding:4px;cursor:pointer">
-        <button type="button" onclick="deleteProductImage('${url.trim()}')" style="position:absolute;top:-6px;right:-6px;background:#ed1c24;color:#fff;border:0;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:900;cursor:pointer;display:grid;place-items:center;line-height:1;box-shadow:0 2px 5px rgba(0,0,0,0.2)" title="Delete this picture">×</button>
+      <div style="position:relative;display:inline-block;margin-right:10px;margin-bottom:10px">
+        <img src="${url.trim()}" title="Click to set as Main Hero Image" onclick="setAsHeroImageByIdx(${idx})" style="width:72px;height:60px;object-fit:contain;background:#fff;border-radius:8px;border:${isHero ? '2.5px solid #1488d8' : '1px solid #ccc'};padding:4px;cursor:pointer">
+        <button type="button" onclick="deleteProductImageByIdx(${idx})" style="position:absolute;top:-8px;right:-8px;background:#ed1c24;color:#fff;border:0;width:22px;height:22px;border-radius:50%;font-size:13px;font-weight:900;cursor:pointer;display:grid;place-items:center;z-index:20;box-shadow:0 2px 6px rgba(0,0,0,0.4)" title="Delete this picture">×</button>
         ${isHero ? '<span style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#1488d8;color:#fff;font-size:8px;font-weight:900;padding:1px 5px;border-radius:4px;white-space:nowrap">HERO</span>' : ''}
       </div>
     `;
   }).join("");
 }
 
-window.deleteProductImage = function(urlToDelete) {
+window.deleteProductImageByIdx = function(idxToDelete) {
   const heroInput = $("#formImage");
   const listTextarea = $("#formImagesList");
 
@@ -88,26 +151,30 @@ window.deleteProductImage = function(urlToDelete) {
     rawList.unshift(heroInput.value.trim());
   }
 
-  const updatedList = rawList.filter(u => u !== urlToDelete);
+  const deletedUrl = rawList[idxToDelete];
+  rawList.splice(idxToDelete, 1);
 
-  if (heroInput && heroInput.value.trim() === urlToDelete) {
-    heroInput.value = updatedList[0] || 'assets/products/H104020-R.webp';
+  if (heroInput && deletedUrl && heroInput.value.trim() === deletedUrl.trim()) {
+    heroInput.value = rawList[0] || 'assets/products/H104020-R.webp';
   }
 
   if (listTextarea) {
-    listTextarea.value = updatedList.join(', ');
+    listTextarea.value = rawList.join(', ');
   }
 
-  renderAdminGalleryPreview(updatedList, heroInput.value.trim());
+  renderAdminGalleryPreview(rawList, heroInput ? heroInput.value.trim() : '');
   toast("Deleted picture from product gallery 🗑️");
 };
 
-window.setAsHeroImage = function(url) {
-  if ($("#formImage")) $("#formImage").value = url;
-  const rawList = $("#formImagesList")?.value || "";
-  const urls = rawList ? rawList.split(',').map(x => x.trim()).filter(Boolean) : [url];
-  renderAdminGalleryPreview(urls, url);
-  toast("Set as Main Hero Image 🌟");
+window.setAsHeroImageByIdx = function(idx) {
+  const listTextarea = $("#formImagesList");
+  let rawList = listTextarea && listTextarea.value.trim() ? listTextarea.value.split(',').map(x => x.trim()).filter(Boolean) : [];
+  const selectedUrl = rawList[idx] || "";
+  if (selectedUrl && $("#formImage")) {
+    $("#formImage").value = selectedUrl;
+    renderAdminGalleryPreview(rawList, selectedUrl);
+    toast("Set as Main Hero Image 🌟");
+  }
 };
 
 function initImageUploadHandler() {
@@ -602,7 +669,92 @@ function deleteProduct(id) {
   toast(`Deleted Product #${id} ✓`);
 }
 
+function populateAdminCatFilter() {
+  const select = $("#adminCatFilter");
+  if (!select) return;
+  const cats = [...new Set(P.map(p => p.category))].sort();
+  select.innerHTML = '<option value="">All Categories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join("");
+}
+
+function renderAdminProducts() {
+  const tbody = $("#adminTableBody");
+  if (!tbody) return;
+
+  const q = ($("#adminSearch")?.value || "").toLowerCase().trim();
+  const cat = $("#adminCatFilter")?.value || "";
+
+  let filtered = P.filter(p => {
+    const textMatch = !q || (p.name + " " + p.sku + " " + p.category + " " + p.scale).toLowerCase().includes(q);
+    const catMatch = !cat || p.category === cat;
+    return textMatch && catMatch;
+  });
+
+  if ($("#adminCountText")) $("#adminCountText").textContent = `Showing ${filtered.length} of ${P.length} total products`;
+  if ($("#metricCount")) $("#metricCount").textContent = P.length;
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:40px;color:#888">No matching products found.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(p => {
+    const gstRate = p.gstRate || 18;
+    const priceIncl = p.price || 0;
+    const priceExcl = priceIncl / (1 + (gstRate / 100));
+    const stock = p.stock !== undefined ? p.stock : 25;
+
+    let stockBadge = `<span style="background:#e8f5e9;color:#2e7d32;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟢 ${stock} Units</span>`;
+    if (stock === 0) stockBadge = `<span style="background:#ffeeef;color:#ed1c24;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🔴 Out of Stock</span>`;
+    else if (stock <= 5) stockBadge = `<span style="background:#fff8e1;color:#b78103;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟡 ${stock} Left</span>`;
+
+    return `
+    <tr>
+      <td><strong>${p.id}</strong></td>
+      <td><img src="${p.image}" alt="${esc(p.name)}"></td>
+      <td><code style="background:#edf2f7;padding:3px 7px;border-radius:6px;font-size:11px">${esc(p.sku)}</code></td>
+      <td><strong style="color:#111;display:block;max-width:260px">${esc(p.name)}</strong></td>
+      <td><span style="background:#eef4ff;color:#1488d8;font-weight:800;padding:3px 8px;border-radius:6px;font-size:10px">${esc(p.category)}</span></td>
+      <td>${stockBadge}</td>
+      <td><span style="color:#666;font-weight:700">₹${priceExcl.toFixed(2)}</span></td>
+      <td><span style="background:#fff8e1;color:#b78103;font-weight:900;padding:3px 7px;border-radius:6px;font-size:10px">${gstRate}% GST</span></td>
+      <td><strong style="color:#2e7d32">${INR(priceIncl)}</strong></td>
+      <td>${esc(p.scale || '1:16')}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-icon edit" title="Edit Product Specs & Stock" onclick="openEditModal(${p.id})">✏️</button>
+          <button class="btn-icon delete" title="Delete Product" onclick="deleteProduct(${p.id})">🗑️</button>
+        </div>
+      </td>
+    </tr>
+  `;
+  }).join("");
+}
+
+function renderAdminOrders() {
+  const tbody = $("#adminOrdersBody");
+  if (!tbody) return;
+
+  let orders = window.HX_ORDERS || [];
+  tbody.innerHTML = orders.map(o => `
+    <tr>
+      <td><strong>${esc(o.id)}</strong></td>
+      <td><span style="font-size:11px;color:#666">${esc(o.date)}</span></td>
+      <td><strong>${esc(o.customer.name)}</strong><br><small style="color:#666">${esc(o.customer.city)}</small></td>
+      <td><span style="font-size:11px">${o.items.map(it => it.name).join(", ")}</span></td>
+      <td><strong>${INR(o.total)}</strong></td>
+      <td><span style="background:#f4f6ff;color:#1488d8;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px">${esc(o.paymentMethod)}</span></td>
+      <td><div style="font-size:11px;color:#7b2cbf">${esc(o.courier)}</div><code>${esc(o.awb)}</code></td>
+      <td><span style="background:#fff8e1;color:#b78103;font-weight:900;padding:4px 10px;border-radius:6px;font-size:11px">${esc(o.fulfillmentStatus)}</span></td>
+      <td>
+        <button class="btn blue" style="height:32px;padding:0 10px;font-size:11px" onclick="openOrderModal('${o.id}')">Manage & Ship 🚚</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  initAdminAuth();
+  initAdminTabs();
   P = loadProductsDB();
   renderAdminProducts();
   renderAdminOrders();
