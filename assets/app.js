@@ -4,17 +4,25 @@ function loadProductsDB() {
     const local = localStorage.getItem("hx_products_db");
     if (local) {
       const parsed = JSON.parse(local);
-      if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (parsed && Array.isArray(parsed) && parsed.length >= 10) return parsed;
     }
   } catch(e) {}
-  return (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS) && window.HX_PRODUCTS.length > 0) ? window.HX_PRODUCTS : [];
+  
+  const full = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS) && window.HX_PRODUCTS.length >= 10) ? window.HX_PRODUCTS : [];
+  if (full.length >= 10) {
+    try { localStorage.setItem("hx_products_db", JSON.stringify(full)); } catch(e) {}
+  }
+  return full;
 }
 
 let P = loadProductsDB();
 
 function getProducts() {
-  if (Array.isArray(P) && P.length > 0) return P;
+  if (Array.isArray(P) && P.length >= 10) return P;
   P = loadProductsDB();
+  if (!Array.isArray(P) || P.length < 10) {
+    P = (window.HX_PRODUCTS && window.HX_PRODUCTS.length >= 10) ? window.HX_PRODUCTS : [];
+  }
   return P;
 }
 
@@ -80,7 +88,7 @@ async function fetchLiveBackendProducts() {
   try {
     const res = await fetch('/api/products-crud');
     const data = await res.json();
-    if (data && data.products && Array.isArray(data.products) && data.products.length > 0) {
+    if (data && data.products && Array.isArray(data.products) && data.products.length >= 10) {
       P = data.products;
       window.HX_PRODUCTS = P;
       localStorage.setItem("hx_products_db", JSON.stringify(P));
@@ -107,7 +115,7 @@ window.addEventListener("storage", (e) => {
 });
 
 window.addEventListener("hx_stock_update", (e) => {
-  if (e.detail) {
+  if (e.detail && e.detail.length >= 10) {
     P = e.detail;
     window.HX_PRODUCTS = P;
     reRenderAllStorefrontPages();
@@ -448,19 +456,17 @@ function shopInit() {
   const priceSelect = $("#priceFilter");
   const sortSelect = $("#sortFilter");
 
-  const productsList = getProducts();
-
-  if (catSelect) {
+  if (catSelect && catSelect.options.length <= 1) {
     const cats = ["All Categories", "Racing Cars", "Drift Cars", "Monster Trucks", "Off Road Crawlers", "Buggies & Truggies", "Mini RC", "Collectables"];
     catSelect.innerHTML = cats.map(c => `<option value="${c === 'All Categories' ? '' : c}">${c}</option>`).join("");
-    if (qs.get("cat")) catSelect.value = qs.get("cat");
   }
+  if (catSelect && qs.get("cat")) catSelect.value = qs.get("cat");
 
-  if (scaleSelect) {
+  if (scaleSelect && scaleSelect.options.length <= 1) {
     const scales = ["All Scales", "1:7", "1:8", "1:10", "1:12", "1:14", "1:16", "1:24", "1:32", "1:64"];
-    scaleSelect.innerHTML = scales.map(s => `<option value="${s === 'All Scales' ? '' : s}">${s}</option>`).join("");
-    if (qs.get("scale")) scaleSelect.value = qs.get("scale");
+    scaleSelect.innerHTML = scales.map(s => `<option value="${s === 'All Scales' ? '' : s}">${s === 'All Scales' ? 'All Scales' : s + ' Scale'}</option>`).join("");
   }
+  if (scaleSelect && qs.get("scale")) scaleSelect.value = qs.get("scale");
 
   if (searchInput && qs.get("q")) searchInput.value = qs.get("q");
 
