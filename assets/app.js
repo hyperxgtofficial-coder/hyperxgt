@@ -27,6 +27,25 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
+// INTERACTIVE HERO IMAGE SWITCHER FOR MULTI-ANGLE GALLERY
+window.switchHeroImage = function(src, el) {
+  const main = document.getElementById("mainProdImg");
+  if (main) {
+    main.style.opacity = "0.4";
+    setTimeout(() => {
+      main.src = src;
+      main.style.opacity = "1";
+    }, 150);
+  }
+  const parent = el.parentElement;
+  if (parent) {
+    [...parent.children].forEach(c => {
+      c.style.border = "1px solid var(--line)";
+    });
+    el.style.border = "2.5px solid #1488d8";
+  }
+};
+
 // ASYNC LIVE BACKEND SERVER DATABASE FETCH
 async function fetchLiveBackendProducts() {
   try {
@@ -41,7 +60,6 @@ async function fetchLiveBackendProducts() {
   } catch(e) {}
 }
 
-// REAL-TIME MULTI-TAB & STORAGE STOCK SYNCHRONIZER
 function reRenderAllStorefrontPages() {
   if (typeof homeInit === "function") homeInit();
   if (typeof shopInit === "function") shopInit();
@@ -149,7 +167,6 @@ function productCard(p) {
   const w = getWish().includes(p.id);
   const specs = [p.scale, p.drive, p.speed].filter(x => x && x !== "Not specified").join(" · ");
   
-  // Real-time Stock Badge
   const stock = p.stock !== undefined ? p.stock : 25;
   let stockBadgeHTML = `<span style="font-size:10px;font-weight:900;color:#2e7d32;display:block;margin-top:4px">🟢 In Stock (${stock} Units)</span>`;
   let buyBtnHTML = `<button class="mini-btn solid" onclick="addCart(${p.id})">Add to cart</button>`;
@@ -285,7 +302,6 @@ function initChrome() {
   const co = $("#cartOpen");
   if (co) co.onclick = () => $("#cartDrawer").classList.add("open");
 
-  // LIVE BACKEND ORDER TRACKING
   const tb = $("#trackBtn");
   if (tb) tb.onclick = async () => {
     const o = $("#trackOrder")?.value.trim() || "HX-10482";
@@ -358,6 +374,16 @@ function productInit() {
   const w = getWish().includes(p.id);
   const stock = p.stock !== undefined ? p.stock : 25;
 
+  const imagesList = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : ['assets/products/H104020-R.webp']);
+  const heroImage = p.image || imagesList[0];
+
+  const galleryThumbnailsHTML = imagesList.map((img, idx) => {
+    const isHero = img.trim() === heroImage.trim() || idx === 0;
+    return `
+      <img class="mini-thumb" src="${img.trim()}" alt="Angle ${idx + 1}" onclick="switchHeroImage('${img.trim()}', this)" style="width:72px;height:58px;object-fit:contain;background:#fff;border-radius:10px;border:${isHero ? '2.5px solid #1488d8' : '1px solid var(--line)'};padding:4px;cursor:pointer;transition:all 0.2s ease">
+    `;
+  }).join("");
+
   let stockStatusHTML = `<div style="margin: 14px 0 20px; font-size: 12px; color: #2e7d32; font-weight: 700; display: flex; align-items: center; gap: 6px;">
     <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e7d32"></span>
     🟢 In Stock — <strong>${stock} Units Available</strong> for Express Dispatch (Ships within 24 Hours)
@@ -379,9 +405,13 @@ function productInit() {
 
   root.innerHTML = `
     <div class="detail-media-wrap">
-      <div class="detail-media">
-        <img id="mainProdImg" src="${p.image}" alt="${esc(p.name)}">
+      <div class="detail-media" style="background:#f6f8fc;border-radius:18px;padding:24px;text-align:center;border:1px solid #e0e6f8">
+        <img id="mainProdImg" src="${heroImage}" alt="${esc(p.name)}" style="max-width:100%;height:340px;object-fit:contain;transition:all 0.3s ease">
       </div>
+      ${imagesList.length > 1 ? `
+      <div style="display:flex;gap:10px;margin-top:14px;overflow-x:auto;padding-bottom:6px">
+        ${galleryThumbnailsHTML}
+      </div>` : ''}
     </div>
     <div class="detail-info">
       <div class="eyebrow"><a href="shop.html?cat=${encodeURIComponent(p.category)}" style="color:inherit">${esc(p.category)}</a> · SKU: <strong>${esc(p.sku)}</strong></div>
