@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Join HyperXGT Club — Driver Perks & Garage</title>
+  <meta name="description" content="Join the HyperXGT RC Driver Club for exclusive product drops, priority repair services, unboxing reward coupons, and driver garage access.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="announce">
+    <div><strong>Fresh drop</strong> · High-performance HyperXGT models</div>
+    <div>Ships from India · Secure checkout</div>
+    <div>Expert RC support · Care & upgrades</div>
+  </div>
+
+  <div class="utility">
+    <div class="container">
+      <span>Premium RC cars for racers, bashers, crawlers & collectors</span>
+      <div class="utility-links">
+        <a href="contact.html">Customer Support</a>
+        <button style="border:0;background:none;font-size:11px;color:#5a5d65;cursor:pointer" data-modal="trackModal">Track My Order</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <div class="brand-logo-wrap">
+          <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT">
+        </div>
+        <div><small>RC PERFORMANCE · STORE · CLUB</small></div>
+      </a>
+      <nav class="navlinks">
+        <a href="why.html">Why HyperXGT</a>
+        <a href="shop.html">Shop</a>
+        <a href="care.html">Care</a>
+        <a href="upgrades.html">Upgrades</a>
+        <a href="club.html">Join HyperXGT Club</a>
+        <a href="contact.html">Support</a>
+      </nav>
+      <div class="actions">
+        <button class="icon trackIcon" title="Track order" data-modal="trackModal">⌖</button>
+        <button class="icon" title="Search" data-modal="searchModal">⌕</button>
+        <button class="icon" title="Account" data-modal="accountModal">♙</button>
+        <button class="icon" title="Cart" id="cartOpen">🛒<span class="cart-count">0</span></button>
+        <button class="icon mobile" title="Menu" id="mobileOpen">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="eyebrow">Enthusiast Driver Community</div>
+      <h1>Join the HyperXGT Club</h1>
+      <p>Exclusive model pre-orders, unboxing 10% discount rewards, priority repair tickets, and community garage access.</p>
+    </div>
+  </section>
+
+  <main class="container" style="padding:60px 0">
+    
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:60px">
+      
+      <div style="background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)">
+        <div style="width:48px;height:48px;border-radius:14px;background:#eef4ff;color:#1488d8;display:grid;place-items:center;font-size:22px;font-weight:900;margin-bottom:16px">🏆</div>
+        <h3 style="font-size:18px;margin-bottom:8px;color:#111">Early Access to Fresh Drops</h3>
+        <p style="font-size:13px;color:#666;line-height:1.6">Get 48-hour early notification when flagship 1:7 rally cars and limited edition drift models drop before general release.</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)">
+        <div style="width:48px;height:48px;border-radius:14px;background:#e8f5e9;color:#2e7d32;display:grid;place-items:center;font-size:22px;font-weight:900;margin-bottom:16px">🎁</div>
+        <h3 style="font-size:18px;margin-bottom:8px;color:#111">10% OFF Unboxing Rewards</h3>
+        <p style="font-size:13px;color:#666;line-height:1.6">Submit photos or video clips of your new model unboxing and claim a 10% OFF discount coupon for your next purchase.</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)">
+        <div style="width:48px;height:48px;border-radius:14px;background:#f3e5f5;color:#7b2cbf;display:grid;place-items:center;font-size:22px;font-weight:900;margin-bottom:16px">🚘</div>
+        <h3 style="font-size:18px;margin-bottom:8px;color:#111">My Garage Dashboard</h3>
+        <p style="font-size:13px;color:#666;line-height:1.6">Save your owned RC models, track order history, request compatible spare parts, and access setup manuals in one place.</p>
+      </div>
+
+    </div>
+
+    <div style="background:#fff;border:1px solid #1488d8;border-radius:24px;padding:48px;max-width:640px;margin:0 auto;box-shadow:var(--shadow)">
+      <h2 style="font-size:24px;margin-top:0;color:#111;text-align:center">Create Free Driver Account</h2>
+      <p style="font-size:13px;color:#666;text-align:center;margin-bottom:28px">Join 5,000+ RC drivers across India today.</p>
+
+      <form id="clubRegisterForm" onsubmit="event.preventDefault(); alert('Welcome to HyperXGT Club! Check your inbox for your driver welcome gift.');">
+        <div style="margin-bottom:14px">
+          <label class="form-label">Full Name *</label>
+          <input class="field" required placeholder="Kabir Sharma">
+        </div>
+        <div style="margin-bottom:14px">
+          <label class="form-label">Email Address *</label>
+          <input class="field" type="email" required placeholder="kabir@gmail.com">
+        </div>
+        <div style="margin-bottom:18px">
+          <label class="form-label">Favorite RC Style *</label>
+          <select class="field">
+            <option>High Speed Racing & Rally</option>
+            <option>Precision Drift</option>
+            <option>4x4 Rock Crawlers</option>
+            <option>Monster Truck Bashing</option>
+            <option>Scale Mini RC Collectables</option>
+          </select>
+        </div>
+        <button class="btn blue" type="submit" style="width:100%;height:48px">Join HyperXGT Club (Free) →</button>
+      </form>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <div class="brand-logo-wrap">
+              <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT">
+            </div>
+            <div><small>RC PERFORMANCE · STORE · CLUB</small></div>
+          </a>
+          <p style="max-width:360px;margin-top:18px">Premium RC cars, racing platforms, drift cars, crawlers, monster trucks, collectables, repairs, upgrades and customer support for enthusiasts who expect more from the hobby.</p>
+          <p>Phone: +91 70902 27777<br>Email: contact@hyperxgt.com</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <a href="shop.html">Catalogue</a>
+          <a href="shop.html?cat=Off%20Road%20Crawlers">Off Road</a>
+          <a href="shop.html?cat=Racing%20Cars">Racing</a>
+          <a href="shop.html?cat=Drift%20Cars">Drift</a>
+        </div>
+        <div>
+          <h4>Customer Care</h4>
+          <a href="#" data-modal="trackModal">Track My Order</a>
+          <a href="care.html">Repair & Care</a>
+          <a href="faq.html">FAQ</a>
+          <a href="returns.html">Returns Policy</a>
+          <a href="contact.html">Contact Support</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="why.html">Why HyperXGT</a>
+          <a href="club.html">Join Club</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="shipping.html">Shipping Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 HYPERXGT · All rights reserved</span>
+        <span>Secure checkout · Ships from India · RC expert support</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/products.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
