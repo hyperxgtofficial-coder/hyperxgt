@@ -354,3 +354,182 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}b
   .hero-copy p{font-size:12px}
   .hero-note{grid-template-columns:1fr 1fr}
 }
+
+/* =========================================================
+   MASTER MOBILE & TABLET RESPONSIVENESS OVERHAUL
+   Ensures perfect layout, typography, touch targets & product
+   grids across all iPhone, Android, and mobile screen sizes.
+   ========================================================= */
+
+@media (max-width: 900px) {
+  /* Header & Navigation */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+  }
+  .header .nav {
+    height: 64px;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    padding: 0 12px;
+  }
+  .brand-logo-wrap {
+    padding: 3px 8px;
+    border-radius: 8px;
+  }
+  .brand-logo {
+    width: 120px;
+    height: 32px;
+  }
+  .brand small {
+    display: none;
+  }
+  .actions {
+    gap: 5px;
+  }
+  .actions .icon {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+    display: grid !important;
+  }
+  .actions .trackIcon {
+    display: grid !important;
+  }
+  .cart-count {
+    width: 16px;
+    height: 16px;
+    font-size: 8px;
+    top: -2px;
+    right: -2px;
+  }
+
+  /* 2-Column Responsive Product Grid on Mobile */
+  .products {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+  .product-card {
+    border-radius: 14px;
+  }
+  .product-media {
+    aspect-ratio: 1.15/1;
+  }
+  .product-media img {
+    padding: 24px 8px 8px 8px;
+  }
+  .product-meta {
+    padding: 12px 10px;
+  }
+  .product-meta h3 {
+    font-size: 12.5px;
+    line-height: 1.25;
+    min-height: 32px;
+    margin: 4px 0;
+  }
+  .product-meta p {
+    font-size: 10px;
+    min-height: 15px;
+  }
+  .price strong {
+    font-size: 13.5px;
+  }
+  .price del {
+    font-size: 10px;
+  }
+  .product-actions {
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .mini-btn {
+    min-height: 32px;
+    font-size: 9px;
+    padding: 0 4px;
+  }
+
+  /* Shop Layout & Filter Bar */
+  .shop-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px 0 48px;
+  }
+  .filters {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 14px;
+    border-radius: 14px;
+  }
+  .filter label {
+    font-size: 8.5px;
+    margin-bottom: 4px;
+  }
+  .filter input, .filter select {
+    height: 38px;
+    font-size: 11px;
+    padding: 0 8px;
+  }
+  .filter:first-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Why HyperXGT Cards */
+  #why div[style*="grid-template-columns"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* Category Carousels */
+  .carousel-card {
+    flex: 0 0 215px !important;
+    padding: 12px !important;
+  }
+  .carousel-card img {
+    height: 130px !important;
+  }
+  .carousel-card h4 {
+    font-size: 12px !important;
+    min-height: 30px !important;
+  }
+
+  /* Page Hero Headlines */
+  .page-hero {
+    padding: 32px 0 24px;
+  }
+  .page-hero h1 {
+    font-size: clamp(28px, 7vw, 42px);
+  }
+
+  /* Modals & Drawers */
+  .modal-box {
+    width: min(92vw, 500px);
+    padding: 20px;
+    border-radius: 18px;
+  }
+  .drawer-panel {
+    width: min(340px, 86vw);
+    padding: 20px;
+  }
+
+  /* Footer Grid */
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px !important;
+  }
+  .footer-grid > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Narrow Phones: Single Column why cards */
+  #why div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
