@@ -4,13 +4,19 @@ function loadProductsDB() {
     const local = localStorage.getItem("hx_products_db");
     if (local) {
       const parsed = JSON.parse(local);
-      if (parsed && parsed.length) return parsed;
+      if (parsed && Array.isArray(parsed) && parsed.length > 0) return parsed;
     }
   } catch(e) {}
-  return window.HX_PRODUCTS || [];
+  return (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS) && window.HX_PRODUCTS.length > 0) ? window.HX_PRODUCTS : [];
 }
 
 let P = loadProductsDB();
+
+function getProducts() {
+  if (Array.isArray(P) && P.length > 0) return P;
+  P = loadProductsDB();
+  return P;
+}
 
 const $ = (q, r = document) => r.querySelector(q);
 const $$ = (q, r = document) => [...r.querySelectorAll(q)];
@@ -84,6 +90,7 @@ async function fetchLiveBackendProducts() {
 }
 
 function reRenderAllStorefrontPages() {
+  P = getProducts();
   if (typeof homeInit === "function") homeInit();
   if (typeof shopInit === "function") shopInit();
   if (typeof productInit === "function") productInit();
@@ -114,7 +121,7 @@ const getWish = () => JSON.parse(localStorage.getItem("hx_wish") || "[]");
 const setWish = w => localStorage.setItem("hx_wish", JSON.stringify(w));
 
 function addCart(id, qty = 1) {
-  const p = P.find(x => x.id === id);
+  const p = getProducts().find(x => x.id === id);
   if (!p) return;
 
   const stock = p.stock !== undefined ? p.stock : 25;
@@ -150,7 +157,7 @@ function removeCart(id) {
 }
 
 function setQty(id, q) {
-  const p = P.find(x => x.id === id);
+  const p = getProducts().find(x => x.id === id);
   const stock = p && p.stock !== undefined ? p.stock : 25;
 
   const c = getCart();
@@ -244,7 +251,7 @@ function renderFullSpecGrid(p) {
 }
 
 function quickView(id) {
-  const p = P.find(x => x.id === id);
+  const p = getProducts().find(x => x.id === id);
   if (!p) return;
 
   const stock = p.stock !== undefined ? p.stock : 25;
@@ -288,7 +295,7 @@ function renderCartDrawer() {
 
   let subtotal = 0;
   root.innerHTML = ids.map(id => {
-    const p = P.find(x => x.id === id);
+    const p = getProducts().find(x => x.id === id);
     if (!p) return "";
     const qty = c[id];
     const itemTotal = p.price * qty;
@@ -345,15 +352,16 @@ function initChrome() {
   };
 }
 
-// CATEGORY PRODUCT CAROUSELS (REQUIREMENT 4)
+// CATEGORY PRODUCT CAROUSELS
 function renderCategoryCarousels() {
   const container = $("#categoryCarousels");
   if (!container) return;
 
+  const productsList = getProducts();
   const categories = ["Racing Cars", "Drift Cars", "Monster Trucks", "Off Road Crawlers", "Buggies & Truggies", "Mini RC"];
 
   container.innerHTML = categories.map(cat => {
-    const catProducts = P.filter(p => p.category === cat).slice(0, 10);
+    const catProducts = productsList.filter(p => p.category === cat).slice(0, 10);
     if (!catProducts.length) return "";
 
     const cardsHTML = catProducts.map(p => {
@@ -388,7 +396,7 @@ function renderCategoryCarousels() {
           <div style="display:flex;gap:8px;align-items:center">
             <button onclick="scrollCarousel('${carouselId}', -300)" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer">‹</button>
             <button onclick="scrollCarousel('${carouselId}', 300)" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer">›</button>
-            <a href="shop.html?cat=${encodeURIComponent(cat)}" class="btn clear" style="height:36px;padding:0 14px;display:inline-flex;align-items:center;background:#f0f2f5;color:#111;font-size:11px">View All (${P.filter(p=>p.category===cat).length}) →</a>
+            <a href="shop.html?cat=${encodeURIComponent(cat)}" class="btn clear" style="height:36px;padding:0 14px;display:inline-flex;align-items:center;background:#f0f2f5;color:#111;font-size:11px">View All (${productsList.filter(p=>p.category===cat).length}) →</a>
           </div>
         </div>
         <div id="${carouselId}" style="display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:12px;-webkit-overflow-scrolling:touch">
@@ -404,7 +412,7 @@ window.scrollCarousel = function(id, offset) {
   if (el) el.scrollBy({ left: offset, behavior: 'smooth' });
 };
 
-// BRAND COLLABORATIONS CAROUSEL (REQUIREMENT 12)
+// BRAND COLLABORATIONS CAROUSEL
 async function renderCollaborationsRail() {
   const container = $("#collaborationsRail");
   if (!container) return;
@@ -425,7 +433,7 @@ async function renderCollaborationsRail() {
   } catch(e) {}
 }
 
-// SHOP FILTERING & DYNAMIC PAGINATION (REQUIREMENT 1 & 11)
+// SHOP FILTERING & DYNAMIC PAGINATION
 let currentPage = 1;
 const itemsPerPage = 16;
 
@@ -440,14 +448,16 @@ function shopInit() {
   const priceSelect = $("#priceFilter");
   const sortSelect = $("#sortFilter");
 
-  if (catSelect && !catSelect.children.length) {
+  const productsList = getProducts();
+
+  if (catSelect) {
     const cats = ["All Categories", "Racing Cars", "Drift Cars", "Monster Trucks", "Off Road Crawlers", "Buggies & Truggies", "Mini RC", "Collectables"];
     catSelect.innerHTML = cats.map(c => `<option value="${c === 'All Categories' ? '' : c}">${c}</option>`).join("");
     if (qs.get("cat")) catSelect.value = qs.get("cat");
   }
 
-  if (scaleSelect && !scaleSelect.children.length) {
-    const scales = ["All Scales", "1:7", "1:8", "1:10", "1:12", "1:14", "1:16", "1:32", "1:64"];
+  if (scaleSelect) {
+    const scales = ["All Scales", "1:7", "1:8", "1:10", "1:12", "1:14", "1:16", "1:24", "1:32", "1:64"];
     scaleSelect.innerHTML = scales.map(s => `<option value="${s === 'All Scales' ? '' : s}">${s}</option>`).join("");
     if (qs.get("scale")) scaleSelect.value = qs.get("scale");
   }
@@ -455,7 +465,7 @@ function shopInit() {
   if (searchInput && qs.get("q")) searchInput.value = qs.get("q");
 
   function render() {
-    let a = [...P];
+    let a = [...getProducts()];
 
     const q = (searchInput?.value || "").toLowerCase().trim();
     if (q) a = a.filter(p => (p.name + " " + p.sku + " " + p.category + " " + (p.scale || '')).toLowerCase().includes(q));
@@ -527,7 +537,7 @@ function homeInit() {
   const root = $("#homeProducts");
   if (!root) return;
   function show(cat = "All") {
-    let a = P.filter(p => p.image && p.category !== "Collectables");
+    let a = getProducts().filter(p => p.image && p.category !== "Collectables");
     if (cat !== "All") a = a.filter(p => p.category === cat);
     a = a.sort((x, y) => (y.featured - x.featured) || (y.discount - x.discount)).slice(0, 8);
     root.innerHTML = a.map(productCard).join("");
@@ -546,7 +556,8 @@ function productInit() {
 
   const qs = new URLSearchParams(location.search);
   const id = Number(qs.get("id")) || 71;
-  const p = P.find(x => x.id === id) || P[0];
+  const productsList = getProducts();
+  const p = productsList.find(x => x.id === id) || productsList[0];
 
   if (!p) {
     root.innerHTML = '<div class="empty">Product not found.</div>';
