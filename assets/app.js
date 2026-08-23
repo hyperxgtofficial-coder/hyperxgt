@@ -777,6 +777,44 @@ function productInit() {
     </div>`;
   }
 
+  let videoPlayerHTML = "";
+  if (p.video && p.video.trim()) {
+    const vUrl = p.video.trim();
+    let iframeSrc = "";
+    
+    if (vUrl.includes("youtube.com/watch?v=")) {
+      const vId = vUrl.split("v=")[1]?.split("&")[0];
+      iframeSrc = `https://www.youtube.com/embed/${vId}?autoplay=0&rel=0`;
+    } else if (vUrl.includes("youtu.be/")) {
+      const vId = vUrl.split("youtu.be/")[1]?.split("?")[0];
+      iframeSrc = `https://www.youtube.com/embed/${vId}?autoplay=0&rel=0`;
+    }
+
+    if (iframeSrc) {
+      videoPlayerHTML = `
+        <div style="margin-top:24px;background:#000;border-radius:18px;overflow:hidden;box-shadow:var(--shadow)">
+          <div style="background:#111;padding:10px 16px;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;gap:8px">
+            <span>🎥 Live Action Product Video</span>
+          </div>
+          <div style="position:relative;padding-bottom:56.25%;height:0">
+            <iframe src="${iframeSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen></iframe>
+          </div>
+        </div>
+      `;
+    } else {
+      videoPlayerHTML = `
+        <div style="margin-top:24px;background:#000;border-radius:18px;overflow:hidden;box-shadow:var(--shadow)">
+          <div style="background:#111;padding:10px 16px;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;gap:8px">
+            <span>🎥 Live Action Product Video</span>
+          </div>
+          <video controls controlsList="nodownload" preload="metadata" style="width:100%;max-height:360px;background:#000;display:block" src="${vUrl}">
+            Your browser does not support video playback.
+          </video>
+        </div>
+      `;
+    }
+  }
+
   // Full Rich YouCliq-Style Product Page HTML
   root.innerHTML = `
     <div style="grid-column:1/-1;display:grid;grid-template-columns:1.05fr .95fr;gap:44px" id="productMainSection">
@@ -810,7 +848,10 @@ function productInit() {
             <span style="color:#666">256-bit PCI-DSS SSL Encryption</span>
           </div>
         </div>
+
+        ${videoPlayerHTML}
       </div>
+
 
       <!-- RIGHT: PURCHASING & PRODUCT HIGHLIGHTS -->
       <div class="detail-info">
