@@ -62,7 +62,7 @@ function parseImagesArray(p) {
   }
 
   const cleanList = [...new Set(list)].filter(x => x && x.length > 5);
-  return cleanList.length ? cleanList : [p.image || 'assets/products/H104020-R.webp'];
+  return cleanList.length ? cleanList : (p.image && p.image.trim() ? [p.image.trim()] : []);
 }
 
 // INTERACTIVE HERO IMAGE SWITCHER
@@ -226,7 +226,7 @@ function productCard(p) {
 
   return `<article class="product-card">
     <div class="product-media">
-      <a href="product.html?id=${p.id}"><img loading="lazy" src="${p.image}" alt="${esc(p.name)}"></a>
+      <a href="product.html?id=${p.id}">${(p.image && p.image.trim()) ? `<img loading="lazy" src="${p.image.trim()}" alt="${esc(p.name)}">` : `<div style="width:100%;height:180px;background:#f8f9fa;border-radius:12px;display:grid;place-items:center;color:#888;font-size:12px;font-weight:800">📷 Photo Coming Soon</div>`}</a>
       <span class="tag">${esc(p.category)}</span>
       ${p.discount ? `<span class="tag sale-tag">${p.discount}% OFF</span>` : ""}
       <button class="wish ${w ? "on" : ""}" data-wish="${p.id}" onclick="toggleWish(${p.id})">${w ? "♥" : "♡"}</button>
@@ -829,7 +829,7 @@ function productInit() {
       <!-- LEFT: IMAGE GALLERY & THUMBNAILS -->
       <div class="detail-media-wrap">
         <div class="detail-media" style="background:#fff;border-radius:22px;padding:28px;text-align:center;border:1px solid var(--line);box-shadow:var(--shadow)">
-          <img id="mainProdImg" src="${heroImage}" alt="${esc(p.name)}" style="max-width:100%;height:380px;object-fit:contain;transition:all 0.3s ease">
+          ${(heroImage && heroImage.trim()) ? `<img id="mainProdImg" src="${heroImage.trim()}" alt="${esc(p.name)}" style="max-width:100%;height:380px;object-fit:contain;transition:all 0.3s ease">` : `<div style="height:380px;display:grid;place-items:center;color:#666;font-size:15px;font-weight:700;background:#f8f9fa;border-radius:18px;border:1.5px dashed #ccc">📷 Official Product Photos Coming Soon</div>`}
         </div>
         ${imagesList.length > 1 ? `
         <div style="display:flex;gap:10px;margin-top:16px;overflow-x:auto;padding-bottom:6px">

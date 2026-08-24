@@ -139,14 +139,18 @@ function renderAdminGalleryPreview(urlsList, heroUrl) {
   const previewBox = $("#formGalleryPreview");
   if (!previewBox) return;
 
-  const currentHero = heroUrl || $("#formImage")?.value.trim() || urlsList[0] || "";
+  const currentHero = heroUrl || $("#formImage")?.value.trim() || (urlsList && urlsList[0]) || "";
 
-  if (!urlsList || !urlsList.length) {
-    previewBox.innerHTML = `<img src="${currentHero || 'assets/products/H104020-R.webp'}" style="width:72px;height:60px;object-fit:contain;background:#fff;border-radius:8px;border:2px solid #1488d8;padding:4px">`;
+  if (!urlsList || !urlsList.length || !urlsList.filter(Boolean).length) {
+    previewBox.innerHTML = `
+      <div style="background:#f8f9fa;border:1.5px dashed #1488d8;border-radius:12px;padding:16px;text-align:center;color:#666;font-size:12px;width:100%">
+        📷 No photos uploaded yet. Click <strong>"Select Multiple Image Files..."</strong> above to upload your product photos.
+      </div>
+    `;
     return;
   }
 
-  previewBox.innerHTML = urlsList.map((url, idx) => {
+  previewBox.innerHTML = urlsList.filter(Boolean).map((url, idx) => {
     const isHero = url.trim() === currentHero.trim() || idx === 0;
     return `
       <div style="position:relative;display:inline-block;margin-right:10px;margin-bottom:10px">
@@ -170,15 +174,16 @@ window.deleteProductImageByIdx = function(idxToDelete) {
   const deletedUrl = rawList[idxToDelete];
   rawList.splice(idxToDelete, 1);
 
-  if (heroInput && deletedUrl && heroInput.value.trim() === deletedUrl.trim()) {
-    heroInput.value = rawList[0] || 'assets/products/H104020-R.webp';
+  const newHero = rawList[0] || '';
+  if (heroInput) {
+    heroInput.value = newHero;
   }
 
   if (listTextarea) {
     listTextarea.value = rawList.join(', ');
   }
 
-  renderAdminGalleryPreview(rawList, heroInput ? heroInput.value.trim() : '');
+  renderAdminGalleryPreview(rawList, newHero);
   toast("Deleted picture from product gallery 🗑️");
 };
 
@@ -682,10 +687,10 @@ function openAddModal() {
   $("#productForm").reset();
   $("#formStock").value = "25";
   $("#formGstTaxType").value = "inclusive";
-  $("#formImage").value = "assets/products/H104020-R.webp";
+  $("#formImage").value = "";
   $("#formImagesList").value = "";
   if ($("#formVideoUrl")) $("#formVideoUrl").value = "";
-  renderAdminGalleryPreview(["assets/products/H104020-R.webp"]);
+  renderAdminGalleryPreview([]);
   openModal("productModal");
 }
 
@@ -708,11 +713,11 @@ function openEditModal(id) {
   $("#formSpeed").value = p.speed || "35 KM/H";
   $("#formDrive").value = p.drive || "4WD";
 
-  const allImgs = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : ["assets/products/H104020-R.webp"]);
-  $("#formImage").value = p.image || allImgs[0];
+  const allImgs = (p.images && p.images.length) ? p.images.filter(Boolean) : (p.image ? [p.image] : []);
+  $("#formImage").value = p.image || allImgs[0] || "";
   $("#formImagesList").value = allImgs.join(", ");
   if ($("#formVideoUrl")) $("#formVideoUrl").value = p.video || "";
-  renderAdminGalleryPreview(allImgs, p.image);
+  renderAdminGalleryPreview(allImgs, p.image || "");
 
   $("#formShortDesc").value = p.short_description || "";
   $("#formFullDesc").value = p.full_description || "";
@@ -750,9 +755,8 @@ async function saveProduct(e) {
   if (images.length > 0 && (!image || !images.includes(image))) {
     image = images[0];
   }
-  if (!image && images.length === 0) {
-    image = "assets/products/H104020-R.webp";
-    images.push(image);
+  if (!image && images.length > 0) {
+    image = images[0];
   }
   const video = $("#formVideoUrl") ? $("#formVideoUrl").value.trim() : "";
 

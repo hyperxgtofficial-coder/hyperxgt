@@ -516,18 +516,16 @@
               <input type="file" id="formFileInput" accept="image/*" multiple style="display:none">
             </label>
             <span style="font-size:11px;color:#888">Main Hero Image URL:</span>
-            <input class="field" id="formImage" required placeholder="assets/products/H6401-P.webp" style="margin:0;flex:1;min-width:200px">
+            <input class="field" id="formImage" placeholder="Uploaded photo URL or path..." style="margin:0;flex:1;min-width:200px">
           </div>
 
           <div style="margin-bottom:12px">
             <label class="form-label" style="font-size:11px">Additional Gallery Photo URLs (comma separated)</label>
-            <textarea class="field" id="formImagesList" rows="2" style="margin:0;font-size:11px;padding-top:8px" placeholder="assets/products/H6401-1.webp, assets/products/H6401-2.webp"></textarea>
+            <textarea class="field" id="formImagesList" rows="2" style="margin:0;font-size:11px;padding-top:8px" placeholder="e.g. photo1.webp, photo2.webp"></textarea>
           </div>
 
-          <div style="font-size:11px;font-weight:800;color:#555;margin-bottom:6px">Active Gallery Thumbnails (Click any mini pic to set as Main Hero Image, click 🗑️ to delete pic):</div>
-          <div id="formGalleryPreview" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-            <img id="formImgPreview" src="assets/products/H6401-P.webp" style="width:72px;height:60px;object-fit:contain;background:#fff;border-radius:8px;border:2px solid #1488d8;padding:4px">
-          </div>
+          <div style="font-size:11px;font-weight:800;color:#555;margin-bottom:6px">Active Gallery Thumbnails (Click any mini pic to set as Main Hero Image, click × to delete pic):</div>
+          <div id="formGalleryPreview" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"></div>
         </div>
 
         <!-- PRODUCT VIDEO UPLOAD & URL MANAGER -->
