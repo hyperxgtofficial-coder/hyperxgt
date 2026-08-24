@@ -187,6 +187,13 @@ window.deleteProductImageByIdx = function(idxToDelete) {
   toast("Deleted picture from product gallery 🗑️");
 };
 
+window.clearAllModalImages = function() {
+  if ($("#formImage")) $("#formImage").value = "";
+  if ($("#formImagesList")) $("#formImagesList").value = "";
+  renderAdminGalleryPreview([]);
+  toast("Cleared all photos from this product. Click Save Product to apply ✓");
+};
+
 window.setAsHeroImageByIdx = function(idx) {
   const listTextarea = $("#formImagesList");
   let rawList = listTextarea && listTextarea.value.trim() ? listTextarea.value.split(',').map(x => x.trim()).filter(Boolean) : [];
@@ -713,11 +720,13 @@ function openEditModal(id) {
   $("#formSpeed").value = p.speed || "35 KM/H";
   $("#formDrive").value = p.drive || "4WD";
 
-  const allImgs = (p.images && p.images.length) ? p.images.filter(Boolean) : (p.image ? [p.image] : []);
-  $("#formImage").value = p.image || allImgs[0] || "";
-  $("#formImagesList").value = allImgs.join(", ");
+  const isNoImg = p.no_image === true || (!p.image && (!p.images || !p.images.length));
+  const allImgs = isNoImg ? [] : ((p.images && p.images.length) ? p.images.filter(Boolean) : (p.image ? [p.image] : []));
+  
+  $("#formImage").value = isNoImg ? "" : (p.image || allImgs[0] || "");
+  $("#formImagesList").value = isNoImg ? "" : allImgs.join(", ");
   if ($("#formVideoUrl")) $("#formVideoUrl").value = p.video || "";
-  renderAdminGalleryPreview(allImgs, p.image || "");
+  renderAdminGalleryPreview(isNoImg ? [] : allImgs, isNoImg ? "" : (p.image || ""));
 
   $("#formShortDesc").value = p.short_description || "";
   $("#formFullDesc").value = p.full_description || "";
