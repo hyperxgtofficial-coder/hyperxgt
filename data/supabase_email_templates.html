@@ -1,0 +1,150 @@
+<!-- =========================================================================
+     HYPERXGT ECOMMERCE — OFFICIAL SUPABASE AUTH BRANDED EMAIL TEMPLATES
+     Copy and paste these exact HTML templates into your Supabase Dashboard:
+     Dashboard -> Authentication -> Email Templates
+     ========================================================================= -->
+
+<!-- =========================================================================
+     1. CONFIRM SIGNUP / EMAIL VERIFICATION TEMPLATE
+     Supabase Location: Authentication -> Email Templates -> Confirm signup
+     Subject: Confirm your HyperXGT Driver Account 🏎️
+     ========================================================================= -->
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; color: #1e293b; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+  
+  <!-- BRANDED HEADER -->
+  <div style="background: #0d0e11; padding: 32px 24px; text-align: center; border-bottom: 3px solid #1488d8;">
+    <img src="https://hyperxgt.com/assets/hyperxgt-logo.png" alt="HyperXGT Logo" style="height: 48px; max-width: 220px; object-fit: contain; margin-bottom: 8px;">
+    <div style="color: #1488d8; font-size: 11px; text-transform: uppercase; font-weight: 900; letter-spacing: 0.15em;">RC PERFORMANCE · STORE · CLUB</div>
+  </div>
+
+  <!-- EMAIL BODY -->
+  <div style="padding: 36px 32px; line-height: 1.6;">
+    <div style="font-size: 11px; font-weight: 800; color: #2e7d32; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">ACCOUNT REGISTRATION</div>
+    <h2 style="color: #0f172a; margin-top: 0; font-size: 22px; font-weight: 900; letter-spacing: -0.02em;">Welcome to the Driver Garage! 🏎️</h2>
+    
+    <p style="font-size: 15px; color: #334155;">Hi <strong>{{ .Email }}</strong>,</p>
+    
+    <p style="font-size: 14px; color: #475569;">Thank you for creating an account with <strong>HyperXGT</strong> — India's premier destination for high-performance RC racing cars, drift platforms, crawlers, and collector scale models.</p>
+    
+    <p style="font-size: 14px; color: #475569;">Please verify your email address to activate your Driver Garage account and unlock instant order tracking, saved RC rigs, and priority care support.</p>
+
+    <!-- VERIFICATION CTA BUTTON -->
+    <div style="text-align: center; margin: 32px 0;">
+      <a href="{{ .ConfirmationURL }}" target="_blank" style="background: #1488d8; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 15px; display: inline-block; box-shadow: 0 4px 14px rgba(20,136,216,0.35); letter-spacing: 0.02em;">Verify Email Address & Activate Account →</a>
+    </div>
+
+    <!-- WELCOME GIFT DISCOUNT BOX -->
+    <div style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 14px; padding: 22px; margin: 28px 0; text-align: center;">
+      <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">YOUR WELCOME GIFT CODE</div>
+      <div style="font-size: 26px; font-weight: 900; color: #1488d8; letter-spacing: 0.12em; margin: 8px 0;">HYPERXGT10</div>
+      <div style="font-size: 13px; color: #2e7d32; font-weight: 800;">Get 10% OFF on your first RC car or spare parts order!</div>
+    </div>
+
+    <!-- SECURITY NOTE -->
+    <div style="background: #fffbebf7; border-left: 4px solid #f59e0b; padding: 14px 16px; border-radius: 0 8px 8px 0; font-size: 12px; color: #92400e; margin-top: 24px;">
+      <strong>Security Note:</strong> If you did not create an account at HyperXGT, please disregard this email. This verification link will expire automatically.
+    </div>
+
+    <!-- SUPPORT FOOTER -->
+    <div style="border-top: 1px solid #e2e8f0; margin-top: 36px; padding-top: 24px; font-size: 12px; color: #64748b; text-align: center;">
+      <p style="margin: 0 0 6px;">Need assistance? Contact our Garage Team at <a href="mailto:support@hyperxgt.com" style="color: #1488d8; text-decoration: none; font-weight: 700;">support@hyperxgt.com</a> or Call/WhatsApp <strong>+91 70902 27777</strong></p>
+      <p style="margin: 0;">© 2026 HyperXGT · All Rights Reserved · India</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =========================================================================
+     2. RESET PASSWORD TEMPLATE
+     Supabase Location: Authentication -> Email Templates -> Reset password
+     Subject: Reset your HyperXGT Account Password 🔒
+     ========================================================================= -->
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; color: #1e293b; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+  
+  <div style="background: #0d0e11; padding: 32px 24px; text-align: center; border-bottom: 3px solid #ed1c24;">
+    <img src="https://hyperxgt.com/assets/hyperxgt-logo.png" alt="HyperXGT Logo" style="height: 48px; max-width: 220px; object-fit: contain; margin-bottom: 8px;">
+    <div style="color: #ed1c24; font-size: 11px; text-transform: uppercase; font-weight: 900; letter-spacing: 0.15em;">ACCOUNT SECURITY CENTER</div>
+  </div>
+
+  <div style="padding: 36px 32px; line-height: 1.6;">
+    <h2 style="color: #0f172a; margin-top: 0; font-size: 22px; font-weight: 900;">Password Reset Request 🔒</h2>
+    
+    <p style="font-size: 15px; color: #334155;">Hi <strong>{{ .Email }}</strong>,</p>
+    
+    <p style="font-size: 14px; color: #475569;">We received a request to reset the password for your <strong>HyperXGT Driver Garage</strong> account.</p>
+    
+    <p style="font-size: 14px; color: #475569;">Click the button below to choose a new password:</p>
+
+    <div style="text-align: center; margin: 32px 0;">
+      <a href="{{ .ConfirmationURL }}" target="_blank" style="background: #0f172a; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 15px; display: inline-block; box-shadow: 0 4px 14px rgba(15,23,42,0.35);">Reset Account Password →</a>
+    </div>
+
+    <div style="background: #ffeeef; border-left: 4px solid #ed1c24; padding: 14px 16px; border-radius: 0 8px 8px 0; font-size: 12px; color: #991b1b; margin-top: 24px;">
+      <strong>Important:</strong> This password reset link is valid for 24 hours. If you did not request a password reset, your account is secure and you can safely ignore this email.
+    </div>
+
+    <div style="border-top: 1px solid #e2e8f0; margin-top: 36px; padding-top: 24px; font-size: 12px; color: #64748b; text-align: center;">
+      <p style="margin: 0 0 6px;">Questions? Contact HyperXGT Support at <a href="mailto:support@hyperxgt.com" style="color: #1488d8; text-decoration: none; font-weight: 700;">support@hyperxgt.com</a></p>
+      <p style="margin: 0;">© 2026 HyperXGT · All Rights Reserved</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- =========================================================================
+     3. MAGIC LINK TEMPLATE
+     Supabase Location: Authentication -> Email Templates -> Magic link
+     Subject: Your HyperXGT One-Click Driver Sign In ⚡
+     ========================================================================= -->
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; color: #1e293b;">
+  <div style="background: #0d0e11; padding: 32px 24px; text-align: center; border-bottom: 3px solid #1488d8;">
+    <img src="https://hyperxgt.com/assets/hyperxgt-logo.png" alt="HyperXGT Logo" style="height: 48px; max-width: 220px; object-fit: contain;">
+  </div>
+  <div style="padding: 36px 32px; line-height: 1.6;">
+    <h2 style="color: #0f172a; margin-top: 0;">One-Click Sign In ⚡</h2>
+    <p>Hi <strong>{{ .Email }}</strong>,</p>
+    <p>Click the button below to sign in instantly to your HyperXGT Driver Garage without entering a password:</p>
+    <div style="text-align: center; margin: 32px 0;">
+      <a href="{{ .ConfirmationURL }}" target="_blank" style="background: #1488d8; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 15px; display: inline-block;">Sign In to My Garage →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- =========================================================================
+     4. CHANGE EMAIL TEMPLATE
+     Supabase Location: Authentication -> Email Templates -> Change email address
+     Subject: Confirm New Email Address for HyperXGT ✉️
+     ========================================================================= -->
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; color: #1e293b;">
+  <div style="background: #0d0e11; padding: 32px 24px; text-align: center; border-bottom: 3px solid #1488d8;">
+    <img src="https://hyperxgt.com/assets/hyperxgt-logo.png" alt="HyperXGT Logo" style="height: 48px; max-width: 220px; object-fit: contain;">
+  </div>
+  <div style="padding: 36px 32px; line-height: 1.6;">
+    <h2 style="color: #0f172a; margin-top: 0;">Confirm New Email Address ✉️</h2>
+    <p>Please confirm that you want to change your HyperXGT account email to <strong>{{ .Email }}</strong>:</p>
+    <div style="text-align: center; margin: 32px 0;">
+      <a href="{{ .ConfirmationURL }}" target="_blank" style="background: #1488d8; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 15px; display: inline-block;">Confirm Email Change →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- =========================================================================
+     5. INVITE USER TEMPLATE
+     Supabase Location: Authentication -> Email Templates -> Invite user
+     Subject: You've been invited to HyperXGT Driver Garage 🏎️
+     ========================================================================= -->
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; color: #1e293b;">
+  <div style="background: #0d0e11; padding: 32px 24px; text-align: center; border-bottom: 3px solid #1488d8;">
+    <img src="https://hyperxgt.com/assets/hyperxgt-logo.png" alt="HyperXGT Logo" style="height: 48px; max-width: 220px; object-fit: contain;">
+  </div>
+  <div style="padding: 36px 32px; line-height: 1.6;">
+    <h2 style="color: #0f172a; margin-top: 0;">Driver Garage Invitation 🏎️</h2>
+    <p>You have been invited to join the <strong>HyperXGT Driver Garage</strong>.</p>
+    <div style="text-align: center; margin: 32px 0;">
+      <a href="{{ .ConfirmationURL }}" target="_blank" style="background: #1488d8; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 15px; display: inline-block;">Accept Invitation & Setup Password →</a>
+    </div>
+  </div>
+</div>

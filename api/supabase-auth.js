@@ -64,6 +64,9 @@ module.exports = async (req, res) => {
       'Authorization': `Bearer ${supabaseAnonKey}`
     };
 
+    const redirectDomain = process.env.SITE_URL || 'https://hyperxgt.com';
+    const redirectUrl = `${redirectDomain}/account.html`;
+
     // 1. SUPABASE SIGNUP / REGISTRATION (auth/v1/signup)
     if (action === 'register') {
       const { name, email, phone, password } = req.body || {};
@@ -73,10 +76,10 @@ module.exports = async (req, res) => {
       }
 
       if (password.length < 6) {
-        return res.status(400).json({ error: 'Password must be at least 6 characters' });
+        return res.status(400).json({ error: 'Password must be at least 6 characters long' });
       }
 
-      const signUpUrl = `${supabaseUrl}/auth/v1/signup`;
+      const signUpUrl = `${supabaseUrl}/auth/v1/signup?redirect_to=${encodeURIComponent(redirectUrl)}`;
       const signUpBody = {
         email: email.toLowerCase().trim(),
         password: password,
@@ -88,7 +91,6 @@ module.exports = async (req, res) => {
 
       let userObj = null;
       let sessionData = null;
-      let apiError = null;
 
       try {
         const suRes = await httpsRequest(signUpUrl, 'POST', commonHeaders, signUpBody);
@@ -96,7 +98,7 @@ module.exports = async (req, res) => {
           userObj = suRes.body.user || suRes.body;
           sessionData = suRes.body;
         } else if (suRes.body && (suRes.body.msg || suRes.body.error_description)) {
-          apiError = suRes.body.msg || suRes.body.error_description;
+          const apiError = suRes.body.msg || suRes.body.error_description;
           return res.status(400).json({ error: apiError });
         }
       } catch(err) {
@@ -111,19 +113,20 @@ module.exports = async (req, res) => {
         };
       }
 
-      // Trigger Automated Welcome Email Dispatch
+      // Trigger Branded Welcome & Verification Email Dispatch
       try {
-        const origin = req.headers.host ? `https://${req.headers.host}` : 'https://hyperxgt.com';
+        const origin = req.headers.host ? `https://${req.headers.host}` : redirectDomain;
         await httpsRequest(`${origin}/api/send-email`, 'POST', { 'Content-Type': 'application/json' }, {
-          template: 'welcome',
+          template: 'verification',
           toEmail: email,
-          toName: name || 'Racer'
+          toName: name || 'Racer',
+          confirmUrl: redirectUrl
         });
       } catch(e) {}
 
       return res.status(201).json({
         success: true,
-        message: `Registered successfully! Welcome email sent to ${email}`,
+        message: `Registered successfully! Branded verification email sent to ${email}`,
         token: sessionData ? sessionData.access_token : "demo_token_" + Date.now(),
         refresh_token: sessionData ? sessionData.refresh_token : null,
         user: {
@@ -151,14 +154,13 @@ module.exports = async (req, res) => {
       };
 
       let authResult = null;
-      let apiError = null;
 
       try {
         const loginRes = await httpsRequest(tokenUrl, 'POST', commonHeaders, loginBody);
         if (loginRes.body && loginRes.body.access_token) {
           authResult = loginRes.body;
         } else if (loginRes.body && (loginRes.body.error_description || loginRes.body.msg)) {
-          apiError = loginRes.body.error_description || loginRes.body.msg;
+          const apiError = loginRes.body.error_description || loginRes.body.msg;
           return res.status(400).json({ error: apiError });
         }
       } catch(err) {
@@ -198,7 +200,7 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Email address is required' });
       }
 
-      const recoverUrl = `${supabaseUrl}/auth/v1/recover`;
+      const recoverUrl = `${supabaseUrl}/auth/v1/recover?redirect_to=${encodeURIComponent(redirectUrl)}`;
       const recoverBody = {
         email: email.toLowerCase().trim()
       };
@@ -210,9 +212,19 @@ module.exports = async (req, res) => {
         }
       } catch(err) {}
 
+      // Trigger Branded Password Reset Email
+      try {
+        const origin = req.headers.host ? `https://${req.headers.host}` : redirectDomain;
+        await httpsRequest(`${origin}/api/send-email`, 'POST', { 'Content-Type': 'application/json' }, {
+          template: 'password_reset',
+          toEmail: email,
+          confirmUrl: redirectUrl
+        });
+      } catch(e) {}
+
       return res.status(200).json({
         success: true,
-        message: `Password reset instructions have been sent to ${email}`
+        message: `Password reset instructions sent to ${email}`
       });
     }
 
@@ -257,19 +269,13 @@ module.exports = async (req, res) => {
         updateBody.password = password;
       }
 
-      let updatedUserObj = null;
-
       if (userToken && userToken !== 'demo_token') {
         try {
           const updateUrl = `${supabaseUrl}/auth/v1/user`;
-          const uRes = await httpsRequest(updateUrl, 'PUT', {
+          await httpsRequest(updateUrl, 'PUT', {
             'apikey': supabaseAnonKey,
             'Authorization': `Bearer ${userToken}`
           }, updateBody);
-
-          if (uRes.body && (uRes.body.id || uRes.body.email)) {
-            updatedUserObj = uRes.body;
-          }
         } catch(e) {}
       }
 
