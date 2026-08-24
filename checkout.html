@@ -125,6 +125,18 @@
   <script src="assets/app.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      // Auto-fill logged in customer details
+      const user = getAuthUser();
+      if (user) {
+        if (user.name) document.getElementById("custName").value = user.name;
+        if (user.phone) document.getElementById("custPhone").value = user.phone;
+        if (user.email) document.getElementById("custEmail").value = user.email;
+        if (user.address) document.getElementById("custAddress").value = user.address;
+        if (user.city) document.getElementById("custCity").value = user.city;
+        if (user.state) document.getElementById("custState").value = user.state;
+        if (user.pincode) document.getElementById("custPincode").value = user.pincode;
+      }
+
       const summaryEl = document.getElementById("checkoutSummary");
       const c = getCart(), ids = Object.keys(c).map(Number);
 

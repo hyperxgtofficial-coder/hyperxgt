@@ -148,6 +148,90 @@ window.addEventListener("hx_stock_update", (e) => {
   }
 });
 
+// SUPABASE CUSTOMER AUTH & SESSION MANAGEMENT
+function getAuthSession() {
+  try {
+    const raw = localStorage.getItem("hx_auth_session");
+    if (raw) return JSON.parse(raw);
+    const legacy = localStorage.getItem("hx_customer_user");
+    if (legacy) return { user: JSON.parse(legacy), token: "demo_token" };
+  } catch(e) {}
+  return null;
+}
+
+function getAuthUser() {
+  const session = getAuthSession();
+  return session ? session.user : null;
+}
+
+function getAuthToken() {
+  const session = getAuthSession();
+  return session ? (session.token || "") : "";
+}
+
+function isLoggedIn() {
+  return !!getAuthUser();
+}
+
+function setAuthSession(user, token = "demo_token", refresh_token = null) {
+  const session = { user, token, refresh_token, loggedAt: new Date().toISOString() };
+  localStorage.setItem("hx_auth_session", JSON.stringify(session));
+  localStorage.setItem("hx_customer_user", JSON.stringify(user));
+  window.dispatchEvent(new CustomEvent("hx_auth_change", { detail: session }));
+}
+
+function clearAuthSession() {
+  localStorage.removeItem("hx_auth_session");
+  localStorage.removeItem("hx_customer_user");
+  window.dispatchEvent(new CustomEvent("hx_auth_change", { detail: null }));
+}
+
+async function logoutCustomer() {
+  const token = getAuthToken();
+  if (token) {
+    try {
+      await fetch('/api/supabase-auth?action=logout', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+    } catch(e) {}
+  }
+  clearAuthSession();
+  toast("Logged out of Driver Garage ✓");
+}
+
+function updateAuthUI() {
+  const user = getAuthUser();
+  const accountBtns = $$('[data-modal="accountModal"]');
+  accountBtns.forEach(btn => {
+    if (user) {
+      if (btn.classList.contains("icon")) {
+        btn.title = `Driver: ${user.name || user.email}`;
+        btn.innerHTML = `👤`;
+      } else {
+        btn.textContent = `👤 ${user.name ? user.name.split(' ')[0] : 'My Garage'}`;
+      }
+    } else {
+      if (btn.classList.contains("icon")) {
+        btn.title = "Account";
+        btn.innerHTML = `♙`;
+      } else {
+        btn.textContent = `Customer Login`;
+      }
+    }
+  });
+
+  const mobAccBtn = $("#btnMobGarageAcc");
+  if (mobAccBtn) {
+    mobAccBtn.textContent = user ? `👤 ${user.name || 'My Garage'}` : `♙ My Garage`;
+  }
+}
+
+window.addEventListener("hx_auth_change", () => {
+  updateAuthUI();
+  if (typeof renderAccountModalUI === "function") renderAccountModalUI();
+});
+
 // LOCAL STORAGE HELPERS
 const getCart = () => JSON.parse(localStorage.getItem("hx_cart") || "{}");
 const setCart = c => localStorage.setItem("hx_cart", JSON.stringify(c));
@@ -425,15 +509,9 @@ function ensureGlobalModalsAndDrawers() {
     div.id = "accountModal";
     div.innerHTML = `
       <div class="shade"></div>
-      <div class="modal-box">
-        <div class="drawer-head"><b>Customer Account</b><button class="x">×</button></div>
-        <h3 style="font-size:22px;margin:12px 0 16px">Welcome to My Garage</h3>
-        <input class="field" placeholder="Email or mobile number">
-        <input class="field" type="password" placeholder="Password">
-        <div class="modal-row" style="margin-top:14px">
-          <button class="btn dark" onclick="toast('Signed in to My Garage ✓'); closeEl(this)">Sign in</button>
-          <button class="btn" onclick="toast('Account created ✓'); closeEl(this)">Create account</button>
-        </div>
+      <div class="modal-box" style="max-width:440px">
+        <div class="drawer-head"><b>Driver Garage Account</b><button class="x">×</button></div>
+        <div id="accountModalBody" style="margin-top:16px"></div>
       </div>
     `;
     document.body.appendChild(div);
@@ -460,10 +538,144 @@ function ensureGlobalModalsAndDrawers() {
   }
 }
 
+let currentModalAuthTab = "login";
+
+function renderAccountModalUI() {
+  const body = $("#accountModalBody");
+  if (!body) return;
+
+  const user = getAuthUser();
+
+  if (user) {
+    body.innerHTML = `
+      <div style="text-align:center;padding:12px 0">
+        <div style="width:58px;height:58px;border-radius:50%;background:#eef4ff;color:#1488d8;display:grid;place-items:center;font-size:26px;font-weight:900;margin:0 auto 10px">👤</div>
+        <h3 style="margin:0;font-size:18px">${esc(user.name || "Customer")}</h3>
+        <div style="font-size:12px;color:#666;margin-top:2px">${esc(user.email)}</div>
+        <div style="display:inline-block;background:#e8f5e9;color:#2e7d32;font-size:10px;font-weight:900;padding:4px 10px;border-radius:8px;margin-top:10px">AUTHENTICATED DRIVER MEMBER 🛡️</div>
+
+        <div style="display:grid;gap:10px;margin-top:22px">
+          <a class="btn blue" href="account.html" style="text-align:center;display:block">Open My Garage & Orders →</a>
+          <button class="btn red" onclick="logoutCustomer(); renderAccountModalUI();">Sign Out</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const isLogin = currentModalAuthTab === "login";
+  const isReg = currentModalAuthTab === "register";
+  const isForgot = currentModalAuthTab === "forgot";
+
+  body.innerHTML = `
+    <div style="display:flex;gap:6px;margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:10px">
+      <button class="btn ${isLogin ? 'dark' : 'clear'}" onclick="currentModalAuthTab='login';renderAccountModalUI()" style="flex:1;height:36px;font-size:11px;padding:0">Sign In</button>
+      <button class="btn ${isReg ? 'dark' : 'clear'}" onclick="currentModalAuthTab='register';renderAccountModalUI()" style="flex:1;height:36px;font-size:11px;padding:0">Register</button>
+      <button class="btn ${isForgot ? 'dark' : 'clear'}" onclick="currentModalAuthTab='forgot';renderAccountModalUI()" style="flex:1;height:36px;font-size:11px;padding:0">Forgot</button>
+    </div>
+
+    ${isLogin ? `
+      <form onsubmit="handleModalAuthSubmit(event, 'login')">
+        <h4 style="margin:0 0 12px;font-size:14px">Sign In to Driver Garage</h4>
+        <input class="field" id="mLogEmail" type="email" placeholder="Email address" required style="margin-bottom:10px">
+        <input class="field" id="mLogPass" type="password" placeholder="Password" required style="margin-bottom:12px">
+        <div id="mAuthErr" style="color:#ed1c24;font-size:11px;margin-bottom:10px;display:none"></div>
+        <button class="btn dark" type="submit" id="mAuthSubmitBtn" style="width:100%;height:44px;font-size:13px">Sign In →</button>
+        <div style="text-align:center;margin-top:10px">
+          <a href="#" onclick="currentModalAuthTab='forgot';renderAccountModalUI();return false;" style="font-size:11px;color:#1488d8">Forgot your password?</a>
+        </div>
+      </form>
+    ` : ''}
+
+    ${isReg ? `
+      <form onsubmit="handleModalAuthSubmit(event, 'register')">
+        <h4 style="margin:0 0 12px;font-size:14px">Create Driver Account</h4>
+        <input class="field" id="mRegName" placeholder="Full Name *" required style="margin-bottom:10px">
+        <input class="field" id="mRegEmail" type="email" placeholder="Email Address *" required style="margin-bottom:10px">
+        <input class="field" id="mRegPhone" type="tel" placeholder="Mobile Number *" required style="margin-bottom:10px">
+        <input class="field" id="mRegPass" type="password" placeholder="Choose Password (min 6 chars) *" required style="margin-bottom:12px">
+        <div id="mAuthErr" style="color:#ed1c24;font-size:11px;margin-bottom:10px;display:none"></div>
+        <button class="btn blue" type="submit" id="mAuthSubmitBtn" style="width:100%;height:44px;font-size:13px;background:#1488d8;color:#fff">Register & Get Gift 🎁</button>
+      </form>
+    ` : ''}
+
+    ${isForgot ? `
+      <form onsubmit="handleModalAuthSubmit(event, 'forgot')">
+        <h4 style="margin:0 0 12px;font-size:14px">Reset Your Password</h4>
+        <p style="font-size:11px;color:#666;margin-bottom:12px">Enter your email and we'll send a password recovery link.</p>
+        <input class="field" id="mForgotEmail" type="email" placeholder="Registered Email Address" required style="margin-bottom:12px">
+        <div id="mAuthErr" style="color:#ed1c24;font-size:11px;margin-bottom:10px;display:none"></div>
+        <button class="btn dark" type="submit" id="mAuthSubmitBtn" style="width:100%;height:44px;font-size:13px">Send Reset Link 📧</button>
+      </form>
+    ` : ''}
+  `;
+}
+
+window.handleModalAuthSubmit = async function(e, type) {
+  e.preventDefault();
+  const errDiv = $("#mAuthErr");
+  const btn = $("#mAuthSubmitBtn");
+  if (errDiv) errDiv.style.display = "none";
+  if (btn) { btn.disabled = true; btn.style.opacity = "0.6"; }
+
+  try {
+    if (type === "login") {
+      const email = $("#mLogEmail").value.trim();
+      const password = $("#mLogPass").value.trim();
+      const res = await fetch('/api/supabase-auth?action=login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setAuthSession(data.user, data.token, data.refresh_token);
+      toast("Signed in to Driver Garage ✓");
+      closeEl($("#accountModal"));
+    } else if (type === "register") {
+      const name = $("#mRegName").value.trim();
+      const email = $("#mRegEmail").value.trim();
+      const phone = $("#mRegPhone").value.trim();
+      const password = $("#mRegPass").value.trim();
+      const res = await fetch('/api/supabase-auth?action=register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, password })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setAuthSession(data.user, data.token, data.refresh_token);
+      toast(`Account created! Welcome email sent to ${email} ✓`);
+      closeEl($("#accountModal"));
+    } else if (type === "forgot") {
+      const email = $("#mForgotEmail").value.trim();
+      const res = await fetch('/api/supabase-auth?action=forgot_password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      toast(`Password reset instructions sent to ${email} ✓`);
+      currentModalAuthTab = "login";
+      renderAccountModalUI();
+    }
+  } catch(err) {
+    if (errDiv) {
+      errDiv.textContent = err.message || "Authentication error";
+      errDiv.style.display = "block";
+    }
+  } finally {
+    if (btn) { btn.disabled = false; btn.style.opacity = "1"; }
+  }
+};
+
 function initChrome() {
   ensureGlobalModalsAndDrawers();
   updateCount();
   renderCartDrawer();
+  updateAuthUI();
+  renderAccountModalUI();
 
   // BIND ALL ACTION BUTTONS & MODALS
   $$("[data-modal]").forEach(b => {
