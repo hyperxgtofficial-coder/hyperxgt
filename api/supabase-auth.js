@@ -140,11 +140,12 @@ module.exports = async (req, res) => {
 
       return res.status(201).json({
         success: true,
-        message: `Registered successfully! Branded verification email sent to ${email}`,
+        message: `Registered successfully in Supabase! Verification email sent to ${email}`,
         token: sessionData ? sessionData.access_token : "demo_token_" + Date.now(),
         refresh_token: sessionData ? sessionData.refresh_token : null,
         user: {
-          id: userObj.id,
+          id: userObj.id || userObj.user_id,
+          supabase_user_id: userObj.id,
           name: name || (userObj.user_metadata && userObj.user_metadata.full_name) || "Customer",
           email: email.toLowerCase().trim(),
           phone: phone || (userObj.user_metadata && userObj.user_metadata.phone) || "",
