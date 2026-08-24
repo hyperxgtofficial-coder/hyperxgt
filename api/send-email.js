@@ -232,7 +232,11 @@ module.exports = async (req, res) => {
     if (resendApiKey) {
       try {
         const resendHeaders = { 'Authorization': `Bearer ${resendApiKey}` };
-        const fromHeader = process.env.VERIFIED_DOMAIN ? `${senderName} <${senderEmail}>` : `${senderName} <onboarding@resend.dev>`;
+        let fromHeader = `${senderName} <${senderEmail}>`;
+        if (process.env.USE_RESEND_DEV || senderEmail.includes("example.com")) {
+          fromHeader = `${senderName} <onboarding@resend.dev>`;
+        }
+
         const resendPayload = {
           from: fromHeader,
           to: [targetEmail],
@@ -240,7 +244,14 @@ module.exports = async (req, res) => {
           subject: subject,
           html: htmlContent
         };
-        const rRes = await httpsPost('https://api.resend.com/emails', resendHeaders, resendPayload);
+        let rRes = await httpsPost('https://api.resend.com/emails', resendHeaders, resendPayload);
+        
+        // If sending from custom domain failed because domain is unverified, fallback to onboarding@resend.dev
+        if (rRes.statusCode >= 400 && fromHeader !== `${senderName} <onboarding@resend.dev>`) {
+          resendPayload.from = `${senderName} <onboarding@resend.dev>`;
+          rRes = await httpsPost('https://api.resend.com/emails', resendHeaders, resendPayload);
+        }
+
         apiResult = rRes.body;
       } catch(err) {
         apiResult = { error: err.message };
