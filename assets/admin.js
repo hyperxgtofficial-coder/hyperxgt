@@ -98,41 +98,26 @@ function initAdminTabs() {
   });
 }
 
-// STORE ORDERS DATABASE
-window.HX_ORDERS = [
-  {
-    id: "HX-948210",
-    date: "2026-08-22 21:14",
-    customer: { name: "Rahul Verma", email: "rahul.v@gmail.com", phone: "+91 98765 43210", address: "Flat 402, Prestige Towers, M.G. Road", city: "Bangalore", state: "Karnataka", pincode: "560001" },
-    items: [{ id: 71, sku: "MJX7303", name: "1:7 Citroen C3 WRC Brushless Rally Car", qty: 1, price: 69999 }],
-    subtotal: 69999,
-    shipping: 0,
-    total: 69999,
-    paymentMethod: "Razorpay / UPI",
-    paymentId: "pay_N8zK1049281",
-    paymentStatus: "Paid",
-    courier: "Shiprocket Express (Bluedart)",
-    awb: "SRK748291048",
-    fulfillmentStatus: "Pending Admin Acceptance",
-    cancellationReason: ""
-  },
-  {
-    id: "HX-948211",
-    date: "2026-08-23 14:20",
-    customer: { name: "Aman Gupta", email: "aman.g@gmail.com", phone: "+91 99887 76655", address: "H.No 12, Sector 15", city: "Gurgaon", state: "Haryana", pincode: "122001" },
-    items: [{ id: 72, sku: "MJX7304", name: "1:14 Brushless 4WD Drift Car", qty: 1, price: 14999 }],
-    subtotal: 14999,
-    shipping: 0,
-    total: 14999,
-    paymentMethod: "Partial COD",
-    paymentId: "pay_N8zK9921102",
-    paymentStatus: "Partial Paid",
-    courier: "Delhivery Surface",
-    awb: "DEL882190412",
-    fulfillmentStatus: "Processing",
-    cancellationReason: ""
-  }
-];
+// STORE ORDERS DATABASE PERSISTENCE
+function getOrdersDB() {
+  try {
+    const local = localStorage.getItem("hx_orders_db");
+    if (local) {
+      const parsed = JSON.parse(local);
+      if (parsed && parsed.length) return parsed;
+    }
+  } catch(e) {}
+  return window.HX_ORDERS || [];
+}
+
+function saveOrdersDB(arr) {
+  window.HX_ORDERS = arr;
+  try {
+    localStorage.setItem("hx_orders_db", JSON.stringify(arr));
+  } catch(e) {}
+}
+
+window.HX_ORDERS = getOrdersDB();
 
 // MULTI-PHOTO UPLOAD & GALLERY PREVIEW MANAGER WITH INDEX-BASED DELETE
 function renderAdminGalleryPreview(urlsList, heroUrl) {
@@ -571,7 +556,8 @@ function initSocialPublisher() {
 
 // ORDER FULFILLMENT & LOGISTICS TRACKING CONTROLLER
 window.openOrderModal = function(orderId) {
-  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  const orders = getOrdersDB();
+  const o = orders.find(x => x.id === orderId);
   if (!o) return;
 
   $("#ordModalTitle").textContent = `Fulfillment & Logistics Hub — Order ${o.id}`;
@@ -656,20 +642,23 @@ window.openOrderModal = function(orderId) {
 };
 
 window.updateOrderStatus = function(orderId) {
-  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  const orders = getOrdersDB();
+  const o = orders.find(x => x.id === orderId);
   if (!o) return;
 
   o.fulfillmentStatus = $("#ordStatus")?.value || o.fulfillmentStatus;
   o.courier = $("#ordCourier")?.value || o.courier;
   o.awb = $("#ordAwb")?.value || o.awb;
 
+  saveOrdersDB(orders);
   renderAdminOrders();
   closeEl($("#orderFulfillmentModal"));
   toast(`Updated Order ${orderId} status to "${o.fulfillmentStatus}" ✓`);
 };
 
 function acceptOrder(orderId) {
-  const o = (window.HX_ORDERS || []).find(x => x.id === orderId);
+  const orders = getOrdersDB();
+  const o = orders.find(x => x.id === orderId);
   if (!o) return;
 
   o.fulfillmentStatus = "Processing";
@@ -683,6 +672,7 @@ function acceptOrder(orderId) {
   });
 
   saveProductsDB(P);
+  saveOrdersDB(orders);
   renderAdminProducts();
   renderAdminOrders();
 
@@ -899,16 +889,16 @@ function renderAdminOrders() {
   const tbody = $("#adminOrdersBody");
   if (!tbody) return;
 
-  let orders = window.HX_ORDERS || [];
+  let orders = getOrdersDB();
   tbody.innerHTML = orders.map(o => `
     <tr>
       <td><strong>${esc(o.id)}</strong></td>
       <td><span style="font-size:11px;color:#666">${esc(o.date)}</span></td>
-      <td><strong>${esc(o.customer.name)}</strong><br><small style="color:#666">${esc(o.customer.city)}</small></td>
-      <td><span style="font-size:11px">${o.items.map(it => esc(it.name)).join(", ")}</span></td>
-      <td><strong>${INR(o.total)}</strong></td>
+      <td><strong>${esc(o.customer ? o.customer.name : 'Customer')}</strong><br><small style="color:#666">${esc(o.customer ? o.customer.city : '')}</small></td>
+      <td><span style="font-size:11px">${(o.items || []).map(it => esc(it.name)).join(", ")}</span></td>
+      <td><strong>${INR(o.total || o.amount)}</strong></td>
       <td><span style="background:#f4f6ff;color:#1488d8;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px">${esc(o.paymentMethod)}</span></td>
-      <td><div style="font-size:11px;color:#7b2cbf">${esc(o.courier)}</div><code>${esc(o.awb)}</code></td>
+      <td><div style="font-size:11px;color:#7b2cbf">${esc(o.courier || 'Express Shipping')}</div><code>${esc(o.awb || 'Pending AWB')}</code></td>
       <td><span style="background:#fff8e1;color:#b78103;font-weight:900;padding:4px 10px;border-radius:6px;font-size:11px">${esc(o.fulfillmentStatus)}</span></td>
       <td>
         <button class="btn blue" style="height:32px;padding:0 10px;font-size:11px" onclick="openOrderModal('${o.id}')">Manage & Ship 🚚</button>

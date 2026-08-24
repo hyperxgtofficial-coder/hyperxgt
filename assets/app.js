@@ -238,6 +238,27 @@ const setCart = c => localStorage.setItem("hx_cart", JSON.stringify(c));
 const getWish = () => JSON.parse(localStorage.getItem("hx_wish") || "[]");
 const setWish = w => localStorage.setItem("hx_wish", JSON.stringify(w));
 
+function getOrdersDB() {
+  try {
+    const raw = localStorage.getItem("hx_orders_db");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.length) return parsed;
+    }
+  } catch(e) {}
+  return window.HX_ORDERS || [];
+}
+
+function saveOrderToDB(newOrder) {
+  const current = getOrdersDB();
+  const updated = [newOrder, ...current.filter(o => o.id !== newOrder.id)];
+  window.HX_ORDERS = updated;
+  try {
+    localStorage.setItem("hx_orders_db", JSON.stringify(updated));
+  } catch(e) {}
+  return updated;
+}
+
 function addCart(id, qty = 1) {
   const p = getProducts().find(x => x.id === id);
   if (!p) return;

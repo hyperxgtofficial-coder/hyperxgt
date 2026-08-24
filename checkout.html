@@ -187,7 +187,7 @@
 
         const orderData = {
           id: orderId,
-          date: new Date().toISOString(),
+          date: new Date().toLocaleDateString('en-CA') + ' ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
           customer: { name, phone, email, address, city, state, pincode },
           items: ids.map(id => {
             const p = P.find(x => x.id === id);
@@ -196,36 +196,43 @@
           subtotal,
           total: grandTotal,
           paymentMethod: paymentMethod === 'cashfree' ? 'Cashfree Payments (UPI/Cards)' : (paymentMethod === 'cod' ? 'Cash on Delivery' : 'Razorpay PG'),
+          paymentStatus: paymentMethod === 'cod' ? 'COD Pending' : 'Paid',
           fulfillmentStatus: 'Pending Admin Acceptance'
         };
+
+        // Save order to persistent database (shared across Customer Account & Admin Panel)
+        saveOrderToDB(orderData);
+
+        // Send Order Receipt Email
+        try {
+          fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              template: 'order_receipt',
+              toEmail: email,
+              toName: name,
+              order: orderData
+            })
+          }).catch(() => {});
+        } catch(e) {}
 
         if (paymentMethod === 'cashfree') {
           toast("Connecting to Cashfree Instant Payments...");
           try {
-            const res = await fetch('/api/cashfree-order', {
+            await fetch('/api/cashfree-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ orderId, amount: grandTotal, customer: { name, phone, email } })
             });
-            const data = await res.json();
-            
-            // Clear cart & redirect to order confirmation
-            localStorage.removeItem("hx_cart");
-            toast("Order Placed! Redirecting to Order Confirmation...");
-            setTimeout(() => {
-              location.href = `account.html?order_id=${orderId}&success=1`;
-            }, 1200);
-          } catch(err) {
-            localStorage.removeItem("hx_cart");
-            location.href = `account.html?order_id=${orderId}&success=1`;
-          }
-        } else {
-          localStorage.removeItem("hx_cart");
-          toast("Order Placed! Redirecting to Order Confirmation...");
-          setTimeout(() => {
-            location.href = `account.html?order_id=${orderId}&success=1`;
-          }, 1200);
+          } catch(err) {}
         }
+
+        localStorage.removeItem("hx_cart");
+        toast("Order Placed Successfully! Redirecting to Garage...");
+        setTimeout(() => {
+          location.href = `account.html?order_id=${orderId}&success=1`;
+        }, 1200);
       };
     });
   </script>

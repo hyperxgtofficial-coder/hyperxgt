@@ -257,29 +257,29 @@
 
       function renderUserOrders(userEmail) {
         const list = document.getElementById("dashOrdersList");
-        let allOrders = window.HX_ORDERS || [
-          {
-            id: "HX-948210",
-            date: "2026-08-22",
-            customer: { name: "Rahul Verma", email: "rahul.v@gmail.com" },
-            items: [{ name: "1:7 Citroen C3 WRC Brushless Rally Car", qty: 1 }],
-            total: 69999,
-            paymentMethod: "Cashfree UPI",
-            status: "Pending Admin Acceptance"
-          }
-        ];
-
+        const allOrders = getOrdersDB();
         const myOrders = allOrders.filter(o => o.customer && o.customer.email && o.customer.email.toLowerCase() === userEmail.toLowerCase());
-        const displayOrders = myOrders.length ? myOrders : allOrders.slice(0, 2);
 
-        list.innerHTML = displayOrders.map(o => `
+        if (!myOrders.length) {
+          list.innerHTML = `
+            <div style="background:#f8f9fa;border:1.5px dashed #cbd5e1;border-radius:14px;padding:32px;text-align:center;color:#64748b">
+              <div style="font-size:32px;margin-bottom:8px">📦</div>
+              <strong style="color:#0f172a;font-size:15px">No orders placed yet</strong>
+              <p style="font-size:12px;margin:6px 0 16px">Your driver garage has no active orders. Explore our catalogue to build your RC rig!</p>
+              <a href="shop.html" class="btn blue" style="display:inline-block;padding:10px 20px">Explore Catalogue & Build Rig →</a>
+            </div>
+          `;
+          return;
+        }
+
+        list.innerHTML = myOrders.map(o => `
           <div style="background:#f8fafe;border:1px solid #dfe4ff;border-radius:14px;padding:16px">
             <div style="display:flex;justify-content:space-between;align-items:center">
               <div>
                 <strong style="font-size:15px;color:#111">Order ${esc(o.id)}</strong>
-                <span style="font-size:11px;color:#666;margin-left:8px">${esc(o.date || '2026-08-22')}</span>
+                <span style="font-size:11px;color:#666;margin-left:8px">${esc(o.date || '')}</span>
               </div>
-              <span style="background:#fff8e1;color:#b78103;font-size:10px;font-weight:900;padding:4px 10px;border-radius:6px">${esc(o.status || o.fulfillmentStatus || 'Processing')}</span>
+              <span style="background:#fff8e1;color:#b78103;font-size:10px;font-weight:900;padding:4px 10px;border-radius:6px">${esc(o.fulfillmentStatus || o.status || 'Processing')}</span>
             </div>
             <div style="font-size:12px;color:#555;margin-top:8px">
               ${(o.items || []).map(it => `• ${esc(it.name)} × ${it.qty || 1}`).join("<br>")}
