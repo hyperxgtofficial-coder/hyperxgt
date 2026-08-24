@@ -1,28 +1,29 @@
 // PERSISTENT STOREFRONT PRODUCTS DATABASE SYNCHRONIZER
 function loadProductsDB() {
+  const staticProducts = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) ? window.HX_PRODUCTS : [];
+  
   try {
     const local = localStorage.getItem("hx_products_db");
     if (local) {
       const parsed = JSON.parse(local);
-      if (parsed && Array.isArray(parsed) && parsed.length >= 10) return parsed;
+      if (parsed && Array.isArray(parsed) && parsed.length > 0) {
+        // Smart merge: Admin & local modifications overwrite static CSV data by ID
+        const map = new Map();
+        staticProducts.forEach(p => map.set(p.id, p));
+        parsed.forEach(p => map.set(p.id, { ...map.get(p.id), ...p }));
+        return Array.from(map.values());
+      }
     }
   } catch(e) {}
   
-  const full = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS) && window.HX_PRODUCTS.length >= 10) ? window.HX_PRODUCTS : [];
-  if (full.length >= 10) {
-    try { localStorage.setItem("hx_products_db", JSON.stringify(full)); } catch(e) {}
-  }
-  return full;
+  return staticProducts;
 }
 
 let P = loadProductsDB();
 
 function getProducts() {
-  if (Array.isArray(P) && P.length >= 10) return P;
+  if (Array.isArray(P) && P.length > 0) return P;
   P = loadProductsDB();
-  if (!Array.isArray(P) || P.length < 10) {
-    P = (window.HX_PRODUCTS && window.HX_PRODUCTS.length >= 10) ? window.HX_PRODUCTS : [];
-  }
   return P;
 }
 
@@ -88,8 +89,14 @@ async function fetchLiveBackendProducts() {
   try {
     const res = await fetch('/api/products-crud');
     const data = await res.json();
-    if (data && data.products && Array.isArray(data.products) && data.products.length >= 10) {
-      P = data.products;
+    if (data && data.products && Array.isArray(data.products) && data.products.length > 0) {
+      const liveProducts = data.products;
+      const staticProducts = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) ? window.HX_PRODUCTS : [];
+      const map = new Map();
+      staticProducts.forEach(p => map.set(p.id, p));
+      liveProducts.forEach(p => map.set(p.id, { ...map.get(p.id), ...p }));
+
+      P = Array.from(map.values());
       window.HX_PRODUCTS = P;
       localStorage.setItem("hx_products_db", JSON.stringify(P));
       reRenderAllStorefrontPages();

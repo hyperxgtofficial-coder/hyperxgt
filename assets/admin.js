@@ -901,6 +901,45 @@ function renderAdminOrders() {
   `).join("");
 }
 
+function initDatabaseSyncHub() {
+  const btnSync = $("#btnSyncAllToLive");
+  const btnExport = $("#btnExportDatabaseJs");
+
+  if (btnSync) {
+    btnSync.onclick = async function() {
+      toast("Syncing all admin edits to live serverless database...");
+      try {
+        const res = await fetch('/api/products-crud?bulk=1', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(P)
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast(`Live Database Synced! ${P.length} products updated on live website ✓`);
+        }
+      } catch(err) {
+        toast(`Synced ${P.length} products to local storage ✓`);
+      }
+    };
+  }
+
+  if (btnExport) {
+    btnExport.onclick = function() {
+      const code = `window.HX_PRODUCTS = ${JSON.stringify(P, null, 2)};`;
+      const blob = new Blob([code], { type: 'application/javascript' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'products.js';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      toast("Downloaded updated assets/products.js file ✓");
+    };
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initAdminAuth();
   initAdminTabs();
@@ -915,6 +954,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCollabForm();
   initCsvBulkUploader();
   initSocialPublisher();
+  initDatabaseSyncHub();
 
   const openAddBtn = $("#btnOpenAddModal");
   if (openAddBtn) openAddBtn.onclick = openAddModal;

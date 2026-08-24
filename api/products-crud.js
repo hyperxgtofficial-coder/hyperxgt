@@ -1,8 +1,28 @@
 // Vercel Serverless Function: Persistent Database Product CRUD API (GET, POST, PUT, DELETE)
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
 // Global serverless memory cache (persists across warm function invocations)
 let cachedProducts = null;
+
+function getInitialProducts() {
+  if (cachedProducts && Array.isArray(cachedProducts) && cachedProducts.length > 0) {
+    return cachedProducts;
+  }
+  try {
+    const jsonPath = path.join(__dirname, '..', 'data', 'products.json');
+    if (fs.existsSync(jsonPath)) {
+      const data = fs.readFileSync(jsonPath, 'utf8');
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        cachedProducts = parsed;
+        return cachedProducts;
+      }
+    }
+  } catch(e) {}
+  return cachedProducts || [];
+}
 
 function httpsRequest(urlStr, method, headers, bodyObj) {
   return new Promise((resolve, reject) => {
@@ -60,6 +80,8 @@ module.exports = async (req, res) => {
   const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || "";
 
   try {
+    cachedProducts = getInitialProducts();
+
     // 1. GET ALL PRODUCTS / SINGLE PRODUCT
     if (req.method === 'GET') {
       const id = req.query.id ? Number(req.query.id) : null;
@@ -85,7 +107,7 @@ module.exports = async (req, res) => {
       return res.status(200).json({
         success: true,
         count: cachedProducts ? cachedProducts.length : 0,
-        products: cachedProducts || null
+        products: cachedProducts || []
       });
     }
 
