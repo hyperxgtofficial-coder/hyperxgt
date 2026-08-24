@@ -36,12 +36,23 @@ function toast(msg) {
 }
 
 // ADMIN AUTHENTICATION CONTROLLER
+function getAdminToken() {
+  return localStorage.getItem("hx_admin_token") || "";
+}
+
+function getAdminHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'x-admin-key': getAdminToken()
+  };
+}
+
 function checkAdminAuth() {
   const overlay = $("#adminLoginOverlay");
   const portal = $("#adminPortal");
-  const isLogged = localStorage.getItem("hx_admin_logged") === "true";
+  const token = getAdminToken();
 
-  if (isLogged) {
+  if (token && localStorage.getItem("hx_admin_logged") === "true") {
     if (overlay) overlay.style.display = "none";
     if (portal) portal.style.display = "block";
   } else {
@@ -55,20 +66,36 @@ function initAdminAuth() {
 
   const loginForm = $("#adminLoginForm");
   if (loginForm) {
-    loginForm.onsubmit = function(e) {
+    loginForm.onsubmit = async function(e) {
       e.preventDefault();
       const email = ($("#adminEmail")?.value || "").trim().toLowerCase();
-      const pass = ($("#adminPass")?.value || "").trim();
+      const password = ($("#adminPass")?.value || "").trim();
 
-      if ((email === "admin@hyperxgt.com" || email === "contact@hyperxgt.com") && (pass === "hyperxgt2026" || pass === "admin123")) {
-        localStorage.setItem("hx_admin_logged", "true");
-        if ($("#adminLoginErr")) $("#adminLoginErr").style.display = "none";
-        checkAdminAuth();
-        toast("Welcome back, Store Admin! 🌟");
-      } else {
+      if ($("#adminLoginErr")) $("#adminLoginErr").style.display = "none";
+
+      try {
+        const res = await fetch('/api/admin-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success && data.admin_token) {
+          localStorage.setItem("hx_admin_token", data.admin_token);
+          localStorage.setItem("hx_admin_logged", "true");
+          checkAdminAuth();
+          toast("Welcome back, Store Admin! 🌟");
+        } else {
+          if ($("#adminLoginErr")) {
+            $("#adminLoginErr").style.display = "block";
+            $("#adminLoginErr").textContent = data.error || "Invalid admin credentials";
+          }
+        }
+      } catch(err) {
         if ($("#adminLoginErr")) {
           $("#adminLoginErr").style.display = "block";
-          $("#adminLoginErr").textContent = "Invalid credentials. Use admin@hyperxgt.com / hyperxgt2026";
+          $("#adminLoginErr").textContent = "Authentication service error";
         }
       }
     };
@@ -77,6 +104,7 @@ function initAdminAuth() {
   const logoutBtn = $("#adminLogout");
   if (logoutBtn) {
     logoutBtn.onclick = function() {
+      localStorage.removeItem("hx_admin_token");
       localStorage.removeItem("hx_admin_logged");
       checkAdminAuth();
       toast("Logged out of Admin Portal.");

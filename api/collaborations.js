@@ -42,10 +42,16 @@ function httpsRequest(urlStr, method, headers, bodyObj) {
   });
 }
 
+function verifyAdminAuth(req) {
+  const adminKey = req.headers['x-admin-key'] || (req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : '');
+  const secretKey = process.env.ADMIN_SECRET_KEY || "hx_admin_sec_2026_super_key";
+  return !!(adminKey && adminKey === secretKey);
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-key');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
@@ -68,6 +74,11 @@ module.exports = async (req, res) => {
 
       inMemoryCollaborations.sort((a, b) => (a.order || 0) - (b.order || 0));
       return res.status(200).json({ success: true, collaborations: inMemoryCollaborations });
+    }
+
+    // REQUIRE ADMIN AUTH FOR WRITE / EDIT / DELETE
+    if (!verifyAdminAuth(req)) {
+      return res.status(401).json({ error: 'Unauthorized: Store Admin credentials required for brand collaboration operations' });
     }
 
     if (req.method === 'POST') {

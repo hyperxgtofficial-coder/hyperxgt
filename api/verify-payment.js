@@ -17,23 +17,35 @@ module.exports = async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body || {};
 
-    const secret = process.env.RAZORPAY_KEY_SECRET || 'hyperxgt_secret';
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Missing mandatory payment verification fields (order ID, payment ID, or signature)' 
+      });
+    }
 
-    if (razorpay_order_id && razorpay_signature) {
-      const generated_signature = crypto
-        .createHmac('sha256', secret)
-        .update(razorpay_order_id + '|' + razorpay_payment_id)
-        .digest('hex');
+    const secret = process.env.RAZORPAY_KEY_SECRET;
+    if (!secret) {
+      return res.status(500).json({ 
+        success: false, 
+        error: 'RAZORPAY_KEY_SECRET is not configured in server environment' 
+      });
+    }
 
-      if (generated_signature !== razorpay_signature) {
-        return res.status(400).json({ success: false, error: 'Invalid payment signature' });
-      }
+    const generated_signature = crypto
+      .createHmac('sha256', secret)
+      .update(razorpay_order_id + '|' + razorpay_payment_id)
+      .digest('hex');
+
+    if (generated_signature !== razorpay_signature) {
+      return res.status(400).json({ success: false, error: 'Invalid payment signature. Payment verification failed.' });
     }
 
     return res.status(200).json({
       success: true,
       message: 'Payment signature verified successfully',
-      paymentId: razorpay_payment_id || 'pay_' + Math.random().toString(36).substring(2, 9)
+      orderId: razorpay_order_id,
+      paymentId: razorpay_payment_id
     });
   } catch (err) {
     console.error('Verify Payment API Error:', err.message);

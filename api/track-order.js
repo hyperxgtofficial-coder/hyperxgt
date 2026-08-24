@@ -2,16 +2,22 @@
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
   const orderId = (req.query.orderId || (req.body && req.body.orderId) || '').toUpperCase().trim();
+  const customerEmail = (req.query.email || (req.body && req.body.email) || '').toLowerCase().trim();
+  const customerPhone = (req.query.phone || (req.body && req.body.phone) || '').replace(/[^0-9]/g, '');
 
   if (!orderId) {
     return res.status(400).json({ error: 'Order ID is required' });
+  }
+
+  if (!customerEmail && !customerPhone) {
+    return res.status(400).json({ error: 'Customer email or phone number is required to verify order ownership' });
   }
 
   // Live Shiprocket & Express Courier tracking response
