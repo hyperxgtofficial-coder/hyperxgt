@@ -64,7 +64,10 @@ module.exports = async (req, res) => {
       'Authorization': `Bearer ${supabaseAnonKey}`
     };
 
-    const redirectDomain = process.env.SITE_URL || 'https://hyperxgt.com';
+    let redirectDomain = process.env.SITE_URL || 'https://hyperxgt.com';
+    if (redirectDomain.includes("localhost") || redirectDomain.includes("127.0.0.1")) {
+      redirectDomain = 'https://hyperxgt.com';
+    }
     const redirectUrl = `${redirectDomain}/account.html`;
 
     // 1. SUPABASE SIGNUP / REGISTRATION (auth/v1/signup)
