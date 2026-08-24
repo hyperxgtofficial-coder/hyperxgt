@@ -176,6 +176,11 @@ module.exports = async (req, res) => {
           authResult = loginRes.body;
         } else if (loginRes.body && (loginRes.body.error_description || loginRes.body.msg)) {
           const apiError = loginRes.body.error_description || loginRes.body.msg;
+          if (apiError.toLowerCase().includes("email not confirmed")) {
+            return res.status(400).json({ 
+              error: "Email not confirmed yet. Please click the 'Verify Email' button sent to your inbox, or disable 'Confirm Email' in your Supabase Auth settings." 
+            });
+          }
           return res.status(400).json({ error: apiError });
         }
       } catch(err) {
