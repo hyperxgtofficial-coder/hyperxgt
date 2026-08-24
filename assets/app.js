@@ -707,6 +707,13 @@ function initChrome() {
     };
   });
 
+  $$("[data-drawer]").forEach(b => {
+    b.onclick = (e) => {
+      e.preventDefault();
+      openModal(b.dataset.drawer);
+    };
+  });
+
   // Track Icon Button (⌖)
   $$(".trackIcon").forEach(b => {
     b.onclick = (e) => {
@@ -715,24 +722,29 @@ function initChrome() {
     };
   });
 
-  // Mobile Menu ☰ (#mobileOpen)
-  const mobBtn = $("#mobileOpen");
-  if (mobBtn) {
+  // Mobile Menu Triggers (☰ #mobileOpen, .icon.mobile)
+  $$("#mobileOpen, .mobileOpen, button.icon.mobile").forEach(mobBtn => {
     mobBtn.onclick = (e) => {
       e.preventDefault();
       openModal("mobileDrawer");
     };
-  }
+  });
+
+  // Automatically close mobileDrawer when any menu item is clicked
+  $$("#mobileDrawer a, #mobileDrawer button").forEach(item => {
+    item.addEventListener("click", () => {
+      $("#mobileDrawer")?.classList.remove("open");
+    });
+  });
 
   // Cart Open 🛒 (#cartOpen)
-  const cartBtn = $("#cartOpen");
-  if (cartBtn) {
+  $$("#cartOpen, .cartOpen").forEach(cartBtn => {
     cartBtn.onclick = (e) => {
       e.preventDefault();
       renderCartDrawer();
       openModal("cartDrawer");
     };
-  }
+  });
 
   // Search Input live filtering in modal
   const searchInput = $("#searchField");
