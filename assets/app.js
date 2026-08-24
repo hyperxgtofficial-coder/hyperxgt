@@ -503,19 +503,20 @@ function ensureGlobalModalsAndDrawers() {
     document.body.appendChild(div);
   }
 
-  if (!$("#accountModal")) {
-    const div = document.createElement("div");
-    div.className = "modal";
-    div.id = "accountModal";
-    div.innerHTML = `
-      <div class="shade"></div>
-      <div class="modal-box" style="max-width:440px">
-        <div class="drawer-head"><b>Driver Garage Account</b><button class="x">×</button></div>
-        <div id="accountModalBody" style="margin-top:16px"></div>
-      </div>
-    `;
-    document.body.appendChild(div);
+  let accModal = $("#accountModal");
+  if (!accModal) {
+    accModal = document.createElement("div");
+    accModal.className = "modal";
+    accModal.id = "accountModal";
+    document.body.appendChild(accModal);
   }
+  accModal.innerHTML = `
+    <div class="shade"></div>
+    <div class="modal-box" style="max-width:440px">
+      <div class="drawer-head"><b>Driver Garage Account</b><button class="x">×</button></div>
+      <div id="accountModalBody" style="margin-top:16px"></div>
+    </div>
+  `;
 
   if (!$("#cartDrawer")) {
     const div = document.createElement("div");
