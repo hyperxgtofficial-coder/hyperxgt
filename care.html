@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Care & Repair Service Hub | HyperXGT</title>
+  <meta name="description" content="Official HyperXGT Care, Repair, Diagnostic, Spare Parts, Maintenance and Replacement Portal for RC enthusiast models across India.">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>window.location.replace("contact.html");</script>
+</head>
+<body>
+  <div class="announce">
+    <div><strong>Fresh drop</strong> · High-performance HyperXGT models</div>
+    <div>Ships from India · Secure checkout</div>
+    <div>Expert RC support · Care & upgrades</div>
+  </div>
+
+  <div class="utility">
+    <div class="container">
+      <span>Premium RC cars for racers, bashers, crawlers & collectors</span>
+      <div class="utility-links">
+        <a href="contact.html">Customer Support</a>
+        <button style="border:0;background:none;font-size:11px;color:#5a5d65;cursor:pointer" data-modal="trackModal">Track My Order</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <div class="brand-logo-wrap">
+          <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT">
+        </div>
+        <div><small>RC PERFORMANCE · STORE · CLUB</small></div>
+      </a>
+      <nav class="navlinks">
+        <a href="why.html">Why HyperXGT</a>
+        <a href="shop.html">Shop</a>
+        <a href="upgrades.html">Upgrades</a>
+        <a href="club.html">Join the movement</a>
+        <a href="contact.html">Support</a>
+      </nav>
+      <div class="actions">
+        <button class="icon trackIcon" title="Track order" data-modal="trackModal">⌖</button>
+        <button class="icon" title="Search" data-modal="searchModal">⌕</button>
+        <button class="icon" title="Account" data-modal="accountModal">♙</button>
+        <button class="icon" title="Cart" id="cartOpen">🛒<span class="cart-count">0</span></button>
+        <button class="icon mobile" title="Menu" id="mobileOpen">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="eyebrow">Ownership & Technical Support</div>
+      <h1>HyperXGT Care & Service Hub</h1>
+      <p>Repair tickets, spare parts assistance, pre-run inspection guides, and AMC maintenance for your RC vehicles.</p>
+    </div>
+  </section>
+
+  <main class="container" style="padding:60px 0">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+      
+      <div>
+        <div class="eyebrow" style="color:#ed1c24">Dedicated RC Service</div>
+        <h2 style="font-size:32px;margin:8px 0 16px;color:#111">Your RC support should be as serious as your RC.</h2>
+        <p style="font-size:15px;color:#555;line-height:1.75;margin-bottom:28px">Whether you need diagnostic troubleshooting for an ESC, replacement drive shafts after a high-speed crash, or routine gear lubrication, our expert RC technicians are here to help.</p>
+
+        <div style="display:grid;gap:16px">
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;gap:16px;align-items:center">
+            <div style="width:44px;height:44px;border-radius:12px;background:#ffeeef;color:#ed1c24;display:grid;place-items:center;font-weight:900;font-size:20px">🔧</div>
+            <div>
+              <strong style="color:#111;font-size:15px;display:block">Repair & Overhaul</strong>
+              <span style="font-size:12px;color:#666">Full chassis diagnostic, motor re-soldering & ESC calibration</span>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;gap:16px;align-items:center">
+            <div style="width:44px;height:44px;border-radius:12px;background:#eef4ff;color:#1488d8;display:grid;place-items:center;font-weight:900;font-size:20px">📦</div>
+            <div>
+              <strong style="color:#111;font-size:15px;display:block">Original Spare Parts Help</strong>
+              <span style="font-size:12px;color:#666">Identify compatible part numbers, suspension arms, differentials & spur gears</span>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;gap:16px;align-items:center">
+            <div style="width:44px;height:44px;border-radius:12px;background:#e8f5e9;color:#2e7d32;display:grid;place-items:center;font-weight:900;font-size:20px">🛡️</div>
+            <div>
+              <strong style="color:#111;font-size:15px;display:block">7-Day Transit Claim & Replacement</strong>
+              <span style="font-size:12px;color:#666">Submit unboxing videos for transit damage or manufacturing defect claims</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--line);border-radius:24px;padding:36px;box-shadow:var(--shadow)">
+        <h3 style="margin-top:0;font-size:20px;color:#111">Submit a Care / Service Ticket</h3>
+        <p style="font-size:12px;color:#666;margin-bottom:20px">Fill in your model details and our service team will respond within 24 hours.</p>
+
+        <form id="careTicketForm" onsubmit="event.preventDefault(); alert('Service Ticket Submitted! Our technical team will contact you within 24 hours.');">
+          <div style="margin-bottom:14px">
+            <label class="form-label">Full Name *</label>
+            <input class="field" required placeholder="Rohan Malhotra">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+            <div>
+              <label class="form-label">Email *</label>
+              <input class="field" type="email" required placeholder="rohan@gmail.com">
+            </div>
+            <div>
+              <label class="form-label">Phone Number *</label>
+              <input class="field" required placeholder="+91 98765 43210">
+            </div>
+          </div>
+          <div style="margin-bottom:14px">
+            <label class="form-label">Order ID / SKU Number *</label>
+            <input class="field" required placeholder="HX-10482 or MJX7303">
+          </div>
+          <div style="margin-bottom:14px">
+            <label class="form-label">Request Category *</label>
+            <select class="field">
+              <option>Repair & Diagnostic Ticket</option>
+              <option>Spare Parts Inquiry</option>
+              <option>Performance Upgrade Request</option>
+              <option>Transit Damage / Defect Claim</option>
+            </select>
+          </div>
+          <div style="margin-bottom:18px">
+            <label class="form-label">Issue Details *</label>
+            <textarea class="field" required style="height:100px;padding-top:10px" placeholder="Describe the issue, part needed, or damage..."></textarea>
+          </div>
+          <button class="btn dark" type="submit" style="width:100%;height:48px">Submit Service Ticket →</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <div class="brand-logo-wrap">
+              <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT">
+            </div>
+            <div><small>RC PERFORMANCE · STORE · CLUB</small></div>
+          </a>
+          <p style="max-width:360px;margin-top:18px">Premium RC cars, racing platforms, drift cars, crawlers, monster trucks, collectables, repairs, upgrades and customer support for enthusiasts who expect more from the hobby.</p>
+          <p>Phone: +91 70902 27777<br>Email: contact@hyperxgt.com</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <a href="shop.html">Catalogue</a>
+          <a href="shop.html?cat=Off%20Road%20Crawlers">Off Road</a>
+          <a href="shop.html?cat=Racing%20Cars">Racing</a>
+          <a href="shop.html?cat=Drift%20Cars">Drift</a>
+        </div>
+        <div>
+          <h4>Customer Care</h4>
+          <a href="#" data-modal="trackModal">Track My Order</a>
+          <a href="care.html">Repair & Care</a>
+          <a href="faq.html">FAQ</a>
+          <a href="returns.html">Returns Policy</a>
+          <a href="contact.html">Contact Support</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="why.html">Why HyperXGT</a>
+          <a href="club.html">Join Club</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="shipping.html">Shipping Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 HYPERXGT · All rights reserved</span>
+        <span>Secure checkout · Ships from India · RC expert support</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/products.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

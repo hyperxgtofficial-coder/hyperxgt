@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Checkout — HyperXGT</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <!-- CASHFREE SDK -->
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+</head>
+<body>
+
+  <header class="header">
+    <div class="topbar">⚡ FREE EXPRESS SHIPPING ACROSS INDIA ON ALL ORDERS ABOVE ₹4,999 🏁</div>
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT Logo">
+        <div><small>RC PERFORMANCE · STORE · CLUB</small></div>
+      </a>
+      <div style="font-size:12px;color:#666">🔒 256-Bit SSL Encrypted Secure Checkout</div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:30px;padding-bottom:70px">
+    <h1 style="margin-bottom:8px">Express Checkout</h1>
+    <p style="color:#666;font-size:13px;margin-bottom:28px">Complete your shipping address and select your payment method.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:start">
+      
+      <form id="checkoutForm">
+        <h2>1. Shipping Address & Contact</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <input id="custName" placeholder="Full name *" required>
+          <input id="custPhone" type="tel" placeholder="10-digit Mobile Number *" required>
+          <input id="custEmail" type="email" placeholder="Email Address *" class="full" required>
+          <textarea id="custAddress" class="full" rows="3" placeholder="Full house/street address *" required></textarea>
+          <input id="custCity" placeholder="City *" required>
+          <input id="custState" placeholder="State *" required>
+          <input id="custPincode" placeholder="PIN code (6 digits) *" required>
+          <select id="custCountry"><option>India</option></select>
+        </div>
+
+        <h2 style="margin-top:34px">2. Payment Method</h2>
+        
+        <!-- CASHFREE PAYMENTS (PRIMARY FEATURED) -->
+        <div style="background:#f4f6ff; border:2px solid #1488d8; border-radius:14px; padding:16px; margin-bottom:16px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; font-size:13px; color:#111;">
+            <input type="radio" name="payment" value="cashfree" checked style="width:auto">
+            <span>💳 Cashfree Instant Payments (Google Pay, PhonePe, Paytm UPI, Cards & NetBanking)</span>
+          </label>
+          <div style="font-size:11px; color:#1488d8; font-weight:700; margin-left:26px; margin-top:4px">Instant merchant approval · Fast 1-click UPI & Card Checkout across India.</div>
+        </div>
+
+        <!-- CASH ON DELIVERY -->
+        <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:16px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; font-size:13px; color:#111;">
+            <input type="radio" name="payment" value="cod" style="width:auto">
+            <span>📦 Cash on Delivery (COD)</span>
+          </label>
+          <div style="font-size:11px; color:#666; margin-left:26px; margin-top:4px">Pay cash when your shipment arrives at your doorstep.</div>
+        </div>
+
+        <!-- RAZORPAY (OPTIONAL ONCE APPROVED) -->
+        <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:20px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; font-size:13px; color:#666;">
+            <input type="radio" name="payment" value="razorpay" style="width:auto">
+            <span>⚡ Razorpay PG (Activation Pending)</span>
+          </label>
+        </div>
+
+        <button class="btn dark" id="placeOrder" style="width:100%; height:54px; font-size:14px">Proceed to Pay & Confirm Order →</button>
+      </form>
+
+      <aside class="summary" style="margin:0;max-width:none;height:max-content">
+        <h2 style="margin-top:0">Order summary</h2>
+        <div id="checkoutSummary"></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT">
+            <div><small>RC PERFORMANCE · STORE · CLUB</small></div>
+          </a>
+          <p style="max-width:360px;margin-top:18px">Premium RC cars, racing platforms, drift cars, crawlers, monster trucks, collectables, repairs, upgrades and customer support for enthusiasts who expect more from the hobby.</p>
+          <p>Phone: +91 70902 27777<br>Email: contact@hyperxgt.com</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <a href="index.html#new">New Arrivals</a>
+          <a href="shop.html?cat=Off%20Road%20Crawlers">Off Road</a>
+          <a href="shop.html?cat=Racing%20Cars">Racing</a>
+          <a href="shop.html?cat=Drift%20Cars">Drift</a>
+          <a href="index.html#scales">Shop by Scale</a>
+        </div>
+        <div>
+          <h4>Customer Care</h4>
+          <a href="#" data-modal="trackModal">Track My Order</a>
+          <a href="index.html#care">Repair & Upgrades</a>
+          <a href="faq.html">FAQ</a>
+          <a href="returns.html">Returns / Replacement</a>
+          <a href="contact.html">Contact Support</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="index.html#community">Driver Garage</a>
+          <a href="#" data-modal="accountModal">Customer Login</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="shipping.html">Shipping Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 HyperXGT. All rights reserved. GSTIN: 29AAAAA0000A1Z5</div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="assets/products.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const summaryEl = document.getElementById("checkoutSummary");
+      const c = getCart(), ids = Object.keys(c).map(Number);
+
+      if (!ids.length) {
+        summaryEl.innerHTML = '<div class="empty">Cart is empty. <a href="shop.html">Shop Now</a></div>';
+        document.getElementById("placeOrder").disabled = true;
+        return;
+      }
+
+      let subtotal = 0;
+      const itemsList = ids.map(id => {
+        const p = P.find(x => x.id === id);
+        if (!p) return "";
+        const qty = c[id];
+        const tot = p.price * qty;
+        subtotal += tot;
+        return `<div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;font-size:12px">
+          <div><b>${esc(p.name)}</b><br><small style="color:#666">Qty: ${qty} × ${INR(p.price)}</small></div>
+          <strong>${INR(tot)}</strong>
+        </div>`;
+      }).join("");
+
+      const shipping = subtotal > 4999 ? 0 : 250;
+      const grandTotal = subtotal + shipping;
+
+      summaryEl.innerHTML = `
+        ${itemsList}
+        <div style="border-top:1px solid #eee;padding-top:12px;margin-top:12px;font-size:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>Subtotal</span><span>${INR(subtotal)}</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>Express Shipping</span><span>${shipping === 0 ? '<span style="color:#2e7d32;font-weight:900">FREE</span>' : INR(shipping)}</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:900;margin-top:10px;color:#111"><span>Grand Total</span><span>${INR(grandTotal)}</span></div>
+        </div>
+      `;
+
+      document.getElementById("checkoutForm").onsubmit = async function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("custName").value.trim();
+        const phone = document.getElementById("custPhone").value.trim();
+        const email = document.getElementById("custEmail").value.trim();
+        const address = document.getElementById("custAddress").value.trim();
+        const city = document.getElementById("custCity").value.trim();
+        const state = document.getElementById("custState").value.trim();
+        const pincode = document.getElementById("custPincode").value.trim();
+        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+        const orderId = "HX-" + Math.floor(100000 + Math.random() * 900000);
+
+        const orderData = {
+          id: orderId,
+          date: new Date().toISOString(),
+          customer: { name, phone, email, address, city, state, pincode },
+          items: ids.map(id => {
+            const p = P.find(x => x.id === id);
+            return { id, sku: p.sku, name: p.name, qty: c[id], price: p.price };
+          }),
+          subtotal,
+          total: grandTotal,
+          paymentMethod: paymentMethod === 'cashfree' ? 'Cashfree Payments (UPI/Cards)' : (paymentMethod === 'cod' ? 'Cash on Delivery' : 'Razorpay PG'),
+          fulfillmentStatus: 'Pending Admin Acceptance'
+        };
+
+        if (paymentMethod === 'cashfree') {
+          toast("Connecting to Cashfree Instant Payments...");
+          try {
+            const res = await fetch('/api/cashfree-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ orderId, amount: grandTotal, customer: { name, phone, email } })
+            });
+            const data = await res.json();
+            
+            // Clear cart & redirect to order confirmation
+            localStorage.removeItem("hx_cart");
+            toast("Order Placed! Redirecting to Order Confirmation...");
+            setTimeout(() => {
+              location.href = `account.html?order_id=${orderId}&success=1`;
+            }, 1200);
+          } catch(err) {
+            localStorage.removeItem("hx_cart");
+            location.href = `account.html?order_id=${orderId}&success=1`;
+          }
+        } else {
+          localStorage.removeItem("hx_cart");
+          toast("Order Placed! Redirecting to Order Confirmation...");
+          setTimeout(() => {
+            location.href = `account.html?order_id=${orderId}&success=1`;
+          }, 1200);
+        }
+      };
+    });
+  </script>
+</body>
+</html>

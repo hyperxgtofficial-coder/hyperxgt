@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HyperXGT — Store Admin Portal & Inventory Manager</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/admin.css">
+</head>
+<body class="admin-body">
+  <!-- LOGIN OVERLAY -->
+  <div id="adminLoginOverlay" class="admin-login-overlay">
+    <div class="admin-login-card">
+      <div class="brand" style="justify-content:center;margin-bottom:14px">
+        <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT Admin">
+      </div>
+      <h2>Store Admin Login</h2>
+      <p style="font-size:12px;color:#666;margin-bottom:20px">Enter admin credentials to manage inventory, products & orders.</p>
+      
+      <form id="adminLoginForm">
+        <input class="field" id="adminEmail" type="email" placeholder="Admin Email" autocomplete="username" required>
+        <input class="field" id="adminPass" type="password" placeholder="Admin Password" autocomplete="current-password" required>
+        <button class="btn dark" type="submit" style="width:100%;height:48px;margin-top:10px">Sign In to Admin Portal →</button>
+      </form>
+      <div id="adminLoginErr" style="color:#ed1c24;font-size:11px;margin-top:12px;display:none">Invalid admin credentials.</div>
+    </div>
+  </div>
+
+  <!-- ADMIN PORTAL MAIN -->
+  <div id="adminPortal" style="display:none">
+    <header class="admin-header">
+      <div class="container nav" style="height:64px">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="assets/hyperxgt-logo.png" alt="HyperXGT Admin" style="height:38px">
+          <span style="background:#1488d8;color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:6px;margin-left:8px">ADMIN PORTAL</span>
+        </a>
+        <div style="display:flex;gap:14px;align-items:center">
+          <span style="font-size:11px;color:#666">Logged in as <strong>admin@hyperxgt.com</strong></span>
+          <a class="btn clear" href="index.html" target="_blank" style="height:36px;min-height:0;padding:0 14px;display:inline-flex;align-items:center;background:#f0f2f5;color:#111">View Live Store ↗</a>
+          <button class="btn red" id="adminLogout" style="height:36px;min-height:0;padding:0 14px">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" style="padding-top:28px;padding-bottom:60px">
+      <!-- DASHBOARD METRICS -->
+      <div class="admin-metrics">
+        <div class="metric-card">
+          <small>Total Catalogue Products</small>
+          <strong id="metricCount">338</strong>
+          <span>Sync'd with WooCommerce</span>
+        </div>
+        <div class="metric-card">
+          <small>Active Categories</small>
+          <strong>7</strong>
+          <span>Racing, Drift, Crawlers...</span>
+        </div>
+        <div class="metric-card">
+          <small>Total Inventory Value</small>
+          <strong id="metricValue">₹1.42 Cr</strong>
+          <span>Based on catalog price</span>
+        </div>
+        <div class="metric-card">
+          <small>Store Orders</small>
+          <strong id="metricOrders">12</strong>
+          <span>Express dispatch ready</span>
+        </div>
+      </div>
+
+      <!-- TABS NAVBAR -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="products">Product Inventory & GST Manager</button>
+        <button class="admin-tab" data-tab="orders">Orders & Logistics Center</button>
+        <button class="admin-tab" data-tab="reviews">💬 Reviews & Unboxing Approvals</button>
+        <button class="admin-tab" data-tab="collaborations">🤝 Brand Collaborations</button>
+        <button class="admin-tab" data-tab="integrations">🔌 Integrations & Social Publisher</button>
+        <button class="admin-tab" data-tab="database">Database & Shiprocket API Logs</button>
+      </div>
+
+      <!-- PRODUCTS MANAGER SECTION -->
+      <section id="tab-products" class="tab-content active">
+        <div class="admin-toolbar">
+          <div style="display:flex;gap:12px;flex:1;max-width:540px">
+            <input class="field" id="adminSearch" placeholder="Search SKU, name, scale, category..." style="margin:0">
+            <select class="field" id="adminCatFilter" style="margin:0;width:170px">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:10px">
+            <a class="btn clear" href="sample_products_template.csv" download style="height:50px;display:inline-flex;align-items:center;gap:6px;background:#f5f5f5;border:1px solid var(--line);color:#333;font-size:11px;font-weight:800;padding:0 14px;border-radius:12px">
+              📄 Sample CSV
+            </a>
+            <label class="btn clear" style="height:50px;display:inline-flex;align-items:center;gap:8px;background:#f0f4ff;border:1px solid #1488d8;color:#1488d8;cursor:pointer;font-weight:800;font-size:12px;padding:0 16px;border-radius:12px">
+              <span>📥 Bulk CSV Update All</span>
+              <input type="file" id="adminCsvFileInput" accept=".csv" style="display:none">
+            </label>
+            <button class="btn blue" id="btnOpenAddModal" style="height:50px;border-radius:12px">+ Add New Product</button>
+          </div>
+        </div>
+
+        <div style="font-size:12px;color:#666;margin:14px 0 10px" id="adminCountText">Showing 338 products</div>
+
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>SKU</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Stock (Units)</th>
+                <th>Price Excl. GST</th>
+                <th>GST Rate</th>
+                <th>Price Incl. GST</th>
+                <th>Scale</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody">
+              <!-- Dynamically rendered -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ORDERS & LOGISTICS FULFILLMENT SECTION -->
+      <section id="tab-orders" class="tab-content">
+        <div class="admin-toolbar">
+          <div style="display:flex;gap:12px;flex:1;max-width:640px">
+            <input class="field" id="orderSearch" placeholder="Search Order ID, Customer Name, Phone, AWB..." style="margin:0">
+            <select class="field" id="orderStatusFilter" style="margin:0;width:230px">
+              <option value="">All Fulfillment Statuses</option>
+              <option value="Pending Admin Acceptance">🟡 Pending Admin Acceptance</option>
+              <option value="Processing">Processing</option>
+              <option value="Packed">Packed</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Out for Delivery">Out for Delivery</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div style="font-size:12px;color:#666;font-weight:700" id="orderCountText">Showing 5 orders</div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:16px">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date & Time</th>
+                <th>Customer & Address</th>
+                <th>Order Items</th>
+                <th>Total (₹)</th>
+                <th>Payment Status</th>
+                <th>Logistics & AWB</th>
+                <th>Fulfillment Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersBody">
+              <!-- Orders list -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CUSTOMER REVIEWS & UNBOXINGS APPROVAL SECTION -->
+      <section id="tab-reviews" class="tab-content">
+        <div style="background:#fff;border:1px solid #2e7d32;border-radius:18px;padding:24px;margin-top:20px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <h3 style="margin:0;color:#2e7d32">💬 Customer Reviews, Unboxings & 10% Coupon Management</h3>
+              <p style="font-size:12px;color:#666;margin:4px 0 0">Review submitted unboxing videos & photos. Upon approving a submission, an automated 10% coupon code is generated and emailed to the customer!</p>
+            </div>
+            <span style="background:#e8f5e9;color:#2e7d32;font-size:11px;font-weight:900;padding:6px 12px;border-radius:8px">AUTOMATED COUPON DISPATCH</span>
+          </div>
+
+          <div class="table-wrap" style="margin-top:20px">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer Info</th>
+                  <th>Order Ref</th>
+                  <th>Rating & Review</th>
+                  <th>Unboxing Media</th>
+                  <th>Status</th>
+                  <th>10% Coupon</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminReviewsBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- BRAND COLLABORATIONS MANAGER SECTION -->
+      <section id="tab-collaborations" class="tab-content">
+        <div style="background:#fff;border:1px solid #1488d8;border-radius:18px;padding:24px;margin-top:20px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+            <div>
+              <h3 style="margin:0;color:#1488d8">🤝 Official Brand Collaborations Manager</h3>
+              <p style="font-size:12px;color:#666;margin:4px 0 0">Manage partner logos scrolling in the homepage brand collaborations ticker.</p>
+            </div>
+            <button class="btn blue" id="btnAddCollab">+ Add New Brand Partner</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Logo</th>
+                  <th>Brand Name</th>
+                  <th>Website Link</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminCollabBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTEGRATIONS & SOCIAL MEDIA PUBLISHER SECTION -->
+      <section id="tab-integrations" class="tab-content">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-top:20px">
+          
+          <!-- SOCIAL MEDIA CONTENT PUBLISHER -->
+          <div style="background:#fff; border:1px solid #7b2cbf; border-radius:18px; padding:24px">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
+              <h3 style="margin:0; color:#7b2cbf; font-size:16px">📲 Social Media Content Publisher</h3>
+              <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 10px; border-radius:8px">META & SOCIAL API READY</span>
+            </div>
+            <p style="font-size:12px; color:#666; margin-bottom:18px">Select any store product to generate promotional captions and publish posts/reels across your connected social channels.</p>
+
+            <form id="socialPublisherForm">
+              <div style="margin-bottom:14px">
+                <label class="form-label">Select Product to Promote *</label>
+                <select class="field" id="socialProdSelect" style="margin:0">
+                  <!-- Populated dynamically with 338 products -->
+                </select>
+              </div>
+
+              <div style="margin-bottom:14px">
+                <label class="form-label">Target Social Channels *</label>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:#f9f9fc; padding:12px; border-radius:10px; border:1px solid var(--line); font-size:12px">
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer"><input type="checkbox" id="chkInsta" checked> 📸 Instagram Feed & Reels</label>
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer"><input type="checkbox" id="chkFb" checked> 📘 Facebook Page & Shop</label>
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer"><input type="checkbox" id="chkWa" checked> 💬 WhatsApp Broadcast</label>
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer"><input type="checkbox" id="chkYt" checked> 📺 YouTube Shorts</label>
+                </div>
+              </div>
+
+              <div style="margin-bottom:14px">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+                  <label class="form-label" style="margin:0">Post Caption & Hashtags *</label>
+                  <button type="button" class="btn clear" id="btnAutoCaption" style="height:28px; padding:0 10px; font-size:10px; background:#f0f4ff; color:#1488d8">✨ Auto-Generate AI Copy</button>
+                </div>
+                <textarea class="field" id="socialCaption" style="height:110px; padding-top:10px; font-size:12px" placeholder="Enter social post caption..."></textarea>
+              </div>
+
+              <div style="display:flex; gap:12px; align-items:center">
+                <button class="btn" type="submit" style="background:#7b2cbf; color:#fff; height:46px; flex:1; font-weight:900">🚀 Publish Live to Connected Channels</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- CONNECTED PLATFORMS HUB -->
+          <div style="display:flex; flex-direction:column; gap:14px">
+            <div style="background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px">
+              <h3 style="margin:0 0 14px; font-size:15px; color:#111">🔌 Connected E-Commerce & Social APIs</h3>
+              
+              <div style="display:flex; flex-direction:column; gap:12px">
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
+                  <div>
+                    <strong style="color:#111; display:block">📸 Instagram Graph API</strong>
+                    <small style="color:#666; font-size:10px">HyperXGT Business Account (@hyperxgt_official)</small>
+                  </div>
+                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
+                  <div>
+                    <strong style="color:#111; display:block">📘 Facebook Marketing & Shop API</strong>
+                    <small style="color:#666; font-size:10px">HyperXGT Official Facebook Page</small>
+                  </div>
+                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
+                  <div>
+                    <strong style="color:#111; display:block">💬 WhatsApp Cloud API</strong>
+                    <small style="color:#666; font-size:10px">+91 70902 27777 Business Broadcast</small>
+                  </div>
+                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
+                  <div>
+                    <strong style="color:#111; display:block">🚀 Shiprocket REST API v1</strong>
+                    <small style="color:#666; font-size:10px">Courier Allocation & AWB Generation</small>
+                  </div>
+                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
+                  <div>
+                    <strong style="color:#111; display:block">💳 Razorpay & Cashfree Gateways</strong>
+                    <small style="color:#666; font-size:10px">Live Instant UPI, Netbanking & Cards</small>
+                  </div>
+                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DATABASE & API LOGS SECTION -->
+      <section id="tab-database" class="tab-content">
+        <!-- LIVE SHIPROCKET API CONNECTION PANEL -->
+        <div style="background:#fff; border:1px solid #7b2cbf; border-radius:18px; padding:24px; margin-top:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="color:#7b2cbf; margin:0; font-size:16px">🚀 Live Shiprocket API Connection Panel</h3>
+            <span style="background:#7b2cbf; color:#fff; font-weight:900; font-size:10px; padding:4px 10px; border-radius:8px">SHIPROCKET REST API v1</span>
+          </div>
+          <p style="font-size:12px; color:#666; margin:8px 0 16px">Enter your live Shiprocket credentials to automatically push store orders, allocate couriers, and generate AWB tracking numbers.</p>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px">
+            <div>
+              <label class="form-label">Shiprocket Email</label>
+              <input class="field" id="srkEmail" placeholder="contact@hyperxgt.com" value="contact@hyperxgt.com" style="margin:0">
+            </div>
+            <div>
+              <label class="form-label">Shiprocket Password / API Key</label>
+              <input class="field" type="password" id="srkPassword" placeholder="Enter Shiprocket password..." style="margin:0">
+            </div>
+          </div>
+
+          <div style="margin-top:14px; display:flex; gap:12px; align-items:center; flex-wrap:wrap">
+            <button class="btn" id="btnTestShiprocket" style="background:#7b2cbf; color:#fff; height:44px; min-height:0">Test Connection to Shiprocket API 🚀</button>
+            <div id="srkApiStatus" style="font-size:12px; font-weight:700; color:#2e7d32">✓ API Bridge Connected: Ready to push orders to Shiprocket</div>
+          </div>
+        </div>
+
+        <!-- DYNAMIC DATABASE OVERLAP & LIVE SYNC PANEL -->
+        <div style="background:#fff; border:1px solid #1488d8; border-radius:18px; padding:24px; margin-top:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+            <h3 style="color:#1488d8; margin:0; font-size:16px">🗄️ Database Overlap Inspector & Live Sync Hub</h3>
+            <span style="background:#e8f5e9; color:#2e7d32; font-weight:900; font-size:10px; padding:4px 10px; border-radius:8px">NO OVERLAPS DETECTED ✓</span>
+          </div>
+          <p style="font-size:12px; color:#666; margin:0 0 16px">Verify data storage across static CSV data (<code>assets/products.js</code>), browser LocalStorage (<code>hx_products_db</code>), and serverless database (<code>/api/products-crud</code>).</p>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:18px">
+            <div style="background:#f8f9fa; border:1px solid var(--line); border-radius:12px; padding:14px">
+              <span style="font-size:11px; color:#666; display:block">Total Products Loaded</span>
+              <strong style="font-size:20px; color:#111" id="dbTotalCount">338 Products</strong>
+            </div>
+            <div style="background:#f8f9fa; border:1px solid var(--line); border-radius:12px; padding:14px">
+              <span style="font-size:11px; color:#666; display:block">LocalStorage Status</span>
+              <strong style="font-size:20px; color:#2e7d32" id="dbLocalStatus">Synced ✓</strong>
+            </div>
+            <div style="background:#f8f9fa; border:1px solid var(--line); border-radius:12px; padding:14px">
+              <span style="font-size:11px; color:#666; display:block">CSV Overlap Status</span>
+              <strong style="font-size:20px; color:#2e7d32" id="dbOverlapStatus">0 Overlaps</strong>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap">
+            <button class="btn blue" id="btnSyncAllToLive" style="height:44px">🔄 Sync All Admin Edits to Live Website & Server</button>
+            <button class="btn dark" id="btnExportDatabaseJs" style="height:44px">📥 Download Updated Database File (assets/products.js)</button>
+          </div>
+        </div>
+
+        <div style="background:#0d0e11;color:#a6adc8;padding:24px;border-radius:18px;font-family:monospace;font-size:12px;margin-top:20px">
+          <h3 style="color:#fff;margin-top:0">🗄️ Database Status & Connection Info</h3>
+          <div>Database Engine: PostgreSQL / Vercel Serverless JSON KV Store</div>
+          <div>Database Path: <code>/data/products.json</code> & Serverless API Routes</div>
+          <div>REST API Endpoints:</div>
+          <div style="color:#89b4fa;margin-left:14px">
+            - POST /api/shiprocket (Shiprocket Order Push & Tracking)<br>
+            - GET /api/products-crud (Fetch Catalogue)<br>
+            - POST /api/products-crud (Add Product)<br>
+            - PUT /api/products-crud (Update Product)<br>
+            - DELETE /api/products-crud?id=X (Delete Product)<br>
+            - POST /api/create-order (Create Order)<br>
+            - GET /api/track-order (Track Shipment)
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ADD / EDIT PRODUCT MODAL -->
+  <div class="modal" id="productModal">
+    <div class="shade"></div>
+    <div class="modal-box" style="width:min(780px,94vw);max-height:88vh">
+      <div class="drawer-head">
+        <b id="modalTitle">Add New Product</b>
+        <button class="x" onclick="closeEl(this)">×</button>
+      </div>
+      
+      <form id="productForm" style="margin-top:18px">
+        <input type="hidden" id="formProdId">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label class="form-label">Product Name *</label>
+            <input class="field" id="formName" required placeholder="e.g. 1:10 Brushless RC Rally Car">
+          </div>
+          <div>
+            <label class="form-label">SKU Code *</label>
+            <input class="field" id="formSku" required placeholder="e.g. HX-10482">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:10px">
+          <div>
+            <label class="form-label">Category *</label>
+            <select class="field" id="formCat">
+              <option>Racing Cars</option>
+              <option>Drift Cars</option>
+              <option>Monster Trucks</option>
+              <option>Off Road Crawlers</option>
+              <option>Buggies & Truggies</option>
+              <option>Mini RC</option>
+              <option>Collectables</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Stock Units *</label>
+            <input class="field" type="number" id="formStock" required placeholder="25" value="25" min="0">
+          </div>
+          <div>
+            <label class="form-label">Pricing Tax Mode *</label>
+            <select class="field" id="formGstTaxType">
+              <option value="inclusive" selected>Prices INCLUSIVE of GST</option>
+              <option value="exclusive">Prices EXCLUSIVE of GST</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" id="lblFormPrice">Sale Price ₹ *</label>
+            <input class="field" type="number" id="formPrice" required placeholder="6248">
+          </div>
+          <div>
+            <label class="form-label" id="lblFormMrp">Regular MRP ₹ *</label>
+            <input class="field" type="number" id="formMrp" required placeholder="7810">
+          </div>
+        </div>
+
+        <!-- INDIAN GST TAX & HSN COMPLIANCE SECTION -->
+        <div style="margin-top:14px; background:#fff8e1; border:1px solid #ffe082; border-radius:14px; padding:16px;">
+          <label class="form-label" style="color:#b78103">Indian GST Tax Breakdown & HSN Code Compliance *</label>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px">
+            <div>
+              <label class="form-label">GST Tax Rate %</label>
+              <select class="field" id="formGstRate" style="margin:0">
+                <option value="18" selected>18% GST (Standard)</option>
+                <option value="28">28% GST (Luxury RC)</option>
+                <option value="12">12% GST</option>
+                <option value="5">5% GST</option>
+                <option value="0">0% GST Exempt</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" id="lblPriceExcl">Price Excl. GST (₹)</label>
+              <input class="field" id="formPriceExcl" readonly style="margin:0; background:#fff; font-weight:900; color:#555">
+            </div>
+            <div>
+              <label class="form-label" id="lblGstAmount">GST Tax Amount (₹)</label>
+              <input class="field" id="formGstAmount" readonly style="margin:0; background:#fff; font-weight:900; color:#2e7d32">
+            </div>
+            <div>
+              <label class="form-label">HSN Code</label>
+              <input class="field" id="formHsn" placeholder="95030090" value="95030090" style="margin:0">
+            </div>
+          </div>
+          <div id="gstBreakdownText" style="font-size:11px; color:#795548; margin-top:10px; font-weight:700">
+            Tax Breakdown: CGST 9% (₹0) + SGST 9% (₹0)
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px">
+          <div>
+            <label class="form-label">Scale Factor</label>
+            <input class="field" id="formScale" placeholder="e.g. 1:10">
+          </div>
+          <div>
+            <label class="form-label">Top Speed</label>
+            <input class="field" id="formSpeed" placeholder="e.g. 60 KM/H">
+          </div>
+          <div>
+            <label class="form-label">Drive System</label>
+            <select class="field" id="formDrive">
+              <option>4WD</option>
+              <option>2WD</option>
+              <option>RWD</option>
+              <option>Pull-Back</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- MULTIPLE FILE UPLOAD & GALLERY MANAGER -->
+        <div style="margin-top:14px; background:#f7f9ff; border:1px solid #dce4ff; border-radius:14px; padding:16px;">
+          <label class="form-label" style="color:#1488d8">Product Photos & Multi-Angle Gallery *</label>
+          
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+            <label style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;background:#1488d8;color:#fff;border-radius:10px;font-weight:900;font-size:12px;cursor:pointer">
+              <span>📸 Select Multiple Image Files...</span>
+              <input type="file" id="formFileInput" accept="image/*" multiple style="display:none">
+            </label>
+            <button type="button" onclick="clearAllModalImages()" style="padding:12px 16px;background:#ed1c24;color:#fff;border:0;border-radius:10px;font-weight:900;font-size:12px;cursor:pointer">🗑️ Clear All Photos</button>
+            <span style="font-size:11px;color:#888">Main Hero Image URL:</span>
+            <input class="field" id="formImage" placeholder="Uploaded photo URL or path..." style="margin:0;flex:1;min-width:200px">
+          </div>
+
+          <div style="margin-bottom:12px">
+            <label class="form-label" style="font-size:11px">Additional Gallery Photo URLs (comma separated)</label>
+            <textarea class="field" id="formImagesList" rows="2" style="margin:0;font-size:11px;padding-top:8px" placeholder="e.g. photo1.webp, photo2.webp"></textarea>
+          </div>
+
+          <div style="font-size:11px;font-weight:800;color:#555;margin-bottom:6px">Active Gallery Thumbnails (Click any mini pic to set as Main Hero Image, click × to delete pic):</div>
+          <div id="formGalleryPreview" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"></div>
+        </div>
+
+        <!-- PRODUCT VIDEO UPLOAD & URL MANAGER -->
+        <div style="margin-top:14px; background:#f4f6ff; border:1px solid #cce0ff; border-radius:14px; padding:16px;">
+          <label class="form-label" style="color:#1488d8">🎥 Product Action Video (YouTube Embed URL or MP4 Video File)</label>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <input class="field" id="formVideoUrl" placeholder="e.g. https://www.youtube.com/watch?v=... or https://youcliq.com/video.mp4" style="margin:0;flex:1;min-width:240px">
+            <label style="display:inline-flex;align-items:center;gap:6px;padding:12px 16px;background:#2e7d32;color:#fff;border-radius:10px;font-weight:900;font-size:12px;cursor:pointer">
+              <span>📹 Upload Video File...</span>
+              <input type="file" id="formVideoFileInput" accept="video/*" style="display:none">
+            </label>
+          </div>
+          <div style="font-size:10.5px;color:#666;margin-top:6px">When a video URL or video file is attached, an interactive live video player automatically displays on the live website for customers!</div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="form-label">Product Short Description</label>
+          <textarea class="field" id="formShortDesc" style="height:70px;padding-top:10px" placeholder="Brief summary of model specs..."></textarea>
+        </div>
+
+
+        <div style="margin-top:10px">
+          <label class="form-label">Full Technical Description (HTML allowed)</label>
+          <textarea class="field" id="formFullDesc" style="height:100px;padding-top:10px" placeholder="Detailed specs and feature highlights..."></textarea>
+        </div>
+
+        <div class="modal-row" style="margin-top:20px">
+          <button class="btn dark" type="submit" style="flex:1">Save Product to Database ✓</button>
+          <button class="btn" type="button" onclick="closeEl(this)">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ORDER FULFILLMENT & LOGISTICS TRACKING MODAL -->
+  <div class="modal" id="orderFulfillmentModal">
+    <div class="shade"></div>
+    <div class="modal-box" style="width:min(780px,94vw);max-height:90vh">
+      <div class="drawer-head">
+        <b id="ordModalTitle">Order Fulfillment & Shipment Center</b>
+        <button class="x" onclick="closeEl(this)">×</button>
+      </div>
+
+      <div id="ordModalContent" style="margin-top:18px">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Changes saved</div>
+
+  <script src="assets/products.js"></script>
+  <script src="assets/admin.js"></script>
+</body>
+</html>
