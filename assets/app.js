@@ -10,7 +10,16 @@ function loadProductsDB() {
         // Smart merge: Admin & local modifications overwrite static CSV data by ID
         const map = new Map();
         staticProducts.forEach(p => map.set(p.id, p));
-        parsed.forEach(p => map.set(p.id, { ...map.get(p.id), ...p }));
+        parsed.forEach(p => {
+          const existing = map.get(p.id) || {};
+          const merged = { ...existing, ...p };
+          if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
+            merged.image = "";
+            merged.images = [];
+            merged.no_image = true;
+          }
+          map.set(p.id, merged);
+        });
         return Array.from(map.values());
       }
     }
@@ -44,6 +53,7 @@ function toast(msg) {
 
 // ROBUST MULTI-IMAGE GALLERY PARSER
 function parseImagesArray(p) {
+  if (p && p.no_image) return [];
   let list = [];
   if (Array.isArray(p.images) && p.images.length) {
     list = p.images.map(x => String(x).trim()).filter(Boolean);
@@ -57,12 +67,12 @@ function parseImagesArray(p) {
     }
   }
 
-  if (!list.length && p.image) {
+  if (!list.length && p.image && p.image.trim()) {
     list = [p.image.trim()];
   }
 
   const cleanList = [...new Set(list)].filter(x => x && x.length > 5);
-  return cleanList.length ? cleanList : (p.image && p.image.trim() ? [p.image.trim()] : []);
+  return cleanList;
 }
 
 // INTERACTIVE HERO IMAGE SWITCHER
@@ -94,7 +104,16 @@ async function fetchLiveBackendProducts() {
       const staticProducts = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) ? window.HX_PRODUCTS : [];
       const map = new Map();
       staticProducts.forEach(p => map.set(p.id, p));
-      liveProducts.forEach(p => map.set(p.id, { ...map.get(p.id), ...p }));
+      liveProducts.forEach(p => {
+        const existing = map.get(p.id) || {};
+        const merged = { ...existing, ...p };
+        if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
+          merged.image = "";
+          merged.images = [];
+          merged.no_image = true;
+        }
+        map.set(p.id, merged);
+      });
 
       P = Array.from(map.values());
       window.HX_PRODUCTS = P;

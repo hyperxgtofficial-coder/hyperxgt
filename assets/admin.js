@@ -752,12 +752,13 @@ async function saveProduct(e) {
   const rawGallery = $("#formImagesList").value.trim();
   const images = rawGallery ? rawGallery.split(',').map(x => x.trim()).filter(Boolean) : [];
   let image = $("#formImage").value.trim();
+
+  const isNoImage = (!image && images.length === 0);
+
   if (images.length > 0 && (!image || !images.includes(image))) {
     image = images[0];
   }
-  if (!image && images.length > 0) {
-    image = images[0];
-  }
+
   const video = $("#formVideoUrl") ? $("#formVideoUrl").value.trim() : "";
 
   const short_description = $("#formShortDesc").value.trim();
@@ -778,8 +779,9 @@ async function saveProduct(e) {
     scale,
     speed,
     drive,
-    image,
-    images,
+    image: isNoImage ? "" : image,
+    images: isNoImage ? [] : images,
+    no_image: isNoImage,
     video,
     short_description,
     full_description
