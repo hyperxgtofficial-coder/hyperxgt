@@ -223,7 +223,12 @@
             await fetch('/api/cashfree-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ orderId, amount: grandTotal, customer: { name, phone, email } })
+              body: JSON.stringify({
+                orderId,
+                amount: grandTotal,
+                items: orderData.items,
+                customer: { name, phone, email }
+              })
             });
           } catch(err) {}
         }
@@ -232,7 +237,7 @@
         toast("Order Placed Successfully! Redirecting to Garage...");
         setTimeout(() => {
           location.href = `account.html?order_id=${orderId}&success=1`;
-        }, 1200);
+        }, 1000);
       };
     });
   </script>
