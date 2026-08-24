@@ -91,6 +91,7 @@ module.exports = async (req, res) => {
 
       let userObj = null;
       let sessionData = null;
+      let supabaseError = null;
 
       try {
         const suRes = await httpsRequest(signUpUrl, 'POST', commonHeaders, signUpBody);
@@ -99,30 +100,31 @@ module.exports = async (req, res) => {
           sessionData = suRes.body;
         } else if (suRes.body && (suRes.body.user || suRes.body.id)) {
           userObj = suRes.body.user || suRes.body;
-        } else if (suRes.body && (suRes.body.msg || suRes.body.error_description)) {
-          const apiError = suRes.body.msg || suRes.body.error_description;
-          // If Supabase created user but native mailer failed, fall back to branded email dispatch
-          if (apiError.toLowerCase().includes("confirmation email") || apiError.toLowerCase().includes("email")) {
-            console.log("Supabase native mailer error, falling back to branded email engine:", apiError);
+        } else if (suRes.body && (suRes.body.msg || suRes.body.error_description || suRes.body.message)) {
+          supabaseError = suRes.body.msg || suRes.body.error_description || suRes.body.message;
+          // If Supabase created user but native mailer failed, extract user or proceed
+          if (supabaseError.toLowerCase().includes("confirmation email")) {
             userObj = {
               id: "usr_" + Math.floor(100000 + Math.random() * 900000),
               email: email.toLowerCase().trim(),
               user_metadata: { full_name: name || "Driver", phone: phone || "" }
             };
           } else {
-            return res.status(400).json({ error: apiError });
+            return res.status(400).json({ error: supabaseError });
           }
         }
       } catch(err) {
-        console.log("Supabase direct auth fallback:", err.message);
+        console.log("Supabase signup connection error:", err.message);
+        supabaseError = err.message;
       }
 
       if (!userObj) {
-        userObj = {
-          id: "usr_" + Math.floor(100000 + Math.random() * 900000),
-          email: email.toLowerCase().trim(),
-          user_metadata: { full_name: name || "Driver", phone: phone || "" }
-        };
+        if (supabaseUrl.includes("dummy") || supabaseAnonKey.includes("dummy")) {
+          return res.status(400).json({ 
+            error: "SUPABASE_URL or SUPABASE_ANON_KEY is not set in Vercel Environment Variables. Please add SUPABASE_URL & SUPABASE_ANON_KEY in Vercel Settings." 
+          });
+        }
+        return res.status(400).json({ error: supabaseError || "Failed to register user in Supabase Auth." });
       }
 
       // Trigger Branded Welcome & Verification Email Dispatch
