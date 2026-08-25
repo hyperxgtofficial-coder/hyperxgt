@@ -1,8 +1,0 @@
-Existing products found in uploaded project: 337
-Buggies & Truggies: 4
-Collectables: 199
-Diecast Models: 2
-Drift Cars: 68
-Monster Trucks: 19
-Off Road Crawlers: 21
-Racing Cars: 24
