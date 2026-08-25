@@ -7,6 +7,6 @@
     "build": "echo 'Build step complete'"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   }
 }
