@@ -3,6 +3,7 @@
 .system_generated
 brain
 scratch
+images
 *.csv
 live_hyperxgt_scraped.json
 audit_*.js
