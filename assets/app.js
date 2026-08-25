@@ -202,28 +202,30 @@ async function logoutCustomer() {
 
 function updateAuthUI() {
   const user = getAuthUser();
-  const accountBtns = $$('[data-modal="accountModal"]');
+  const accountBtns = $$('[data-modal="accountModal"], .accountBtn');
+  const userSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+
   accountBtns.forEach(btn => {
     if (user) {
       if (btn.classList.contains("icon")) {
         btn.title = `Driver: ${user.name || user.email}`;
-        btn.innerHTML = `👤`;
+        btn.innerHTML = userSvg;
       } else {
-        btn.textContent = `👤 ${user.name ? user.name.split(' ')[0] : 'My Garage'}`;
+        btn.innerHTML = `${userSvg} ${esc(user.name ? user.name.split(' ')[0] : 'My Garage')}`;
       }
     } else {
       if (btn.classList.contains("icon")) {
-        btn.title = "Account";
-        btn.innerHTML = `♙`;
+        btn.title = "Driver Account / Login";
+        btn.innerHTML = userSvg;
       } else {
-        btn.textContent = `Customer Login`;
+        btn.innerHTML = `${userSvg} Customer Login`;
       }
     }
   });
 
   const mobAccBtn = $("#btnMobGarageAcc");
   if (mobAccBtn) {
-    mobAccBtn.textContent = user ? `👤 ${user.name || 'My Garage'}` : `♙ My Garage`;
+    mobAccBtn.innerHTML = user ? `${userSvg} ${esc(user.name || 'My Garage')}` : `${userSvg} Driver Sign In / Register`;
   }
 }
 
@@ -483,7 +485,7 @@ function ensureGlobalModalsAndDrawers() {
           <a href="contact.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Care & Support</a>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
             <button class="btn blue" onclick="closeEl(this); openModal('trackModal')">⌖ Track Order</button>
-            <button class="btn dark" onclick="closeEl(this); openModal('accountModal')">♙ My Garage</button>
+            <button class="btn dark" id="btnMobGarageAcc" data-modal="accountModal" onclick="closeEl(this); openModal('accountModal')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Driver Garage</button>
           </div>
         </div>
       </div>
@@ -699,27 +701,27 @@ function initChrome() {
   updateAuthUI();
   renderAccountModalUI();
 
-  // BIND ALL ACTION BUTTONS & MODALS
-  $$("[data-modal]").forEach(b => {
-    b.onclick = (e) => {
-      e.preventDefault();
-      openModal(b.dataset.modal);
-    };
-  });
+  // GLOBAL DELEGATED CLICK LISTENER FOR ALL MODALS & DRAWERS
+  document.addEventListener("click", (e) => {
+    const modalBtn = e.target.closest("[data-modal]");
+    if (modalBtn) {
+      const modalId = modalBtn.getAttribute("data-modal");
+      if (modalId) {
+        e.preventDefault();
+        openModal(modalId);
+        return;
+      }
+    }
 
-  $$("[data-drawer]").forEach(b => {
-    b.onclick = (e) => {
-      e.preventDefault();
-      openModal(b.dataset.drawer);
-    };
-  });
-
-  // Track Icon Button (⌖)
-  $$(".trackIcon").forEach(b => {
-    b.onclick = (e) => {
-      e.preventDefault();
-      openModal("trackModal");
-    };
+    const drawerBtn = e.target.closest("[data-drawer]");
+    if (drawerBtn) {
+      const drawerId = drawerBtn.getAttribute("data-drawer");
+      if (drawerId) {
+        e.preventDefault();
+        openModal(drawerId);
+        return;
+      }
+    }
   });
 
   // Mobile Menu Triggers (☰ #mobileOpen, .icon.mobile)
