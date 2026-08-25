@@ -557,16 +557,18 @@ function ensureGlobalModalsAndDrawers() {
     accModal.id = "accountModal";
     document.body.appendChild(accModal);
   }
-  accModal.innerHTML = `
-    <div class="shade" onclick="closeEl(this)"></div>
-    <div class="modal-box" style="max-width:440px;position:relative;z-index:2">
-      <div class="drawer-head">
-        <b style="font-size:15px;color:#111">Driver Garage Account</b>
-        <button class="x" onclick="closeEl(this)" style="cursor:pointer">×</button>
+  if (!$("#accountModalBody", accModal)) {
+    accModal.innerHTML = `
+      <div class="shade" onclick="closeEl(this)"></div>
+      <div class="modal-box" style="max-width:440px;position:relative;z-index:2">
+        <div class="drawer-head">
+          <b style="font-size:15px;color:#111">Driver Garage Account</b>
+          <button class="x" onclick="closeEl(this)" style="cursor:pointer">×</button>
+        </div>
+        <div id="accountModalBody" style="margin-top:16px"></div>
       </div>
-      <div id="accountModalBody" style="margin-top:16px"></div>
-    </div>
-  `;
+    `;
+  }
 
   if (!$("#cartDrawer")) {
     const div = document.createElement("div");
@@ -607,6 +609,7 @@ function renderAccountModalUI() {
 
         <div style="display:grid;gap:10px;margin-top:22px">
           <a class="btn blue" href="account.html" style="text-align:center;display:block">Open My Garage & Orders →</a>
+          <button class="btn clear" onclick="logoutCustomer(); renderAccountModalUI();" style="border:1px solid #ddd;color:#555">Sign In as Different User</button>
           <button class="btn red" onclick="logoutCustomer(); renderAccountModalUI();">Sign Out</button>
         </div>
       </div>
