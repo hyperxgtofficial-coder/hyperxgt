@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "HyperXGT E-Commerce Platform",
-  "scripts": {
-    "build": "echo 'Build step complete'"
-  },
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   }
 }
