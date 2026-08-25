@@ -1,9 +1,0 @@
-{
-  "name": "hyperxgt-website",
-  "version": "1.0.0",
-  "private": true,
-  "description": "HyperXGT E-Commerce Platform",
-  "engines": {
-    "node": "22.x"
-  }
-}
