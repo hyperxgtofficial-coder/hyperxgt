@@ -109,7 +109,7 @@ module.exports = async (req, res) => {
       },
       order_meta: {
         return_url: `https://hyperxgt.com/account.html?order_id={order_id}`,
-        notify_url: `https://hyperxgt.com/api/verify-cashfree-payment`
+        notify_url: `https://hyperxgt.com/api/verify-payment?provider=cashfree`
       }
     });
 
