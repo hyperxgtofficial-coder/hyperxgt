@@ -40,7 +40,15 @@ const $ = (q, r = document) => r.querySelector(q);
 const $$ = (q, r = document) => [...r.querySelectorAll(q)];
 const INR = n => "₹" + Number(n || 0).toLocaleString("en-IN");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
-const openModal = id => $("#" + id)?.classList.add("open");
+const openModal = id => {
+  if (!id) return;
+  if (id === "accountModal") {
+    ensureGlobalModalsAndDrawers();
+    renderAccountModalUI();
+  }
+  const el = $("#" + id);
+  if (el) el.classList.add("open");
+};
 const closeEl = el => el.closest(".modal,.drawer")?.classList.remove("open");
 
 function toast(msg) {
@@ -534,9 +542,12 @@ function ensureGlobalModalsAndDrawers() {
     document.body.appendChild(accModal);
   }
   accModal.innerHTML = `
-    <div class="shade"></div>
-    <div class="modal-box" style="max-width:440px">
-      <div class="drawer-head"><b>Driver Garage Account</b><button class="x">×</button></div>
+    <div class="shade" onclick="closeEl(this)"></div>
+    <div class="modal-box" style="max-width:440px;position:relative;z-index:2">
+      <div class="drawer-head">
+        <b style="font-size:15px;color:#111">Driver Garage Account</b>
+        <button class="x" onclick="closeEl(this)" style="cursor:pointer">×</button>
+      </div>
       <div id="accountModalBody" style="margin-top:16px"></div>
     </div>
   `;
