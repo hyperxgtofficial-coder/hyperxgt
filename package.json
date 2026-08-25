@@ -1,0 +1,12 @@
+{
+  "name": "hyperxgt-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HyperXGT E-Commerce Platform",
+  "scripts": {
+    "build": "echo 'Build step complete'"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

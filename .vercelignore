@@ -1,0 +1,17 @@
+.git
+.github
+.system_generated
+brain
+scratch
+*.csv
+live_hyperxgt_scraped.json
+audit_*.js
+copy_*.js
+fix_*.js
+map_*.js
+update_*.js
+verify_*.js
+build_*.js
+ANTIGRAVITY_MASTER_PROMPT.txt
+CATALOGUE_DATA_CHECK.txt
+LIVE_SITE_REFERENCE_NOTES.txt
