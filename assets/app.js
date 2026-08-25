@@ -7,18 +7,23 @@ function loadProductsDB() {
     if (local) {
       const parsed = JSON.parse(local);
       if (parsed && Array.isArray(parsed) && parsed.length > 0) {
-        // Smart merge: Admin & local modifications overwrite static CSV data by ID
+        // Smart merge: Admin & local modifications overwrite static CSV data by ID with string keys
         const map = new Map();
-        staticProducts.forEach(p => map.set(p.id, p));
+        staticProducts.forEach(p => {
+          if (p && p.id != null) map.set(String(p.id), p);
+        });
         parsed.forEach(p => {
-          const existing = map.get(p.id) || {};
-          const merged = { ...existing, ...p };
-          if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
-            merged.image = "";
-            merged.images = [];
-            merged.no_image = true;
+          if (p && p.id != null) {
+            const key = String(p.id);
+            const existing = map.get(key) || {};
+            const merged = { ...existing, ...p };
+            if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
+              merged.image = "";
+              merged.images = [];
+              merged.no_image = true;
+            }
+            map.set(key, merged);
           }
-          map.set(p.id, merged);
         });
         return Array.from(map.values());
       }
@@ -61,26 +66,37 @@ function toast(msg) {
 
 // ROBUST MULTI-IMAGE GALLERY PARSER
 function parseImagesArray(p) {
-  if (p && p.no_image) return [];
+  if (!p || p.no_image) return [];
   let list = [];
+
+  if (p.image && typeof p.image === "string" && p.image.trim()) {
+    list.push(p.image.trim());
+  }
+
   if (Array.isArray(p.images) && p.images.length) {
-    list = p.images.map(x => String(x).trim()).filter(Boolean);
+    p.images.map(x => String(x).trim()).filter(Boolean).forEach(img => {
+      if (!list.includes(img)) list.push(img);
+    });
   } else if (typeof p.images === "string" && p.images.trim()) {
     try {
       const parsed = JSON.parse(p.images);
-      if (Array.isArray(parsed) && parsed.length) list = parsed.map(x => String(x).trim()).filter(Boolean);
-      else list = p.images.split(',').map(x => x.trim()).filter(Boolean);
+      if (Array.isArray(parsed) && parsed.length) {
+        parsed.map(x => String(x).trim()).filter(Boolean).forEach(img => {
+          if (!list.includes(img)) list.push(img);
+        });
+      } else {
+        p.images.split(',').map(x => x.trim()).filter(Boolean).forEach(img => {
+          if (!list.includes(img)) list.push(img);
+        });
+      }
     } catch(e) {
-      list = p.images.split(',').map(x => x.trim()).filter(Boolean);
+      p.images.split(',').map(x => x.trim()).filter(Boolean).forEach(img => {
+        if (!list.includes(img)) list.push(img);
+      });
     }
   }
 
-  if (!list.length && p.image && p.image.trim()) {
-    list = [p.image.trim()];
-  }
-
-  const cleanList = [...new Set(list)].filter(x => x && x.length > 5);
-  return cleanList;
+  return [...new Set(list)].filter(x => x && x.length > 5);
 }
 
 // INTERACTIVE HERO IMAGE SWITCHER
@@ -400,7 +416,7 @@ function renderFullSpecGrid(p) {
 }
 
 function quickView(id) {
-  const p = getProducts().find(x => x.id === id);
+  const p = getProducts().find(x => String(x.id) === String(id));
   if (!p) return;
 
   const stock = p.stock !== undefined ? p.stock : 25;
@@ -445,7 +461,7 @@ function renderCartDrawer() {
 
   let subtotal = 0;
   root.innerHTML = ids.map(id => {
-    const p = getProducts().find(x => x.id === id);
+    const p = getProducts().find(x => String(x.id) === String(id));
     if (!p) return "";
     const qty = c[id];
     const itemTotal = p.price * qty;
@@ -1019,9 +1035,9 @@ function productInit() {
   if (!root) return;
 
   const qs = new URLSearchParams(location.search);
-  const id = Number(qs.get("id")) || 71;
+  const rawId = qs.get("id") || qs.get("sku") || "71";
   const productsList = getProducts();
-  const p = productsList.find(x => x.id === id) || productsList[0];
+  const p = productsList.find(x => String(x.id) === String(rawId) || String(x.sku).toLowerCase() === String(rawId).toLowerCase()) || productsList[0];
 
   if (!p) {
     root.innerHTML = '<div class="empty">Product not found.</div>';

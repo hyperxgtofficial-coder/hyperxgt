@@ -106,7 +106,7 @@ module.exports = async (req, res) => {
       }
 
       if (id && cachedProducts) {
-        const item = cachedProducts.find(x => x.id === id);
+        const item = cachedProducts.find(x => String(x.id) === String(id));
         return res.status(200).json({ success: true, product: item });
       }
 
@@ -131,7 +131,7 @@ module.exports = async (req, res) => {
 
       // Update in memory cache
       if (cachedProducts && Array.isArray(cachedProducts)) {
-        const idx = cachedProducts.findIndex(x => x.id === updatedProd.id || (x.sku && x.sku.toLowerCase() === (updatedProd.sku || '').toLowerCase()));
+        const idx = cachedProducts.findIndex(x => String(x.id) === String(updatedProd.id) || (x.sku && x.sku.toLowerCase() === (updatedProd.sku || '').toLowerCase()));
         if (idx !== -1) {
           cachedProducts[idx] = { ...cachedProducts[idx], ...updatedProd };
         } else {
