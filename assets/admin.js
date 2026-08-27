@@ -817,12 +817,20 @@ async function saveProduct(e) {
 
   try {
     const method = idVal ? 'PUT' : 'POST';
-    await fetch('/api/products-crud', {
+    const apiRes = await fetch('/api/products-crud', {
       method,
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAdminHeaders(),
       body: JSON.stringify(productObj)
     });
-  } catch(err) {}
+    const apiData = await apiRes.json();
+    if (!apiRes.ok || !apiData.success) {
+      console.error('Product save API error:', apiData.error || apiRes.status);
+      toast('⚠️ Server save failed: ' + (apiData.error || 'Unknown error') + '. Saved locally only.');
+    }
+  } catch(err) {
+    console.error('Product save network error:', err.message);
+    toast('⚠️ Network error saving product. Saved locally only.');
+  }
 
   if (idVal) {
     const idx = P.findIndex(p => p.id === Number(idVal));
@@ -838,12 +846,20 @@ async function saveProduct(e) {
   toast(idVal ? `Updated Product "${name}" ✓` : `Created Product "${name}" ✓`);
 }
 
-function deleteProduct(id) {
+async function deleteProduct(id) {
   const p = P.find(x => x.id === id);
   if (!p) return;
   if (!confirm(`Delete product "${p.name}" (SKU: ${p.sku})?`)) return;
 
-  fetch(`/api/products-crud?id=${id}`, { method: 'DELETE' }).catch(() => {});
+  try {
+    const apiRes = await fetch(`/api/products-crud?id=${id}`, { method: 'DELETE', headers: getAdminHeaders() });
+    const apiData = await apiRes.json();
+    if (!apiRes.ok || !apiData.success) {
+      console.error('Delete API error:', apiData.error || apiRes.status);
+    }
+  } catch(err) {
+    console.error('Delete network error:', err.message);
+  }
 
   P = P.filter(x => x.id !== id);
   saveProductsDB(P);
@@ -945,7 +961,7 @@ function initDatabaseSyncHub() {
       try {
         const res = await fetch('/api/products-crud?bulk=1', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAdminHeaders(),
           body: JSON.stringify(P)
         });
         const data = await res.json();
