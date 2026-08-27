@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>HyperXGT — Store Admin Portal & Inventory Manager</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="stylesheet" href="assets/admin.css">
+  <link rel="stylesheet" href="assets/style.css?v=20260827">
+  <link rel="stylesheet" href="assets/admin.css?v=20260827">
 </head>
 <body class="admin-body">
   <!-- LOGIN OVERLAY -->
@@ -357,7 +357,7 @@
             <h3 style="color:#1488d8; margin:0; font-size:16px">🗄️ Database Overlap Inspector & Live Sync Hub</h3>
             <span style="background:#e8f5e9; color:#2e7d32; font-weight:900; font-size:10px; padding:4px 10px; border-radius:8px">NO OVERLAPS DETECTED ✓</span>
           </div>
-          <p style="font-size:12px; color:#666; margin:0 0 16px">Verify data storage across static CSV data (<code>assets/products.js</code>), browser LocalStorage (<code>hx_products_db</code>), and serverless database (<code>/api/products-crud</code>).</p>
+          <p style="font-size:12px; color:#666; margin:0 0 16px">Verify data storage across static CSV data (<code>assets/products.js?v=20260827</code>), browser LocalStorage (<code>hx_products_db</code>), and serverless database (<code>/api/products-crud</code>).</p>
           
           <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:18px">
             <div style="background:#f8f9fa; border:1px solid var(--line); border-radius:12px; padding:14px">
@@ -376,7 +376,7 @@
 
           <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap">
             <button class="btn blue" id="btnSyncAllToLive" style="height:44px">🔄 Sync All Admin Edits to Live Website & Server</button>
-            <button class="btn dark" id="btnExportDatabaseJs" style="height:44px">📥 Download Updated Database File (assets/products.js)</button>
+            <button class="btn dark" id="btnExportDatabaseJs" style="height:44px">📥 Download Updated Database File (assets/products.js?v=20260827)</button>
           </div>
         </div>
 
@@ -580,7 +580,7 @@
 
   <div class="toast" id="toast">Changes saved</div>
 
-  <script src="assets/products.js"></script>
-  <script src="assets/admin.js"></script>
+  <script src="assets/products.js?v=20260827"></script>
+  <script src="assets/admin.js?v=20260827"></script>
 </body>
 </html>
