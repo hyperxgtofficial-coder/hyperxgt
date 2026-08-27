@@ -58,6 +58,13 @@ window.openModal = function(id) {
     el.style.visibility = "visible";
     el.style.opacity = "1";
     el.style.pointerEvents = "auto";
+
+    const box = $(".modal-box", el);
+    if (box) {
+      box.style.opacity = "1";
+      box.style.visibility = "visible";
+      box.style.transform = "translate(-50%, -50%)";
+    }
   }
 };
 
@@ -69,6 +76,13 @@ window.closeEl = function(el) {
     modal.style.visibility = "";
     modal.style.opacity = "";
     modal.style.pointerEvents = "";
+
+    const box = $(".modal-box", modal);
+    if (box) {
+      box.style.opacity = "";
+      box.style.visibility = "";
+      box.style.transform = "";
+    }
   }
 };
 
@@ -138,27 +152,32 @@ window.switchHeroImage = function(src, el) {
 async function fetchLiveBackendProducts() {
   try {
     const res = await fetch('/api/products-crud');
+    if (!res.ok) return;
     const data = await res.json();
     if (data && data.products && Array.isArray(data.products) && data.products.length > 0) {
-      const liveProducts = data.products;
-      const staticProducts = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) ? window.HX_PRODUCTS : [];
+      const liveProducts = data.products.filter(p => p && p.id != null);
+      const staticProducts = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) ? window.HX_PRODUCTS.filter(p => p && p.id != null) : [];
       const map = new Map();
-      staticProducts.forEach(p => map.set(p.id, p));
+      staticProducts.forEach(p => map.set(String(p.id), p));
       liveProducts.forEach(p => {
-        const existing = map.get(p.id) || {};
+        const key = String(p.id);
+        const existing = map.get(key) || {};
         const merged = { ...existing, ...p };
         if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
           merged.image = "";
           merged.images = [];
           merged.no_image = true;
         }
-        map.set(p.id, merged);
+        map.set(key, merged);
       });
 
-      P = Array.from(map.values());
-      window.HX_PRODUCTS = P;
-      localStorage.setItem("hx_products_db", JSON.stringify(P));
-      reRenderAllStorefrontPages();
+      const mergedList = Array.from(map.values()).filter(p => p && p.id != null);
+      if (mergedList.length > 0) {
+        P = mergedList;
+        window.HX_PRODUCTS = P;
+        localStorage.setItem("hx_products_db", JSON.stringify(P));
+        reRenderAllStorefrontPages();
+      }
     }
   } catch(e) {}
 }
@@ -376,6 +395,7 @@ function toggleWish(id) {
 
 /* 4-COLUMN RESPONSIVE PRODUCT CARD WITH REAL-TIME STOCK BADGES */
 function productCard(p) {
+  if (!p || p.id == null) return "";
   const w = getWish().includes(p.id);
   const specs = [p.scale, p.drive, p.speed].filter(x => x && x !== "Not specified").join(" · ");
   
@@ -632,6 +652,9 @@ function ensureGlobalModalsAndDrawers() {
 let currentModalAuthTab = "login";
 
 function renderAccountModalUI() {
+  if (!$("#accountModal") || !$("#accountModalBody")) {
+    ensureGlobalModalsAndDrawers();
+  }
   const body = $("#accountModalBody");
   if (!body) return;
 
@@ -1016,7 +1039,13 @@ function shopInit() {
     if (!pageProducts.length) {
       grid.innerHTML = '<div class="empty" style="grid-column:1/-1;text-align:center;padding:48px;color:#888">No matching models found. Try clearing filters.</div>';
     } else {
-      grid.innerHTML = pageProducts.map(productCard).join("");
+      try {
+        grid.innerHTML = pageProducts.map(productCard).filter(Boolean).join("");
+      } catch(err) {
+        console.error("Shop grid render error:", err);
+        const fallback = (window.HX_PRODUCTS || []).slice(0, itemsPerPage);
+        grid.innerHTML = fallback.map(productCard).filter(Boolean).join("");
+      }
     }
 
     const pager = $("#pager");
