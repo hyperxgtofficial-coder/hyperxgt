@@ -1,13 +1,12 @@
 // PERSISTENT STOREFRONT PRODUCTS DATABASE SYNCHRONIZER
 function loadProductsDB() {
-  const staticProducts = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) ? window.HX_PRODUCTS : [];
+  const staticProducts = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) ? window.HX_PRODUCTS.filter(p => p && p.id != null) : [];
   
   try {
     const local = localStorage.getItem("hx_products_db");
     if (local) {
       const parsed = JSON.parse(local);
-      if (parsed && Array.isArray(parsed) && parsed.length > 0) {
-        // Smart merge: Admin & local modifications overwrite static CSV data by ID with string keys
+      if (parsed && Array.isArray(parsed) && parsed.length >= 10) {
         const map = new Map();
         staticProducts.forEach(p => {
           if (p && p.id != null) map.set(String(p.id), p);
@@ -25,7 +24,8 @@ function loadProductsDB() {
             map.set(key, merged);
           }
         });
-        return Array.from(map.values());
+        const result = Array.from(map.values()).filter(p => p && p.id != null);
+        if (result.length >= 10) return result;
       }
     }
   } catch(e) {}
@@ -36,9 +36,20 @@ function loadProductsDB() {
 let P = loadProductsDB();
 
 function getProducts() {
-  if (Array.isArray(P) && P.length > 0) return P;
+  if (Array.isArray(P) && P.length >= 10) {
+    const valid = P.filter(p => p && p.id != null);
+    if (valid.length >= 10) return valid;
+  }
   P = loadProductsDB();
-  return P;
+  if (Array.isArray(P) && P.length >= 10) {
+    const valid = P.filter(p => p && p.id != null);
+    if (valid.length >= 10) return valid;
+  }
+  if (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) {
+    const staticValid = window.HX_PRODUCTS.filter(p => p && p.id != null);
+    if (staticValid.length > 0) return staticValid;
+  }
+  return [];
 }
 
 const $ = (q, r = document) => r.querySelector(q);
