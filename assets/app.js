@@ -495,21 +495,43 @@ function ensureGlobalModalsAndDrawers() {
     div.className = "drawer";
     div.id = "mobileDrawer";
     div.innerHTML = `
-      <div class="shade"></div>
-      <div class="drawer-panel" style="width:min(360px,88vw)">
+      <div class="shade" onclick="closeEl(this)"></div>
+      <div class="drawer-panel" style="width:min(380px,90vw);padding:22px">
         <div class="drawer-head">
-          <div><b style="color:#ed1c24;font-size:16px">HYPERXGT</b> <span style="font-size:10px;color:#888">Store Menu</span></div>
-          <button class="x">×</button>
+          <div><b style="color:#ed1c24;font-size:18px;letter-spacing:-.03em">HYPERXGT</b> <span style="font-size:10px;color:#888">Store & Driver Hub</span></div>
+          <button class="x" onclick="closeEl(this)">×</button>
         </div>
-        <div style="display:flex;flex-direction:column;gap:14px;padding:24px 0">
-          <a href="why.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Why HyperXGT</a>
-          <a href="shop.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Shop Catalogue (338 Rigs)</a>
-          <a href="upgrades.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Upgrades & Parts</a>
-          <a href="club.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Join the movement</a>
-          <a href="contact.html" style="font-size:15px;font-weight:900;color:#111;padding:10px 0;border-bottom:1px solid #eee">Care & Support</a>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
-            <button class="btn blue" onclick="closeEl(this); openModal('trackModal')">⌖ Track Order</button>
-            <button class="btn dark" id="btnMobGarageAcc" data-modal="accountModal" onclick="closeEl(this); openModal('accountModal')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Driver Garage</button>
+        
+        <div style="margin-top:14px">
+          <button class="field" data-modal="searchModal" onclick="closeEl(this); openModal('searchModal')" style="display:flex;align-items:center;gap:10px;color:#888;font-size:13px;text-align:left;cursor:pointer">
+            <span>⌕</span> Search SKU, Brushless, 1:14, Drift...
+          </button>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:14px;overflow-y:auto;max-height:calc(100vh - 165px);padding-right:4px">
+          <div style="font-size:9px;font-weight:900;letter-spacing:.12em;color:#999;text-transform:uppercase;margin:8px 0 4px">Navigation & Store</div>
+          <a href="index.html" class="mob-link">🏠 Home Overview</a>
+          <a href="shop.html" class="mob-link">🛒 Shop Catalogue (338 Rigs)</a>
+          <a href="upgrades.html" class="mob-link">⚡ Upgrades & Spare Parts</a>
+          <a href="why.html" class="mob-link">🏆 Why HyperXGT (Hobby Grade)</a>
+          <a href="club.html" class="mob-link">🤝 Driver Club & Community</a>
+
+          <div style="font-size:9px;font-weight:900;letter-spacing:.12em;color:#999;text-transform:uppercase;margin:12px 0 4px">Popular RC Categories</div>
+          <a href="shop.html?cat=Racing+Cars" class="mob-link">🏎️ Racing Cars</a>
+          <a href="shop.html?cat=Drift+Cars" class="mob-link">💨 Drift Cars</a>
+          <a href="shop.html?cat=Off+Road+Crawlers" class="mob-link">🧗 Off-Road Crawlers & Trucks</a>
+          <a href="shop.html?cat=Buggies+%26+Truggies" class="mob-link">🏜️ Buggies & Truggies</a>
+          <a href="shop.html?cat=Mini+RC" class="mob-link">🚗 Mini RC Collectables</a>
+
+          <div style="font-size:9px;font-weight:900;letter-spacing:.12em;color:#999;text-transform:uppercase;margin:12px 0 4px">Customer Care & Tracking</div>
+          <a href="contact.html" class="mob-link">💬 Support & WhatsApp Care</a>
+          <a href="faq.html" class="mob-link">❓ FAQ & Warranty Policy</a>
+          <a href="shipping.html" class="mob-link">🚚 Shipping & Delivery Info</a>
+          <a href="returns.html" class="mob-link">🔄 Returns & Replacement</a>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;padding-bottom:16px">
+            <button class="btn blue" data-modal="trackModal" onclick="closeEl(this); openModal('trackModal')" style="height:44px;font-size:12px;display:flex;align-items:center;justify-content:center">⌖ Track Order</button>
+            <button class="btn dark" id="btnMobGarageAcc" data-modal="accountModal" onclick="closeEl(this); openModal('accountModal')" style="height:44px;font-size:12px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Driver Garage</button>
           </div>
         </div>
       </div>
