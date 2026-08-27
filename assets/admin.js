@@ -23,7 +23,18 @@ let P = loadProductsDB();
 const $ = (q, r = document) => r.querySelector(q);
 const $$ = (q, r = document) => [...r.querySelectorAll(q)];
 const INR = n => "₹" + Number(n || 0).toLocaleString("en-IN");
-const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&#039;" }[m]));
+// The apostrophe key was missing from this map, so the regex matched ' but the lookup
+// returned undefined — every apostrophe in a customer name or review rendered as the
+// literal text "undefined". Double quotes were also mapped to &#039; instead of &quot;.
+const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+// Blocks javascript:/vbscript: URLs from customer-submitted review media reaching an href.
+const safeUrl = (u, fallback = "") => {
+  const raw = String(u ?? "").trim();
+  if (!raw) return fallback;
+  if (/^(https?:|data:image\/|data:video\/|mailto:|tel:)/i.test(raw)) return esc(raw);
+  if (/^[a-z][a-z0-9+.-]*:/i.test(raw)) return fallback;
+  return esc(raw);
+};
 const openModal = id => $("#" + id)?.classList.add("open");
 const closeEl = el => el.closest(".modal,.drawer")?.classList.remove("open");
 
@@ -243,7 +254,7 @@ function initImageUploadHandler() {
 
           const apiRes = await fetch('/api/upload-image', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAdminHeaders(),
             body: JSON.stringify({
               base64,
               filename: file.name,
@@ -297,7 +308,7 @@ function initVideoUploadHandler() {
 
         const apiRes = await fetch('/api/upload-image', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAdminHeaders(),
           body: JSON.stringify({
             base64,
             filename: file.name,
@@ -334,24 +345,24 @@ async function renderAdminReviews() {
     }
 
     tbody.innerHTML = reviews.map(r => {
-      let statusBadge = `<span style="background:#fff8e1;color:#b78103;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟡 ${r.status}</span>`;
+      let statusBadge = `<span style="background:#fff8e1;color:#b78103;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟡 ${esc(r.status)}</span>`;
       if (r.status === "Approved") statusBadge = `<span style="background:#e8f5e9;color:#2e7d32;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🟢 Approved</span>`;
       else if (r.status === "Rejected") statusBadge = `<span style="background:#ffeeef;color:#ed1c24;font-weight:900;padding:3px 8px;border-radius:6px;font-size:10px">🔴 Rejected</span>`;
 
       return `
         <tr>
-          <td><strong>${r.id}</strong></td>
+          <td><strong>${esc(r.id)}</strong></td>
           <td><strong>${esc(r.name)}</strong><br><small style="color:#666">${esc(r.email)}</small></td>
           <td><code>${esc(r.orderId)}</code></td>
           <td>
-            <div style="color:#b78103;font-weight:900">⭐ ${r.rating}/5</div>
+            <div style="color:#b78103;font-weight:900">⭐ ${esc(r.rating)}/5</div>
             <p style="font-size:11px;color:#444;margin:4px 0 0;max-width:220px">${esc(r.text)}</p>
           </td>
           <td>
-            ${r.mediaUrl ? `<a href="${r.mediaUrl}" target="_blank" style="color:#1488d8;font-weight:800;font-size:11px">📁 View ${r.mediaType || 'Media'}</a>` : '<span style="color:#aaa;font-size:10px">No Media</span>'}
+            ${safeUrl(r.mediaUrl) ? `<a href="${safeUrl(r.mediaUrl)}" target="_blank" rel="noopener noreferrer" style="color:#1488d8;font-weight:800;font-size:11px">📁 View ${esc(r.mediaType || 'Media')}</a>` : '<span style="color:#aaa;font-size:10px">No Media</span>'}
           </td>
           <td>${statusBadge}</td>
-          <td>${r.couponCode ? `<code style="background:#eef4ff;color:#1488d8;padding:3px 6px;border-radius:6px;font-weight:900">${r.couponCode} (10% OFF)</code>` : '<span style="color:#888;font-size:10px">Pending</span>'}</td>
+          <td>${r.couponCode ? `<code style="background:#eef4ff;color:#1488d8;padding:3px 6px;border-radius:6px;font-weight:900">${esc(r.couponCode)} (10% OFF)</code>` : '<span style="color:#888;font-size:10px">Pending</span>'}</td>
           <td>
             <div style="display:flex;gap:6px">
               ${r.status !== 'Approved' ? `<button class="btn blue" style="height:30px;padding:0 8px;font-size:10px" onclick="approveReview('${r.id}')">Approve & Send Coupon 📧</button>` : ''}
@@ -362,43 +373,63 @@ async function renderAdminReviews() {
         </tr>
       `;
     }).join("");
-  } catch(e) {}
+  } catch (err) {
+    console.error("Could not load reviews:", err);
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:#ed1c24">Could not load reviews. Check the API and refresh.</td></tr>`;
+  }
+}
+
+// Review and collaboration writes require the x-admin-key header (see verifyAdminAuth in
+// api/submit-review.js and api/collaborations.js). These calls previously sent only a
+// Content-Type header, so every moderation action was rejected with 401 — and because the
+// responses were never checked, the UI still reported success.
+async function adminWrite(url, options, successMsg, onDone) {
+  try {
+    const res = await fetch(url, { ...options, headers: getAdminHeaders() });
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok || data.error) {
+      const msg = res.status === 401
+        ? "Admin session expired — please sign in again."
+        : (data.error || `Request failed (${res.status})`);
+      toast(msg);
+      if (res.status === 401) {
+        localStorage.removeItem("hx_admin_logged");
+        checkAdminAuth();
+      }
+      return null;
+    }
+
+    if (successMsg) toast(typeof successMsg === "function" ? successMsg(data) : successMsg);
+    if (onDone) onDone();
+    return data;
+  } catch (err) {
+    console.error(`Admin request to ${url} failed:`, err);
+    toast("Network error — the change was not saved.");
+    return null;
+  }
 }
 
 async function approveReview(id) {
-  try {
-    const res = await fetch('/api/submit-review', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'approve' })
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast(`Approved Review #${id}! Coupon ${data.couponCode} emailed ✓`);
-      renderAdminReviews();
-    }
-  } catch(e) {}
+  await adminWrite('/api/submit-review',
+    { method: 'PUT', body: JSON.stringify({ id, action: 'approve' }) },
+    data => `Approved review ${id}! Coupon ${(data.review && data.review.couponCode) || ''} issued ✓`,
+    renderAdminReviews);
 }
 
 async function rejectReview(id) {
-  try {
-    await fetch('/api/submit-review', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'reject' })
-    });
-    toast(`Rejected Review #${id}`);
-    renderAdminReviews();
-  } catch(e) {}
+  await adminWrite('/api/submit-review',
+    { method: 'PUT', body: JSON.stringify({ id, action: 'reject' }) },
+    `Rejected review ${id}`,
+    renderAdminReviews);
 }
 
 async function deleteReview(id) {
-  if (!confirm(`Delete review #${id}?`)) return;
-  try {
-    await fetch(`/api/submit-review?id=${id}`, { method: 'DELETE' });
-    toast(`Deleted review #${id}`);
-    renderAdminReviews();
-  } catch(e) {}
+  if (!confirm(`Delete review ${id}?`)) return;
+  await adminWrite(`/api/submit-review?id=${encodeURIComponent(id)}`,
+    { method: 'DELETE' },
+    `Deleted review ${id}`,
+    renderAdminReviews);
 }
 
 // BRAND COLLABORATIONS MANAGER
@@ -418,66 +449,64 @@ async function renderAdminCollaborations() {
 
     tbody.innerHTML = collabs.map(c => `
       <tr>
-        <td><strong>${c.id}</strong></td>
-        <td><img src="${c.logo}" style="width:40px;height:40px;object-fit:contain;background:#f5f5f5;border-radius:8px;padding:4px"></td>
+        <td><strong>${esc(c.id)}</strong></td>
+        <td><img src="${safeUrl(c.logo)}" alt="${esc(c.name)}" style="width:40px;height:40px;object-fit:contain;background:#f5f5f5;border-radius:8px;padding:4px"></td>
         <td><strong>${esc(c.name)}</strong></td>
-        <td><a href="${esc(c.link)}" target="_blank" style="color:#1488d8">${esc(c.link)}</a></td>
+        <td><a href="${safeUrl(c.link)}" target="_blank" rel="noopener noreferrer" style="color:#1488d8">${esc(c.link)}</a></td>
         <td>${c.active ? '<span style="color:#2e7d32;font-weight:900">🟢 Active</span>' : '<span style="color:#888">⚪ Hidden</span>'}</td>
         <td>
           <div style="display:flex;gap:6px">
-            <button class="btn blue" style="height:30px;padding:0 8px;font-size:10px" onclick="toggleCollabActive(${c.id})">${c.active ? 'Hide' : 'Show'}</button>
-            <button class="btn red" style="height:30px;padding:0 8px;font-size:10px" onclick="deleteCollab(${c.id})">🗑️</button>
+            <button class="btn blue" style="height:30px;padding:0 8px;font-size:10px" onclick="toggleCollabActive('${esc(c.id)}')">${c.active ? 'Hide' : 'Show'}</button>
+            <button class="btn red" style="height:30px;padding:0 8px;font-size:10px" onclick="deleteCollab('${esc(c.id)}')">🗑️</button>
           </div>
         </td>
       </tr>
     `).join("");
-  } catch(e) {}
+  } catch (err) {
+    console.error("Could not load collaborations:", err);
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:#ed1c24">Could not load collaborations. Check the API and refresh.</td></tr>`;
+  }
 }
 
 async function toggleCollabActive(id) {
   try {
     const res = await fetch('/api/collaborations');
     const data = await res.json();
-    const c = data.collaborations.find(x => x.id === id);
-    if (!c) return;
+    const c = (data.collaborations || []).find(x => String(x.id) === String(id));
+    if (!c) return toast("That collaboration no longer exists.");
 
-    await fetch('/api/collaborations', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...c, active: !c.active })
-    });
-    toast("Updated collaboration visibility ✓");
-    renderAdminCollaborations();
-  } catch(e) {}
+    await adminWrite('/api/collaborations',
+      { method: 'PUT', body: JSON.stringify({ ...c, active: !c.active }) },
+      "Updated collaboration visibility ✓",
+      renderAdminCollaborations);
+  } catch (err) {
+    console.error("Could not load collaborations:", err);
+    toast("Could not reach the collaborations service.");
+  }
 }
 
 async function deleteCollab(id) {
   if (!confirm("Delete this brand collaboration?")) return;
-  try {
-    await fetch(`/api/collaborations?id=${id}`, { method: 'DELETE' });
-    toast("Deleted brand collaboration ✓");
-    renderAdminCollaborations();
-  } catch(e) {}
+  await adminWrite(`/api/collaborations?id=${encodeURIComponent(id)}`,
+    { method: 'DELETE' },
+    "Deleted brand collaboration ✓",
+    renderAdminCollaborations);
 }
 
 function initCollabForm() {
   const btn = $("#btnAddCollab");
   if (btn) {
-    btn.onclick = function() {
+    btn.onclick = async function() {
       const name = prompt("Enter Brand Partner Name (e.g. Traxxas India):");
       if (!name) return;
       const logo = prompt("Enter Brand Logo URL:", "assets/hyperxgt-logo.png");
       if (!logo) return;
       const link = prompt("Enter Brand Website / Catalog Link:", "index.html");
 
-      fetch('/api/collaborations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, logo, link, active: true })
-      }).then(() => {
-        toast(`Added Brand Partner "${name}" ✓`);
-        renderAdminCollaborations();
-      });
+      await adminWrite('/api/collaborations',
+        { method: 'POST', body: JSON.stringify({ name, logo, link, active: true }) },
+        `Added brand partner "${name}" ✓`,
+        renderAdminCollaborations);
     };
   }
 }

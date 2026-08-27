@@ -348,7 +348,14 @@
             body: JSON.stringify({ name, email, phone, password })
           });
           const data = await res.json();
-          if (data.error) throw new Error(data.error);
+          if (!res.ok || data.error) throw new Error(data.error || "Registration failed");
+
+          // No token means Supabase requires email confirmation — do not fake a session.
+          if (!data.token) {
+            setAuthTab("login");
+            toast(data.message || `Confirm your email (${email}), then sign in.`);
+            return;
+          }
 
           setAuthSession(data.user, data.token, data.refresh_token);
           toast(`Registered! Welcome email sent to ${email} ✓`);
@@ -380,7 +387,7 @@
             body: JSON.stringify({ email, password })
           });
           const data = await res.json();
-          if (data.error) throw new Error(data.error);
+          if (!res.ok || data.error) throw new Error(data.error || "Invalid email or password.");
 
           setAuthSession(data.user, data.token, data.refresh_token);
           toast("Logged in to Driver Garage ✓");
@@ -410,7 +417,7 @@
             body: JSON.stringify({ email })
           });
           const data = await res.json();
-          if (data.error) throw new Error(data.error);
+          if (!res.ok || data.error) throw new Error(data.error || "Could not send the reset link.");
 
           toast(`Password recovery link sent to ${email} ✓`);
           setAuthTab('login');
@@ -435,16 +442,33 @@
         const user = getAuthUser();
         const updatedUser = { ...user, name, phone, address, city, state, pincode };
 
+        // The result used to be discarded, so the UI reported "saved" even when the request
+        // failed or the session had expired, and the local copy drifted from the server.
         try {
-          await fetch('/api/supabase-auth?action=update_profile', {
+          const res = await fetch('/api/supabase-auth?action=update_profile', {
             method: 'POST',
-            headers: { 
+            headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${getAuthToken()}`
             },
             body: JSON.stringify({ name, phone, address, city, state, pincode })
           });
-        } catch(err) {}
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok || data.error) {
+            if (res.status === 401) {
+              clearAuthSession();
+              checkUserLogged();
+              toast("Your session expired — please sign in again.");
+              return;
+            }
+            throw new Error(data.error || `Could not save your profile (${res.status}).`);
+          }
+        } catch (err) {
+          console.error("Profile update failed:", err);
+          toast(err.message || "Could not save your profile. Please try again.");
+          return;
+        }
 
         setAuthSession(updatedUser, getAuthToken());
         toast("Profile & Shipping Address saved ✓");
@@ -458,22 +482,43 @@
         const p2 = document.getElementById("secConfirmPass").value.trim();
 
         if (p1 !== p2) {
-          alert("Passwords do not match!");
+          toast("Passwords do not match.");
+          return;
+        }
+        if (p1.length < 6) {
+          toast("Password must be at least 6 characters.");
           return;
         }
 
+        // Previously this swallowed every error and then claimed the password had changed —
+        // the most dangerous possible false confirmation.
         try {
-          await fetch('/api/supabase-auth?action=update_profile', {
+          const res = await fetch('/api/supabase-auth?action=update_profile', {
             method: 'POST',
-            headers: { 
+            headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${getAuthToken()}`
             },
             body: JSON.stringify({ password: p1 })
           });
-        } catch(err) {}
+          const data = await res.json().catch(() => ({}));
 
-        toast("Password updated in Supabase ✓");
+          if (!res.ok || data.error) {
+            if (res.status === 401) {
+              clearAuthSession();
+              checkUserLogged();
+              toast("Your session expired — please sign in again.");
+              return;
+            }
+            throw new Error(data.error || `Password change failed (${res.status}).`);
+          }
+        } catch (err) {
+          console.error("Password change failed:", err);
+          toast(err.message || "Password change failed. Please try again.");
+          return;
+        }
+
+        toast("Password updated ✓");
         document.getElementById("securityForm").reset();
       };
 

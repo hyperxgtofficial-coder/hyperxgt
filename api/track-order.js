@@ -20,12 +20,17 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Customer email or phone number is required to verify order ownership' });
   }
 
-  // Live Shiprocket & Express Courier tracking response
+  // NOTE: this is placeholder tracking data. Wiring it to the real Shiprocket account
+  // means calling api/shiprocket.js with `action=track`; until then the AWB is synthetic.
+  // The AWB and its tracking URL were generated independently, so the link never matched
+  // the number shown to the customer — derive both from one value.
+  const awb = `SRK${Math.floor(100000000 + Math.random() * 900000000)}`;
+
   const trackingData = {
     orderId,
     courier: 'Shiprocket Express (Bluedart / Delhivery)',
-    trackingNumber: `SRK${Math.floor(100000000 + Math.random() * 900000000)}`,
-    shiprocketUrl: `https://shiprocket.co/tracking/SRK${Math.floor(100000000 + Math.random() * 900000000)}`,
+    trackingNumber: awb,
+    shiprocketUrl: `https://shiprocket.co/tracking/${awb}`,
     status: 'In Transit — Express Dispatch',
     estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
     origin: 'HyperXGT Central Warehouse, India',

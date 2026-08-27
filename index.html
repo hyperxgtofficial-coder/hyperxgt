@@ -158,16 +158,11 @@
     </section>
 
     <!-- QUICK CATEGORIES STRIP -->
+    <!-- Rendered by renderQuickCategories() in assets/app.js. The counts were previously
+         hardcoded and every one of them was wrong, and the "Mini RC" tile pointed at a
+         category no product has, so it always opened an empty shop page. -->
     <div class="quickcats">
-      <div class="container">
-        <a class="cat" href="shop.html?cat=Racing%20Cars"><div class="dot">🏁</div><b>Racing Cars</b><small>24 models</small></a>
-        <a class="cat" href="shop.html?cat=Drift%20Cars"><div class="dot">↗</div><b>Drift Cars</b><small>68 models</small></a>
-        <a class="cat" href="shop.html?cat=Monster%20Trucks"><div class="dot">🛞</div><b>Monster Trucks</b><small>19 models</small></a>
-        <a class="cat" href="shop.html?cat=Off%20Road%20Crawlers"><div class="dot">⛰</div><b>Off Road Crawlers</b><small>21 models</small></a>
-        <a class="cat" href="shop.html?cat=Buggies%20%26%20Truggies"><div class="dot">⚡</div><b>Buggies & Truggies</b><small>4 models</small></a>
-        <a class="cat" href="shop.html?cat=Mini RC%20Models"><div class="dot">🏎</div><b>Mini RC</b><small>2 models</small></a>
-        <a class="cat" href="shop.html?cat=Collectables"><div class="dot">★</div><b>Collectables</b><small>199 models</small></a>
-      </div>
+      <div class="container" id="quickCats"></div>
     </div>
 
     <!-- NEW ARRIVALS GRID -->

@@ -35,6 +35,28 @@ function loadProductsDB() {
 
 let P = loadProductsDB();
 
+// Category lists were hardcoded in three places and included "Mini RC", which no product
+// actually carries — those links and filters always produced an empty result set.
+// Deriving them from the catalogue keeps the UI honest as the data changes.
+function getCategories() {
+  const seen = new Map();
+  getProducts().forEach(p => {
+    const cat = p && p.category ? String(p.category).trim() : "";
+    if (cat) seen.set(cat, (seen.get(cat) || 0) + 1);
+  });
+  return [...seen.entries()].map(([name, count]) => ({ name, count }));
+}
+
+function getScales() {
+  const seen = new Set();
+  getProducts().forEach(p => {
+    const s = p && p.scale ? String(p.scale).trim() : "";
+    if (s && s !== "Not specified") seen.add(s);
+  });
+  // Sort by denominator so 1:7 comes before 1:64.
+  return [...seen].sort((a, b) => (Number(a.split(":")[1]) || 0) - (Number(b.split(":")[1]) || 0));
+}
+
 function getProducts() {
   if (Array.isArray(P) && P.length >= 10) {
     const valid = P.filter(p => p && p.id != null);
@@ -52,10 +74,22 @@ function getProducts() {
   return [];
 }
 
+// Product ids are compared as strings everywhere (backend rows may use non-numeric ids),
+// so inline handlers must emit them as quoted JS strings rather than bare numbers.
+const idArg = v => `'${String(v).replace(/\\/g, "\\\\").replace(/'/g, "\\'")}'`;
 const $ = (q, r = document) => r.querySelector(q);
 const $$ = (q, r = document) => [...r.querySelectorAll(q)];
 const INR = n => "₹" + Number(n || 0).toLocaleString("en-IN");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+// Blocks javascript:/vbscript: and other active schemes before a URL reaches an href or src.
+// Relative paths (assets/…) are allowed through unchanged.
+const safeUrl = (u, fallback = "") => {
+  const raw = String(u ?? "").trim();
+  if (!raw) return fallback;
+  if (/^(https?:|data:image\/|mailto:|tel:)/i.test(raw)) return esc(raw);
+  if (/^[a-z][a-z0-9+.-]*:/i.test(raw)) return fallback; // any other scheme is rejected
+  return esc(raw);
+};
 window.openModal = function(id) {
   if (!id) return;
   if (id === "accountModal") {
@@ -199,6 +233,7 @@ function reRenderAllStorefrontPages() {
   if (typeof shopInit === "function") shopInit();
   if (typeof productInit === "function") productInit();
   if (typeof renderCartDrawer === "function") renderCartDrawer();
+  if (typeof renderQuickCategories === "function") renderQuickCategories();
   if (typeof renderCategoryCarousels === "function") renderCategoryCarousels();
 }
 
@@ -304,6 +339,14 @@ window.addEventListener("hx_auth_change", () => {
   if (typeof renderAccountModalUI === "function") renderAccountModalUI();
 });
 
+// Shipping was calculated three different ways (checkout.html used >4999 ? 0 : 250, the cart
+// page claimed free over ₹999, both APIs use >=4999 ? 0 : 199). The server recalculates the
+// total authoritatively, so the client must mirror api/create-order.js exactly or the
+// customer is quoted a price the payment session will not match.
+const FREE_SHIPPING_THRESHOLD = 4999;
+const FLAT_SHIPPING_FEE = 199;
+const shippingFor = subtotal => (Number(subtotal) >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_FEE);
+
 // LOCAL STORAGE HELPERS
 const getCart = () => JSON.parse(localStorage.getItem("hx_cart") || "{}");
 const setCart = c => localStorage.setItem("hx_cart", JSON.stringify(c));
@@ -332,7 +375,7 @@ function saveOrderToDB(newOrder) {
 }
 
 function addCart(id, qty = 1) {
-  const p = getProducts().find(x => x.id === id);
+  const p = getProducts().find(x => String(x.id) === String(id));
   if (!p) return;
 
   const stock = p.stock !== undefined ? p.stock : 25;
@@ -364,11 +407,11 @@ function removeCart(id) {
   setCart(c);
   updateCount();
   renderCartDrawer();
-  if (typeof renderCartPage === "function") renderCartPage();
+  if (typeof cartPageInit === "function") cartPageInit();
 }
 
 function setQty(id, q) {
-  const p = getProducts().find(x => x.id === id);
+  const p = getProducts().find(x => String(x.id) === String(id));
   const stock = p && p.stock !== undefined ? p.stock : 25;
 
   const c = getCart();
@@ -384,7 +427,7 @@ function setQty(id, q) {
   setCart(c);
   updateCount();
   renderCartDrawer();
-  if (typeof renderCartPage === "function") renderCartPage();
+  if (typeof cartPageInit === "function") cartPageInit();
 }
 
 function updateCount() {
@@ -393,26 +436,35 @@ function updateCount() {
   $$(".cart-count").forEach(el => el.textContent = count);
 }
 
+// Wishlist ids are normalised to strings so entries saved before/after a backend refresh
+// (which can change id types) still match.
+function isWished(id) {
+  return getWish().some(x => String(x) === String(id));
+}
+
 function toggleWish(id) {
-  let w = getWish();
-  w = w.includes(id) ? w.filter(x => x !== id) : [...w, id];
-  setWish(w);
-  $$(`[data-wish="${id}"]`).forEach(b => {
-    b.classList.toggle("on", w.includes(id));
-    b.textContent = w.includes(id) ? "♥" : "♡";
+  const key = String(id);
+  const w = getWish().map(String);
+  const next = w.includes(key) ? w.filter(x => x !== key) : [...w, key];
+  setWish(next);
+
+  const on = next.includes(key);
+  $$(`[data-wish="${key}"]`).forEach(b => {
+    b.classList.toggle("on", on);
+    b.textContent = on ? "♥" : "♡";
   });
-  toast(w.includes(id) ? "Saved to wishlist" : "Removed from wishlist");
+  toast(on ? "Saved to wishlist" : "Removed from wishlist");
 }
 
 /* 4-COLUMN RESPONSIVE PRODUCT CARD WITH REAL-TIME STOCK BADGES */
 function productCard(p) {
   if (!p || p.id == null) return "";
-  const w = getWish().includes(p.id);
+  const w = isWished(p.id);
   const specs = [p.scale, p.drive, p.speed].filter(x => x && x !== "Not specified").join(" · ");
   
   const stock = p.stock !== undefined ? p.stock : 25;
   let stockBadgeHTML = `<span style="font-size:10px;font-weight:900;color:#2e7d32;display:block;margin-top:4px">🟢 In Stock (${stock} Units)</span>`;
-  let buyBtnHTML = `<button class="mini-btn solid" onclick="addCart(${p.id})">Add to cart</button>`;
+  let buyBtnHTML = `<button class="mini-btn solid" onclick="addCart(${idArg(p.id)})">Add to cart</button>`;
 
   if (stock === 0) {
     stockBadgeHTML = `<span style="font-size:10px;font-weight:900;color:#ed1c24;display:block;margin-top:4px">🔴 Out of Stock (Sold Out)</span>`;
@@ -426,7 +478,7 @@ function productCard(p) {
       <a href="product.html?id=${p.id}">${(p.image && p.image.trim()) ? `<img loading="lazy" src="${p.image.trim()}" alt="${esc(p.name)}">` : `<div style="width:100%;height:180px;background:#f8f9fa;border-radius:12px;display:grid;place-items:center;color:#888;font-size:12px;font-weight:800">📷 Photo Coming Soon</div>`}</a>
       <span class="tag">${esc(p.category)}</span>
       ${p.discount ? `<span class="tag sale-tag">${p.discount}% OFF</span>` : ""}
-      <button class="wish ${w ? "on" : ""}" data-wish="${p.id}" onclick="toggleWish(${p.id})">${w ? "♥" : "♡"}</button>
+      <button class="wish ${w ? "on" : ""}" data-wish="${p.id}" onclick="toggleWish(${idArg(p.id)})">${w ? "♥" : "♡"}</button>
     </div>
     <div class="product-meta">
       <div class="sku">HYPERXGT · ${esc(p.sku)}</div>
@@ -438,7 +490,7 @@ function productCard(p) {
         ${p.mrp > p.price ? `<del>${INR(p.mrp)}</del>` : ""}
       </div>
       <div class="product-actions">
-        <button class="mini-btn quick" onclick="quickView(${p.id})">Quick view</button>
+        <button class="mini-btn quick" onclick="quickView(${idArg(p.id)})">Quick view</button>
         ${buyBtnHTML}
       </div>
     </div>
@@ -468,7 +520,7 @@ function quickView(id) {
 
   const stock = p.stock !== undefined ? p.stock : 25;
   let stockBadge = `<span style="font-size:11px;font-weight:900;color:#2e7d32">🟢 In Stock (${stock} Units)</span>`;
-  let btnHTML = `<button class="btn dark" onclick="addCart(${p.id})">Add to Cart 🛒</button>`;
+  let btnHTML = `<button class="btn dark" onclick="addCart(${idArg(p.id)})">Add to Cart 🛒</button>`;
   
   if (stock === 0) {
     stockBadge = `<span style="font-size:11px;font-weight:900;color:#ed1c24">🔴 Out of Stock</span>`;
@@ -499,7 +551,7 @@ function quickView(id) {
 function renderCartDrawer() {
   const root = $("#cartItems");
   if (!root) return;
-  const c = getCart(), ids = Object.keys(c).map(Number);
+  const c = getCart(), ids = Object.keys(c);
   if (!ids.length) {
     root.innerHTML = '<div class="empty">Your cart is currently empty.</div>';
     $("#cartSummary").style.display = "none";
@@ -522,12 +574,12 @@ function renderCartDrawer() {
         <div style="font-size:10px;color:#666">${esc(p.sku)} · ${stock > 0 ? `In Stock (${stock} avail)` : 'Out of stock'}</div>
         <div class="price" style="margin-top:4px"><strong>${INR(p.price)}</strong> × ${qty} = ${INR(itemTotal)}</div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
-          <button class="qty-btn" onclick="setQty(${id}, ${qty - 1})">-</button>
+          <button class="qty-btn" onclick="setQty(${idArg(id)}, ${qty - 1})">-</button>
           <span style="font-size:12px;font-weight:900">${qty}</span>
-          <button class="qty-btn" onclick="setQty(${id}, ${qty + 1})">+</button>
+          <button class="qty-btn" onclick="setQty(${idArg(id)}, ${qty + 1})">+</button>
         </div>
       </div>
-      <button class="remove" onclick="removeCart(${id})">Remove</button>
+      <button class="remove" onclick="removeCart(${idArg(id)})">Remove</button>
     </div>`;
   }).join("");
 
@@ -564,11 +616,7 @@ function ensureGlobalModalsAndDrawers() {
           <a href="club.html" class="mob-link">🤝 Driver Club & Community</a>
 
           <div style="font-size:9px;font-weight:900;letter-spacing:.12em;color:#999;text-transform:uppercase;margin:12px 0 4px">Popular RC Categories</div>
-          <a href="shop.html?cat=Racing+Cars" class="mob-link">🏎️ Racing Cars</a>
-          <a href="shop.html?cat=Drift+Cars" class="mob-link">💨 Drift Cars</a>
-          <a href="shop.html?cat=Off+Road+Crawlers" class="mob-link">🧗 Off-Road Crawlers & Trucks</a>
-          <a href="shop.html?cat=Buggies+%26+Truggies" class="mob-link">🏜️ Buggies & Truggies</a>
-          <a href="shop.html?cat=Mini+RC" class="mob-link">🚗 Mini RC Collectables</a>
+          ${getCategories().map(c => `<a href="shop.html?cat=${encodeURIComponent(c.name)}" class="mob-link">${CATEGORY_ICONS[c.name] || "🚗"} ${esc(c.name)} (${c.count})</a>`).join("\n          ")}
 
           <div style="font-size:9px;font-weight:900;letter-spacing:.12em;color:#999;text-transform:uppercase;margin:12px 0 4px">Customer Care & Tracking</div>
           <a href="contact.html" class="mob-link">💬 Support & WhatsApp Care</a>
@@ -590,12 +638,15 @@ function ensureGlobalModalsAndDrawers() {
     const div = document.createElement("div");
     div.className = "modal";
     div.id = "trackModal";
+    // /api/track-order verifies ownership, so it needs the email or phone on the order
+    // as well as the order number. Collecting only the order number always returned 400.
     div.innerHTML = `
       <div class="shade"></div>
       <div class="modal-box">
         <div class="drawer-head"><b>Track My Order</b><button class="x">×</button></div>
         <h3 style="font-size:22px;margin:12px 0 16px">Where is my RC?</h3>
-        <input class="field" id="trackOrder" placeholder="Order number, e.g. HX-10482">
+        <input class="field" id="trackOrder" placeholder="Order number, e.g. HX-10482" style="margin-bottom:10px">
+        <input class="field" id="trackContact" placeholder="Email or mobile used on the order">
         <div class="modal-row"><button class="btn blue" id="trackBtn">Track shipment</button></div>
         <div id="trackResult"></div>
       </div>
@@ -639,6 +690,16 @@ function ensureGlobalModalsAndDrawers() {
     `;
   }
 
+  // toast() no-ops when #toast is absent, which silently swallowed every confirmation
+  // on the pages whose markup never included it (care, club, contact, privacy, returns,
+  // upgrades, why). Inject it globally so feedback works everywhere.
+  if (!$("#toast")) {
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.id = "toast";
+    document.body.appendChild(t);
+  }
+
   if (!$("#cartDrawer")) {
     const div = document.createElement("div");
     div.className = "drawer";
@@ -658,6 +719,91 @@ function ensureGlobalModalsAndDrawers() {
     `;
     document.body.appendChild(div);
   }
+
+  // productInit() renders a "Submit Review" button on product.html, but the modal it opens
+  // only existed in index.html's markup. Inject it wherever it is missing.
+  if (!$("#reviewModal")) {
+    const div = document.createElement("div");
+    div.className = "modal";
+    div.id = "reviewModal";
+    div.innerHTML = `
+      <div class="shade"></div>
+      <div class="modal-box" style="width:min(600px,92vw)">
+        <div class="drawer-head"><b>Submit Review &amp; Unboxing Content</b><button class="x">×</button></div>
+        <div style="background:#e8f5e9;border:1px solid #a5d6a7;padding:14px;border-radius:12px;margin:16px 0;font-size:12px;color:#1b5e20;font-weight:700">
+          🎉 Submit your review, testimonial, or unboxing video/photo and get a <strong>10% OFF Coupon</strong> upon admin approval!
+        </div>
+        <form id="reviewSubmissionForm">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><label class="form-label">Full Name *</label><input class="field" id="revName" required placeholder="Aman Sharma"></div>
+            <div><label class="form-label">Email Address *</label><input class="field" type="email" id="revEmail" required placeholder="aman@gmail.com"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+            <div><label class="form-label">Order ID / Ref Number</label><input class="field" id="revOrder" placeholder="HX-10482"></div>
+            <div><label class="form-label">Rating (1 to 5 Stars) *</label>
+              <select class="field" id="revRating">
+                <option value="5" selected>⭐⭐⭐⭐⭐ (5/5 Stars)</option>
+                <option value="4">⭐⭐⭐⭐ (4/5 Stars)</option>
+                <option value="3">⭐⭐⭐ (3/5 Stars)</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top:10px">
+            <label class="form-label">Review / Testimonial Text *</label>
+            <textarea class="field" id="revText" required style="height:90px;padding-top:10px" placeholder="Share your experience driving or unboxing your model..."></textarea>
+          </div>
+          <div id="revErr" style="color:#ed1c24;font-size:11px;margin-top:10px;display:none"></div>
+          <button class="btn dark" type="submit" style="width:100%;height:48px;margin-top:16px">Submit Review &amp; Claim 10% OFF →</button>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(div);
+  }
+}
+
+// The review form markup shipped without any submit handler, so submissions never reached
+// /api/submit-review (the endpoint the admin moderation queue reads from).
+function initReviewForm() {
+  const form = $("#reviewSubmissionForm");
+  if (!form || form.dataset.bound === "1") return;
+  form.dataset.bound = "1";
+
+  form.onsubmit = async function(e) {
+    e.preventDefault();
+    const err = $("#revErr");
+    const btn = form.querySelector('button[type="submit"]');
+    if (err) err.style.display = "none";
+    if (btn) btn.disabled = true;
+
+    try {
+      const res = await fetch('/api/submit-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: $("#revName")?.value.trim(),
+          email: $("#revEmail")?.value.trim(),
+          orderId: $("#revOrder")?.value.trim(),
+          prodName: document.title.split(" — ")[0],
+          rating: $("#revRating")?.value,
+          text: $("#revText")?.value.trim()
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Could not submit your review.");
+
+      form.reset();
+      closeEl($("#reviewModal"));
+      toast("Review submitted! Your coupon is emailed once approved ✓");
+    } catch (submitErr) {
+      console.error("Review submission failed:", submitErr);
+      if (err) {
+        err.textContent = submitErr.message || "Could not submit your review.";
+        err.style.display = "block";
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  };
 }
 
 let currentModalAuthTab = "login";
@@ -754,7 +900,7 @@ window.handleModalAuthSubmit = async function(e, type) {
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      if (!res.ok || data.error) throw new Error(data.error || "Invalid email or password.");
       setAuthSession(data.user, data.token, data.refresh_token);
       toast("Signed in to Driver Garage ✓");
       closeEl($("#accountModal"));
@@ -769,7 +915,16 @@ window.handleModalAuthSubmit = async function(e, type) {
         body: JSON.stringify({ name, email, phone, password })
       });
       const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      if (!res.ok || data.error) throw new Error(data.error || "Registration failed");
+
+      // No token means Supabase requires email confirmation — do not fake a session.
+      if (!data.token) {
+        currentModalAuthTab = "login";
+        renderAccountModalUI();
+        toast(data.message || `Confirm your email (${email}), then sign in.`);
+        return;
+      }
+
       setAuthSession(data.user, data.token, data.refresh_token);
       toast(`Account created! Welcome email sent to ${email} ✓`);
       closeEl($("#accountModal"));
@@ -781,7 +936,7 @@ window.handleModalAuthSubmit = async function(e, type) {
         body: JSON.stringify({ email })
       });
       const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      if (!res.ok || data.error) throw new Error(data.error || "Could not send the reset link.");
       toast(`Password reset instructions sent to ${email} ✓`);
       currentModalAuthTab = "login";
       renderAccountModalUI();
@@ -802,6 +957,7 @@ function initChrome() {
   renderCartDrawer();
   updateAuthUI();
   renderAccountModalUI();
+  initReviewForm();
 
   // GLOBAL DELEGATED CLICK LISTENER FOR ALL MODALS & DRAWERS
   document.addEventListener("click", (e) => {
@@ -867,7 +1023,7 @@ function initChrome() {
       } else {
         resultsDiv.innerHTML = matches.map(p => `
           <a href="product.html?id=${p.id}" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eee">
-            <img src="${p.image}" style="width:36px;height:30px;object-fit:contain${p.no_image ? ';display:none' : ''}">
+            <img src="${safeUrl(p.image)}" alt="" style="width:36px;height:30px;object-fit:contain${p.no_image ? ';display:none' : ''}">
             <div>
               <strong style="color:#111;font-size:12px">${esc(p.name)}</strong>
               <div style="font-size:10px;color:#1488d8">${esc(p.sku)} · ${INR(p.price)}</div>
@@ -882,20 +1038,52 @@ function initChrome() {
   const tb = $("#trackBtn");
   if (tb) {
     tb.onclick = async () => {
-      const o = $("#trackOrder")?.value.trim() || "HX-10482";
-      $("#trackResult").innerHTML = '<div style="margin-top:14px;font-size:11px;color:#888">Fetching live tracking status...</div>';
+      const result = $("#trackResult");
+      if (!result) return;
+
+      const orderId = $("#trackOrder")?.value.trim() || "";
+      const contact = $("#trackContact")?.value.trim() || "";
+
+      const showError = msg => {
+        result.innerHTML = `<div style="margin-top:14px;padding:12px 14px;border-radius:12px;background:#ffeeef;border:1px solid #ffc9cc;font-size:12px;color:#b3151b;font-weight:700">${esc(msg)}</div>`;
+      };
+
+      if (!orderId) return showError("Please enter your order number.");
+      if (!contact) return showError("Please enter the email or mobile number used on the order.");
+
+      // The API accepts either an email or a phone number for ownership verification.
+      const params = new URLSearchParams({ orderId });
+      params.set(contact.includes("@") ? "email" : "phone", contact);
+
+      tb.disabled = true;
+      result.innerHTML = '<div style="margin-top:14px;font-size:11px;color:#888">Fetching live tracking status...</div>';
+
       try {
-        const res = await fetch('/api/track-order?orderId=' + encodeURIComponent(o));
+        const res = await fetch('/api/track-order?' + params.toString());
         const data = await res.json();
-        if (data.success && data.tracking) {
-          const t = data.tracking;
-          $("#trackResult").innerHTML = `<div style="margin-top:18px;padding:18px;border-radius:16px;background:#f4f6ff;border:1px solid #dfe4ff;text-align:left">
-            <div style="font-size:12px;font-weight:900;color:#1488d8">Order ${esc(t.orderId)} · ${esc(t.courier)}</div>
-            <div style="font-size:11px;color:#555;margin-top:4px">AWB Tracking: <strong>${esc(t.trackingNumber)}</strong></div>
-            <div style="font-size:11px;color:#2e7d32;font-weight:800;margin-top:4px">Est. Delivery: ${esc(t.estimatedDelivery)}</div>
-          </div>`;
+
+        if (!res.ok || !data.success || !data.tracking) {
+          return showError(data.error || "We could not find that order. Please check the details and try again.");
         }
-      } catch(err) {}
+
+        const t = data.tracking;
+        const timeline = Array.isArray(t.timeline) ? t.timeline : [];
+        result.innerHTML = `<div style="margin-top:18px;padding:18px;border-radius:16px;background:#f4f6ff;border:1px solid #dfe4ff;text-align:left">
+          <div style="font-size:12px;font-weight:900;color:#1488d8">Order ${esc(t.orderId)} · ${esc(t.courier)}</div>
+          <div style="font-size:11px;color:#555;margin-top:4px">AWB Tracking: <strong>${esc(t.trackingNumber)}</strong></div>
+          <div style="font-size:11px;color:#555;margin-top:4px">Status: <strong>${esc(t.status)}</strong></div>
+          <div style="font-size:11px;color:#2e7d32;font-weight:800;margin-top:4px">Est. Delivery: ${esc(t.estimatedDelivery)}</div>
+          ${t.shiprocketUrl ? `<a href="${esc(t.shiprocketUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;font-size:11px;color:#1488d8;font-weight:800">Open courier tracking page →</a>` : ''}
+          ${timeline.length ? `<div style="margin-top:14px;border-top:1px solid #dfe4ff;padding-top:12px">
+            ${timeline.map(s => `<div style="font-size:11px;color:${s.done ? '#2e7d32' : '#888'};margin-bottom:6px">${s.done ? '✅' : '⬜'} ${esc(s.step)} <span style="color:#999">· ${esc(s.time)}</span></div>`).join("")}
+          </div>` : ''}
+        </div>`;
+      } catch (err) {
+        console.error("Track order failed:", err);
+        showError("Tracking service is unreachable right now. Please try again shortly.");
+      } finally {
+        tb.disabled = false;
+      }
     };
   }
 
@@ -908,13 +1096,37 @@ function initChrome() {
   });
 }
 
+// QUICK CATEGORY STRIP — counts come from the catalogue so they cannot drift out of date.
+const CATEGORY_ICONS = {
+  "Racing Cars": "🏁",
+  "Drift Cars": "↗",
+  "Monster Trucks": "🛞",
+  "Off Road Crawlers": "⛰",
+  "Buggies & Truggies": "⚡",
+  "Collectables": "★"
+};
+
+function renderQuickCategories() {
+  const container = $("#quickCats");
+  if (!container) return;
+
+  container.innerHTML = getCategories().map(c => `
+    <a class="cat" href="shop.html?cat=${encodeURIComponent(c.name)}">
+      <div class="dot">${CATEGORY_ICONS[c.name] || "🚗"}</div>
+      <b>${esc(c.name)}</b>
+      <small>${c.count} model${c.count === 1 ? "" : "s"}</small>
+    </a>
+  `).join("");
+}
+
 // CATEGORY PRODUCT CAROUSELS
 function renderCategoryCarousels() {
   const container = $("#categoryCarousels");
   if (!container) return;
 
   const productsList = getProducts();
-  const categories = ["Racing Cars", "Drift Cars", "Monster Trucks", "Off Road Crawlers", "Buggies & Truggies", "Mini RC"];
+  // Collectables is the display-only long tail; the rails showcase the driveable ranges.
+  const categories = getCategories().filter(c => c.name !== "Collectables").map(c => c.name);
 
   container.innerHTML = categories.map(cat => {
     const catProducts = productsList.filter(p => p.category === cat).slice(0, 10);
@@ -933,7 +1145,7 @@ function renderCategoryCarousels() {
             <div style="font-size:10px;font-weight:900;color:${stock > 0 ? '#2e7d32' : '#ed1c24'}">${stock > 0 ? `🟢 In Stock (${stock})` : '🔴 Out of Stock'}</div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
               <strong style="font-size:15px;color:#111">${INR(p.price)}</strong>
-              <button class="mini-btn solid" onclick="addCart(${p.id})" style="height:32px;padding:0 12px">Add 🛒</button>
+              <button class="mini-btn solid" onclick="addCart(${idArg(p.id)})" style="height:32px;padding:0 12px">Add 🛒</button>
             </div>
           </div>
         </div>
@@ -980,13 +1192,18 @@ async function renderCollaborationsRail() {
 
     if (collabs.length) {
       container.innerHTML = collabs.map(c => `
-        <a href="${c.link || 'index.html'}" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;background:#fff;border:1px solid var(--line);border-radius:14px;white-space:nowrap;font-weight:800;font-size:12px;color:#111">
-          <img src="${c.logo}" style="width:32px;height:32px;object-fit:contain">
+        <a href="${safeUrl(c.link, 'index.html')}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;background:#fff;border:1px solid var(--line);border-radius:14px;white-space:nowrap;font-weight:800;font-size:12px;color:#111">
+          <img src="${safeUrl(c.logo)}" alt="${esc(c.name)}" style="width:32px;height:32px;object-fit:contain">
           <span>${esc(c.name)}</span>
         </a>
       `).join("");
+    } else {
+      container.innerHTML = '';
     }
-  } catch(e) {}
+  } catch (e) {
+    console.error("Collaborations rail failed to load:", e);
+    container.innerHTML = '';
+  }
 }
 
 // SHOP FILTERING & DYNAMIC PAGINATION
@@ -1004,17 +1221,29 @@ function shopInit() {
   const priceSelect = $("#priceFilter");
   const sortSelect = $("#sortFilter");
 
-  if (catSelect && catSelect.options.length <= 1) {
-    const cats = ["All Categories", "Racing Cars", "Drift Cars", "Monster Trucks", "Off Road Crawlers", "Buggies & Truggies", "Mini RC", "Collectables"];
-    catSelect.innerHTML = cats.map(c => `<option value="${c === 'All Categories' ? '' : c}">${c}</option>`).join("");
+  // Always rebuild from the catalogue: the static markup listed a "Mini RC" category that
+  // no product has, and omitted several scales that products do have.
+  if (catSelect) {
+    catSelect.innerHTML = `<option value="">All Categories</option>` +
+      getCategories().map(c => `<option value="${esc(c.name)}">${esc(c.name)} (${c.count})</option>`).join("");
   }
-  if (catSelect && qs.get("cat")) catSelect.value = qs.get("cat");
+  if (scaleSelect) {
+    scaleSelect.innerHTML = `<option value="">All Scales</option>` +
+      getScales().map(s => `<option value="${esc(s)}">${esc(s)} Scale</option>`).join("");
+  }
 
-  if (scaleSelect && scaleSelect.options.length <= 1) {
-    const scales = ["All Scales", "1:7", "1:8", "1:10", "1:12", "1:14", "1:16", "1:24", "1:32", "1:64"];
-    scaleSelect.innerHTML = scales.map(s => `<option value="${s === 'All Scales' ? '' : s}">${s === 'All Scales' ? 'All Scales' : s + ' Scale'}</option>`).join("");
+  // Only apply a URL filter the catalogue can actually satisfy, so a stale link shows the
+  // full catalogue rather than a silently empty grid.
+  const qsCat = qs.get("cat");
+  if (catSelect && qsCat) {
+    catSelect.value = qsCat;
+    if (catSelect.value !== qsCat) catSelect.value = "";
   }
-  if (scaleSelect && qs.get("scale")) scaleSelect.value = qs.get("scale");
+  const qsScale = qs.get("scale");
+  if (scaleSelect && qsScale) {
+    scaleSelect.value = qsScale;
+    if (scaleSelect.value !== qsScale) scaleSelect.value = "";
+  }
 
   if (searchInput && qs.get("q")) searchInput.value = qs.get("q");
 
@@ -1085,9 +1314,13 @@ function shopInit() {
     window.scrollTo({ top: grid.offsetTop - 120, behavior: 'smooth' });
   };
 
+  // shopInit() runs again whenever live backend products arrive, so bind filters only once —
+  // otherwise every refresh stacked another listener and re-rendered the grid N times.
   [searchInput, catSelect, scaleSelect, priceSelect, sortSelect].forEach(el => {
-    if (el) el.addEventListener("change", () => { currentPage = 1; render(); });
-    if (el && el.tagName === "INPUT") el.addEventListener("input", () => { currentPage = 1; render(); });
+    if (!el || el.dataset.bound === "1") return;
+    el.dataset.bound = "1";
+    el.addEventListener("change", () => { currentPage = 1; render(); });
+    if (el.tagName === "INPUT") el.addEventListener("input", () => { currentPage = 1; render(); });
   });
 
   render();
@@ -1118,16 +1351,24 @@ function productInit() {
   const qs = new URLSearchParams(location.search);
   const rawId = qs.get("id") || qs.get("sku") || "71";
   const productsList = getProducts();
-  const p = productsList.find(x => String(x.id) === String(rawId) || String(x.sku).toLowerCase() === String(rawId).toLowerCase()) || productsList[0];
+  const p = productsList.find(x => String(x.id) === String(rawId) || String(x.sku).toLowerCase() === String(rawId).toLowerCase());
 
+  // Previously this fell back to productsList[0], so a bad or stale ?id= silently rendered
+  // a different product's page under the requested URL.
   if (!p) {
-    root.innerHTML = '<div class="empty">Product not found.</div>';
+    document.title = "Product not found — HyperXGT";
+    root.innerHTML = `<div class="empty" style="grid-column:1/-1;text-align:center;padding:64px 20px">
+      <div style="font-size:48px;margin-bottom:12px">🔍</div>
+      <h2 style="font-size:24px;color:#111;margin-bottom:8px">We couldn't find that model</h2>
+      <p style="font-size:14px;color:#666;max-width:420px;margin:0 auto 24px">The product <strong>${esc(rawId)}</strong> is no longer in the catalogue, or the link is out of date.</p>
+      <a class="btn blue" href="shop.html" style="height:48px;padding:0 28px;display:inline-flex;align-items:center">Browse the full catalogue →</a>
+    </div>`;
     return;
   }
 
   document.title = `${p.name} — HyperXGT`;
 
-  const w = getWish().includes(p.id);
+  const w = isWished(p.id);
   const stock = p.stock !== undefined ? p.stock : 25;
   const savings = Math.max(0, (p.mrp || 0) - (p.price || 0));
 
@@ -1145,7 +1386,7 @@ function productInit() {
     <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e7d32"></span>
     🟢 In Stock — <strong>${stock} Units Available</strong> for Express Dispatch (Ships within 24 Hours)
   </div>`;
-  let buyDetailBtn = `<button class="btn dark" style="flex:1;height:52px;font-size:14px" onclick="addCart(${p.id}, $('#detailQty').value)">Add to Cart 🛒</button>`;
+  let buyDetailBtn = `<button class="btn dark" style="flex:1;height:52px;font-size:14px" onclick="addCart(${idArg(p.id)}, $('#detailQty').value)">Add to Cart 🛒</button>`;
 
   if (stock === 0) {
     stockStatusHTML = `<div style="margin: 14px 0 16px; font-size: 12px; color: #ed1c24; font-weight: 700; display: flex; align-items: center; gap: 6px;">
@@ -1264,7 +1505,7 @@ function productInit() {
             <button style="width:38px;height:52px;border:0;background:none;font-weight:900;cursor:pointer;font-size:16px" onclick="const i=$('#detailQty'); i.value=Math.min(${stock}, Number(i.value)+1)">+</button>
           </div>
           ${buyDetailBtn}
-          <button class="btn" style="width:52px;height:52px;padding:0;display:grid;place-items:center;font-size:20px" onclick="toggleWish(${p.id})">${w ? "♥" : "♡"}</button>
+          <button class="btn" style="width:52px;height:52px;padding:0;display:grid;place-items:center;font-size:20px" onclick="toggleWish(${idArg(p.id)})">${w ? "♥" : "♡"}</button>
         </div>
 
         <!-- WHATSAPP FAST ORDER BUTTON -->
@@ -1416,7 +1657,7 @@ function cartPageInit() {
   if (!itemsContainer || !summaryContainer) return;
 
   const cart = getCart();
-  const ids = Object.keys(cart).map(Number);
+  const ids = Object.keys(cart);
   const products = getProducts();
 
   if (!ids.length) {
@@ -1434,7 +1675,7 @@ function cartPageInit() {
 
   let subtotal = 0;
   let itemsHTML = ids.map(id => {
-    const p = products.find(x => x.id === id);
+    const p = products.find(x => String(x.id) === String(id));
     if (!p) return "";
     const qty = cart[id];
     const itemTotal = p.price * qty;
@@ -1442,7 +1683,7 @@ function cartPageInit() {
 
     return `
       <div style="display:grid;grid-template-columns:100px 1fr 140px 100px;gap:20px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)">
-        <img src="${p.image}" alt="${esc(p.name)}" style="width:100px;height:80px;object-fit:contain;background:#f8f9fa;border-radius:12px;padding:4px">
+        ${(p.image && !p.no_image) ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" style="width:100px;height:80px;object-fit:contain;background:#f8f9fa;border-radius:12px;padding:4px">` : `<div style="width:100px;height:80px;background:#f8f9fa;border-radius:12px;display:grid;place-items:center;font-size:11px;color:#888">📷</div>`}
         <div>
           <span style="font-size:11px;color:#1488d8;font-weight:900">${esc(p.category)} · SKU: ${esc(p.sku)}</span>
           <h3 style="font-size:16px;margin:4px 0 6px;color:#111"><a href="product.html?id=${p.id}" style="color:inherit">${esc(p.name)}</a></h3>
@@ -1450,20 +1691,23 @@ function cartPageInit() {
         </div>
 
         <div style="display:flex;align-items:center;gap:8px;background:#f0f4ff;border-radius:10px;padding:4px 8px;width:fit-content">
-          <button style="border:0;background:none;font-weight:900;font-size:16px;cursor:pointer;width:24px;height:24px" onclick="updateQty(${p.id}, ${qty - 1})">-</button>
+          <button style="border:0;background:none;font-weight:900;font-size:16px;cursor:pointer;width:24px;height:24px" onclick="updateQty(${idArg(p.id)}, ${qty - 1})">-</button>
           <span style="font-weight:900;font-size:14px;min-width:20px;text-align:center">${qty}</span>
-          <button style="border:0;background:none;font-weight:900;font-size:16px;cursor:pointer;width:24px;height:24px" onclick="updateQty(${p.id}, ${qty + 1})">+</button>
+          <button style="border:0;background:none;font-weight:900;font-size:16px;cursor:pointer;width:24px;height:24px" onclick="updateQty(${idArg(p.id)}, ${qty + 1})">+</button>
         </div>
 
         <div style="text-align:right">
           <strong style="font-size:16px;color:#2e7d32;display:block">${INR(itemTotal)}</strong>
-          <button style="border:0;background:none;color:#ed1c24;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px" onclick="removeCartItem(${p.id})">Remove 🗑️</button>
+          <button style="border:0;background:none;color:#ed1c24;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px" onclick="removeCartItem(${idArg(p.id)})">Remove 🗑️</button>
         </div>
       </div>
     `;
   }).join("");
 
   itemsContainer.innerHTML = itemsHTML;
+
+  const shipping = shippingFor(subtotal);
+  const grandTotal = subtotal + shipping;
 
   summaryContainer.innerHTML = `
     <div style="background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)">
@@ -1474,7 +1718,9 @@ function cartPageInit() {
       </div>
       <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px">
         <span style="color:#666">Express Courier Delivery</span>
-        <strong style="color:#2e7d32">FREE (Orders > ₹999)</strong>
+        ${shipping === 0
+          ? `<strong style="color:#2e7d32">FREE (over ${INR(FREE_SHIPPING_THRESHOLD)})</strong>`
+          : `<strong>${INR(shipping)}</strong>`}
       </div>
       <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #eee">
         <span style="color:#666">GST & Taxes</span>
@@ -1482,7 +1728,7 @@ function cartPageInit() {
       </div>
       <div style="display:flex;justify-content:space-between;font-size:18px;margin-bottom:24px">
         <strong style="color:#111">Total Amount</strong>
-        <strong style="color:#2e7d32;font-size:22px">${INR(subtotal)}</strong>
+        <strong style="color:#2e7d32;font-size:22px">${INR(grandTotal)}</strong>
       </div>
 
       <a class="btn blue" href="checkout.html" style="width:100%;height:52px;font-size:14px;display:flex;align-items:center;justify-content:center">Proceed to Secure Checkout 🔒</a>
@@ -1501,12 +1747,20 @@ window.removeCartItem = function(id) {
   toast("Removed item from cart");
 };
 
+// cartPageInit() renders quantity steppers that call updateQty(), which was never defined —
+// every +/- click on cart.html threw ReferenceError. It is the cart-page counterpart of setQty().
+window.updateQty = function(id, q) {
+  setQty(id, q);
+  cartPageInit();
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   initChrome();
   homeInit();
   shopInit();
   productInit();
   cartPageInit();
+  renderQuickCategories();
   renderCategoryCarousels();
   renderCollaborationsRail();
   fetchLiveBackendProducts();
