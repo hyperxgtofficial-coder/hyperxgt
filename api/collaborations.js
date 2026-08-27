@@ -57,6 +57,7 @@ module.exports = async (req, res) => {
 
   const supabaseUrl = (process.env.SUPABASE_URL || "https://hyperxgt-db.supabase.co").replace(/\/$/, '');
   const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || "";
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
 
   try {
     if (req.method === 'GET') {
@@ -87,14 +88,14 @@ module.exports = async (req, res) => {
       newCollab.active = newCollab.active !== undefined ? newCollab.active : true;
       inMemoryCollaborations.push(newCollab);
 
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/collaborations`, 'POST', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`,
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
             'Prefer': 'return=minimal'
           }, newCollab);
-        } catch(e) {}
+        } catch(e) { console.error('Supabase collab POST error:', e.message); }
       }
 
       return res.status(201).json({ success: true, collaboration: newCollab });
@@ -107,13 +108,13 @@ module.exports = async (req, res) => {
         inMemoryCollaborations[idx] = { ...inMemoryCollaborations[idx], ...updated };
       }
 
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/collaborations?id=eq.${updated.id}`, 'PATCH', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
           }, updated);
-        } catch(e) {}
+        } catch(e) { console.error('Supabase collab PUT error:', e.message); }
       }
 
       return res.status(200).json({ success: true, collaboration: updated });
@@ -123,13 +124,13 @@ module.exports = async (req, res) => {
       const deleteId = Number(req.query.id);
       inMemoryCollaborations = inMemoryCollaborations.filter(c => c.id !== deleteId);
 
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/collaborations?id=eq.${deleteId}`, 'DELETE', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
           });
-        } catch(e) {}
+        } catch(e) { console.error('Supabase collab DELETE error:', e.message); }
       }
 
       return res.status(200).json({ success: true, message: `Collaboration ID ${deleteId} deleted.` });

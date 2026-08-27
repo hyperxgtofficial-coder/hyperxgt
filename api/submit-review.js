@@ -69,6 +69,7 @@ module.exports = async (req, res) => {
 
   const supabaseUrl = (process.env.SUPABASE_URL || "https://hyperxgt-db.supabase.co").replace(/\/$/, '');
   const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || "";
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
 
   try {
     // 1. GET REVIEWS
@@ -121,14 +122,14 @@ module.exports = async (req, res) => {
 
       inMemoryReviews.unshift(newReview);
 
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/reviews`, 'POST', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`,
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
             'Prefer': 'return=minimal'
           }, newReview);
-        } catch(e) {}
+        } catch(e) { console.error('Supabase review POST error:', e.message); }
       }
 
       return res.status(201).json({
@@ -161,13 +162,13 @@ module.exports = async (req, res) => {
         rev.featured = !rev.featured;
       }
 
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/reviews?id=eq.${id}`, 'PATCH', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
           }, rev);
-        } catch(e) {}
+        } catch(e) { console.error('Supabase review PUT error:', e.message); }
       }
 
       return res.status(200).json({ success: true, message: `Review ${id} status updated to ${rev.status}`, review: rev });
@@ -178,13 +179,13 @@ module.exports = async (req, res) => {
       const deleteId = req.query.id;
       inMemoryReviews = inMemoryReviews.filter(r => r.id !== deleteId);
 
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/reviews?id=eq.${deleteId}`, 'DELETE', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
           });
-        } catch(e) {}
+        } catch(e) { console.error('Supabase review DELETE error:', e.message); }
       }
 
       return res.status(200).json({ success: true, message: `Review ${deleteId} deleted.` });

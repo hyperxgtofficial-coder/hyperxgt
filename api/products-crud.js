@@ -84,6 +84,7 @@ module.exports = async (req, res) => {
 
   const supabaseUrl = (process.env.SUPABASE_URL || "https://hyperxgt-db.supabase.co").replace(/\/$/, '');
   const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || "";
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
 
   try {
     cachedProducts = getInitialProducts();
@@ -139,15 +140,15 @@ module.exports = async (req, res) => {
         }
       }
 
-      // Persist to Supabase DB if credentials set
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      // Persist to Supabase DB if credentials set (use service_role key for writes - RLS requires it)
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/products?id=eq.${updatedProd.id}`, 'PATCH', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`,
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
             'Prefer': 'return=minimal'
           }, updatedProd);
-        } catch(e) {}
+        } catch(e) { console.error('Supabase PUT error:', e.message); }
       }
 
       return res.status(200).json({
@@ -172,14 +173,14 @@ module.exports = async (req, res) => {
         cachedProducts.unshift(newProd);
       }
 
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/products`, 'POST', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`,
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
             'Prefer': 'return=minimal'
           }, newProd);
-        } catch(e) {}
+        } catch(e) { console.error('Supabase POST error:', e.message); }
       }
 
       return res.status(201).json({
@@ -196,13 +197,13 @@ module.exports = async (req, res) => {
         cachedProducts = cachedProducts.filter(x => x.id !== deleteId);
       }
 
-      if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+      if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
           await httpsRequest(`${supabaseUrl}/rest/v1/products?id=eq.${deleteId}`, 'DELETE', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${supabaseAnonKey}`
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
           });
-        } catch(e) {}
+        } catch(e) { console.error('Supabase DELETE error:', e.message); }
       }
 
       return res.status(200).json({
