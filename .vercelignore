@@ -5,6 +5,7 @@ brain
 scratch
 images
 *.csv
+!sample_products_template.csv
 live_hyperxgt_scraped.json
 ANTIGRAVITY_MASTER_PROMPT.txt
 CATALOGUE_DATA_CHECK.txt
