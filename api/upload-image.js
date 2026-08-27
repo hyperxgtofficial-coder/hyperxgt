@@ -102,9 +102,22 @@ module.exports = async (req, res) => {
       }
     }
 
-    // Fallback: If Supabase Storage bucket isn't created yet, compress data URL safely
+    // Fallback: If Supabase Storage bucket isn't configured, save file to assets/uploads/ on local disk
     if (!publicUrl) {
-      publicUrl = `data:${mimeType};base64,${cleanBase64}`;
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        const uploadsDir = path.join(__dirname, '..', 'assets', 'uploads');
+        if (!fs.existsSync(uploadsDir)) {
+          fs.mkdirSync(uploadsDir, { recursive: true });
+        }
+        const localFilePath = path.join(uploadsDir, uniqueName);
+        fs.writeFileSync(localFilePath, buffer);
+        publicUrl = `assets/uploads/${uniqueName}`;
+      } catch(err) {
+        console.error("Local disk storage write error:", err.message);
+        publicUrl = `data:${mimeType};base64,${cleanBase64}`;
+      }
     }
 
     return res.status(200).json({

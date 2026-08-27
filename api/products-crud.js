@@ -24,6 +24,18 @@ function getInitialProducts() {
   return cachedProducts || [];
 }
 
+function saveProductsToJsonDisk(arr) {
+  try {
+    if (!Array.isArray(arr) || !arr.length) return;
+    const jsonPath = path.join(__dirname, '..', 'data', 'products.json');
+    const dir = path.dirname(jsonPath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(jsonPath, JSON.stringify(arr, null, 2), 'utf8');
+  } catch(e) {
+    console.error("Disk save error:", e.message);
+  }
+}
+
 function httpsRequest(urlStr, method, headers, bodyObj) {
   return new Promise((resolve, reject) => {
     try {
@@ -138,6 +150,7 @@ module.exports = async (req, res) => {
         } else {
           cachedProducts.unshift(updatedProd);
         }
+        saveProductsToJsonDisk(cachedProducts);
       }
 
       // Persist to Supabase DB if credentials set (use service_role key for writes - RLS requires it)
@@ -165,12 +178,14 @@ module.exports = async (req, res) => {
       // Bulk list sync from CSV or admin
       if (req.query.bulk === '1' && Array.isArray(payload)) {
         cachedProducts = payload;
+        saveProductsToJsonDisk(cachedProducts);
         return res.status(200).json({ success: true, message: `Bulk updated ${payload.length} products` });
       }
 
       const newProd = payload;
       if (cachedProducts && Array.isArray(cachedProducts)) {
         cachedProducts.unshift(newProd);
+        saveProductsToJsonDisk(cachedProducts);
       }
 
       if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
@@ -195,6 +210,7 @@ module.exports = async (req, res) => {
       const deleteId = Number(req.query.id);
       if (cachedProducts && Array.isArray(cachedProducts)) {
         cachedProducts = cachedProducts.filter(x => x.id !== deleteId);
+        saveProductsToJsonDisk(cachedProducts);
       }
 
       if (supabaseServiceKey && supabaseUrl.includes("supabase")) {

@@ -174,8 +174,11 @@ function renderAdminGalleryPreview(urlsList, heroUrl) {
     return;
   }
 
+  const activeHero = currentHero.trim();
+  const hasMatch = urlsList.some(u => u.trim() === activeHero);
+
   previewBox.innerHTML = urlsList.filter(Boolean).map((url, idx) => {
-    const isHero = url.trim() === currentHero.trim() || idx === 0;
+    const isHero = hasMatch ? (url.trim() === activeHero) : (idx === 0);
     return `
       <div style="position:relative;display:inline-block;margin-right:10px;margin-bottom:10px">
         <img src="${url.trim()}" title="Click to set as Main Hero Image" onclick="setAsHeroImageByIdx(${idx})" style="width:72px;height:60px;object-fit:contain;background:#fff;border-radius:8px;border:${isHero ? '2.5px solid #1488d8' : '1px solid #ccc'};padding:4px;cursor:pointer">
@@ -224,7 +227,9 @@ window.setAsHeroImageByIdx = function(idx) {
   const selectedUrl = rawList[idx] || "";
   if (selectedUrl && $("#formImage")) {
     $("#formImage").value = selectedUrl;
-    renderAdminGalleryPreview(rawList, selectedUrl);
+    const reordered = [selectedUrl, ...rawList.filter((_, i) => i !== idx)];
+    if (listTextarea) listTextarea.value = reordered.join(', ');
+    renderAdminGalleryPreview(reordered, selectedUrl);
     toast("Set as Main Hero Image 🌟");
   }
 };
@@ -273,15 +278,13 @@ function initImageUploadHandler() {
       }
 
       if (uploadedPublicUrls.length) {
-        if (!imgInput.value.trim()) {
-          imgInput.value = uploadedPublicUrls[0];
-        }
+        imgInput.value = uploadedPublicUrls[0];
         const existingExtra = galleryTextarea.value.trim() ? galleryTextarea.value.trim().split(',').map(x => x.trim()).filter(Boolean) : [];
         const combined = [...new Set([...uploadedPublicUrls, ...existingExtra])];
         galleryTextarea.value = combined.join(', ');
 
         renderAdminGalleryPreview(combined, imgInput.value.trim());
-        toast(`Uploaded ${uploadedPublicUrls.length} images! Hero & gallery updated ✓`);
+        toast(`Uploaded ${uploadedPublicUrls.length} images! Main hero photo & gallery updated ✓`);
       }
     };
   }
@@ -768,13 +771,14 @@ function openEditModal(id) {
   $("#formSpeed").value = p.speed || "35 KM/H";
   $("#formDrive").value = p.drive || "4WD";
 
-  const isNoImg = p.no_image === true || (!p.image && (!p.images || !p.images.length));
-  const allImgs = isNoImg ? [] : ((p.images && p.images.length) ? p.images.filter(Boolean) : (p.image ? [p.image] : []));
+  const allImgs = (p.images && p.images.length) ? p.images.filter(Boolean) : (p.image ? [p.image] : []);
+  const mainImg = p.image || allImgs[0] || "";
+  const isNoImg = p.no_image === true && !mainImg && !allImgs.length;
   
-  $("#formImage").value = isNoImg ? "" : (p.image || allImgs[0] || "");
+  $("#formImage").value = isNoImg ? "" : mainImg;
   $("#formImagesList").value = isNoImg ? "" : allImgs.join(", ");
   if ($("#formVideoUrl")) $("#formVideoUrl").value = p.video || "";
-  renderAdminGalleryPreview(isNoImg ? [] : allImgs, isNoImg ? "" : (p.image || ""));
+  renderAdminGalleryPreview(isNoImg ? [] : allImgs, isNoImg ? "" : mainImg);
 
   $("#formShortDesc").value = p.short_description || "";
   $("#formFullDesc").value = p.full_description || "";
@@ -807,14 +811,20 @@ async function saveProduct(e) {
   const speed = $("#formSpeed").value.trim() || "35 KM/H";
   const drive = $("#formDrive").value;
   const rawGallery = $("#formImagesList").value.trim();
-  const images = rawGallery ? rawGallery.split(',').map(x => x.trim()).filter(Boolean) : [];
+  let images = rawGallery ? rawGallery.split(',').map(x => x.trim()).filter(Boolean) : [];
   let image = $("#formImage").value.trim();
 
-  const isNoImage = (!image && images.length === 0);
-
-  if (images.length > 0 && (!image || !images.includes(image))) {
+  if (image) {
+    if (!images.includes(image)) {
+      images.unshift(image);
+    } else if (images[0] !== image) {
+      images = [image, ...images.filter(x => x !== image)];
+    }
+  } else if (images.length > 0) {
     image = images[0];
   }
+
+  const isNoImage = (!image && images.length === 0);
 
   const video = $("#formVideoUrl") ? $("#formVideoUrl").value.trim() : "";
 

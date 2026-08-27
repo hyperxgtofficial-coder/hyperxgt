@@ -16,7 +16,9 @@ function loadProductsDB() {
             const key = String(p.id);
             const existing = map.get(key) || {};
             const merged = { ...existing, ...p };
-            if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
+            if (p.image || (Array.isArray(p.images) && p.images.length > 0)) {
+              merged.no_image = false;
+            } else if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
               merged.image = "";
               merged.images = [];
               merged.no_image = true;
@@ -202,13 +204,30 @@ async function fetchLiveBackendProducts() {
     if (data && data.products && Array.isArray(data.products) && data.products.length > 0) {
       const liveProducts = data.products.filter(p => p && p.id != null);
       const staticProducts = (window.HX_PRODUCTS && Array.isArray(window.HX_PRODUCTS)) ? window.HX_PRODUCTS.filter(p => p && p.id != null) : [];
+      
+      let localProducts = [];
+      try {
+        const local = localStorage.getItem("hx_products_db");
+        if (local) {
+          const parsed = JSON.parse(local);
+          if (Array.isArray(parsed)) localProducts = parsed.filter(p => p && p.id != null);
+        }
+      } catch(e) {}
+
       const map = new Map();
       staticProducts.forEach(p => map.set(String(p.id), p));
+      localProducts.forEach(p => {
+        const key = String(p.id);
+        const existing = map.get(key) || {};
+        map.set(key, { ...existing, ...p });
+      });
       liveProducts.forEach(p => {
         const key = String(p.id);
         const existing = map.get(key) || {};
         const merged = { ...existing, ...p };
-        if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
+        if (p.image || (Array.isArray(p.images) && p.images.length > 0)) {
+          merged.no_image = false;
+        } else if (p.no_image || (p.image === "" && Array.isArray(p.images) && p.images.length === 0)) {
           merged.image = "";
           merged.images = [];
           merged.no_image = true;

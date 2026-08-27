@@ -17,17 +17,9 @@
     "dimensions": "10 × 6 × 5 cm",
     "weight": "0.08 kg",
     "age": "8+ Years",
-    "image": "assets/products/H6401-P.webp",
+    "image": "assets/uploads/prod_1787842900353_1248.png",
     "images": [
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/4.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/4.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/3.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/9.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/2.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/5.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/7.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/8.png"
+      "assets/uploads/prod_1787842900353_1248.png"
     ],
     "short_description": "Experience precision drifting with this 1:64 scale RC Drift Car, designed for smooth control and realistic performance. Its compact size delivers fast turns, stable drifting, and exciting racing action on flat surfaces. Perfect for collectors, beginners, and RC enthusiasts looking for a stylish mini drift car with responsive handling and fun indoor driving.",
     "full_description": "Experience precision drifting with this 1:64 scale RC Drift Car, designed for smooth control and realistic performance. Its compact size delivers fast turns, stable drifting, and exciting racing action on flat surfaces. Perfect for collectors, beginners, and RC enthusiasts looking for a stylish mini drift car with responsive handling and fun indoor driving.",
@@ -37,7 +29,13 @@
       "H6401-Y"
     ],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25,
+    "taxMode": "inclusive",
+    "gstRate": 18,
+    "hsn": "95030090",
+    "no_image": false,
+    "video": ""
   },
   {
     "id": 2,
@@ -57,24 +55,22 @@
     "dimensions": "25 × 22 × 15 cm",
     "weight": "1 kg",
     "age": "8+ Years",
-    "image": "assets/products/H284131.webp",
+    "image": "assets/uploads/prod_1787842866438_2398.jpg",
     "images": [
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/3-6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/6-6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/9-2.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/1-6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/2-6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/4-7.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/5-6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/7-6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/07/8-3.png"
+      "assets/uploads/prod_1787842866438_2398.jpg"
     ],
     "short_description": "The H284131 RC Car delivers fast speed and smooth remote control performance for exciting racing action. Built with a durable body and stable handling, it runs efficiently on different surfaces. Perfect for racing, drifting, and everyday RC fun, making it a great choice for beginners and RC car enthusiasts. 🚗",
     "full_description": "The H284131 RC Car delivers fast speed and smooth remote control performance for exciting racing action. Built with a durable body and stable handling, it runs efficiently on different surfaces. Perfect for racing, drifting, and everyday RC fun, making it a great choice for beginners and RC car enthusiasts. 🚗",
     "attributes": {},
     "upsells": [],
     "source_page": 1,
-    "featured": true
+    "featured": true,
+    "stock": 25,
+    "taxMode": "inclusive",
+    "gstRate": 18,
+    "hsn": "95030090",
+    "no_image": false,
+    "video": ""
   },
   {
     "id": 3,
@@ -3206,28 +3202,17 @@
     "dimensions": "46 × 32 × 20 cm",
     "weight": "8.9 kg",
     "age": "8+ Years",
-    "image": "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/8-1.png",
+    "image": "assets/uploads/prod_1787842559751_3655.png",
     "images": [
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/8-1.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/8-2.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/6-1.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/4-1.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/5-1.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/7-1.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/1-4.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/9-1.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/10-7.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/11-6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/12-6.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/13-5.png",
-      "https://hxgt.blr1.cdn.digitaloceanspaces.com/2025/09/14-5.png"
+      "assets/uploads/prod_1787842559751_3655.png"
     ],
     "short_description": "The MJX 7303 RC Car is a durable off-road remote control vehicle designed for smooth handling and exciting racing. Built with a strong body and responsive 2.4GHz control system, it delivers stable performance on different terrains. Ideal for hobbyists who enjoy speed, control, and outdoor RC adventures. 🚗💨",
     "full_description": "The MJX 7303 RC Car is a durable off-road remote control vehicle designed for smooth handling and exciting racing. Built with a strong body and responsive 2.4GHz control system, it delivers stable performance on different terrains. Ideal for hobbyists who enjoy speed, control, and outdoor RC adventures. 🚗💨",
     "attributes": {},
     "upsells": [],
     "source_page": 4,
-    "featured": true
+    "featured": true,
+    "no_image": false
   },
   {
     "id": 72,
