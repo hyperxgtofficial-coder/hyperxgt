@@ -45,16 +45,32 @@ const $ = (q, r = document) => r.querySelector(q);
 const $$ = (q, r = document) => [...r.querySelectorAll(q)];
 const INR = n => "₹" + Number(n || 0).toLocaleString("en-IN");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
-const openModal = id => {
+window.openModal = function(id) {
   if (!id) return;
   if (id === "accountModal") {
     ensureGlobalModalsAndDrawers();
     renderAccountModalUI();
   }
   const el = $("#" + id);
-  if (el) el.classList.add("open");
+  if (el) {
+    el.classList.add("open");
+    el.style.display = "block";
+    el.style.visibility = "visible";
+    el.style.opacity = "1";
+    el.style.pointerEvents = "auto";
+  }
 };
-const closeEl = el => el.closest(".modal,.drawer")?.classList.remove("open");
+
+window.closeEl = function(el) {
+  const modal = (el && el.nodeType) ? el.closest(".modal,.drawer") : (typeof el === "string" ? $("#" + el) : null);
+  if (modal) {
+    modal.classList.remove("open");
+    modal.style.display = "";
+    modal.style.visibility = "";
+    modal.style.opacity = "";
+    modal.style.pointerEvents = "";
+  }
+};
 
 function toast(msg) {
   const t = $("#toast");
@@ -1455,4 +1471,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCollaborationsRail();
   fetchLiveBackendProducts();
 });
+
+// Immediate execution to ensure modals exist before any user click
+try { ensureGlobalModalsAndDrawers(); } catch(e) {}
 
