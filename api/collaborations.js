@@ -103,7 +103,7 @@ module.exports = async (req, res) => {
 
     if (req.method === 'PUT') {
       const updated = req.body || {};
-      const idx = inMemoryCollaborations.findIndex(c => c.id === updated.id);
+      const idx = inMemoryCollaborations.findIndex(c => String(c.id) === String(updated.id));
       if (idx !== -1) {
         inMemoryCollaborations[idx] = { ...inMemoryCollaborations[idx], ...updated };
       }
@@ -121,8 +121,8 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'DELETE') {
-      const deleteId = Number(req.query.id);
-      inMemoryCollaborations = inMemoryCollaborations.filter(c => c.id !== deleteId);
+      const deleteId = req.query.id;
+      inMemoryCollaborations = inMemoryCollaborations.filter(c => String(c.id) !== String(deleteId));
 
       if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {

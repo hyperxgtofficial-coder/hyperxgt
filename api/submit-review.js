@@ -97,6 +97,26 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Name, email, and review text are required.' });
       }
 
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(email).trim())) {
+        return res.status(400).json({ error: 'Please provide a valid email address.' });
+      }
+
+      const ratingValue = Number(rating);
+      if (rating !== undefined && (!Number.isFinite(ratingValue) || ratingValue < 1 || ratingValue > 5)) {
+        return res.status(400).json({ error: 'Rating must be between 1 and 5.' });
+      }
+
+      // mediaUrl is rendered as an <a href> in the admin panel. Storing it unchecked let a
+      // public submission put a javascript: URL in front of a signed-in administrator.
+      const rawMedia = String(mediaUrl || '').trim();
+      if (rawMedia && !/^(https?:\/\/|data:(image|video)\/|assets\/)/i.test(rawMedia)) {
+        return res.status(400).json({ error: 'Media link must be an http(s) URL or an uploaded file.' });
+      }
+
+      if (String(text).trim().length > 5000) {
+        return res.status(400).json({ error: 'Review text is too long (5000 character limit).' });
+      }
+
       // Check duplicate submission for orderId / email
       const existing = inMemoryReviews.find(r => r.email === email && r.orderId === orderId);
       if (existing) {
@@ -113,8 +133,8 @@ module.exports = async (req, res) => {
         prodName: prodName ? prodName.trim() : "HyperXGT RC Model",
         rating: Number(rating) || 5,
         text: text.trim(),
-        mediaUrl: mediaUrl || "",
-        mediaType: mediaType || (mediaUrl && (mediaUrl.includes(".mp4") || mediaUrl.includes(".mov")) ? "video" : "image"),
+        mediaUrl: rawMedia,
+        mediaType: mediaType || (/\.(mp4|mov|webm)(?:$|[?#])|^data:video\//i.test(rawMedia) ? "video" : "image"),
         status: "Pending Approval",
         couponCode: null,
         featured: false

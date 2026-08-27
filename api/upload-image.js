@@ -40,7 +40,7 @@ function httpsUpload(urlStr, headers, buffer) {
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-key');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -50,15 +50,29 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // This endpoint writes to the shared storage bucket and was reachable by anyone.
+  const adminKey = req.headers['x-admin-key'] || (req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : '');
+  if (!adminKey || adminKey !== (process.env.ADMIN_SECRET_KEY || "hx_admin_sec_2026_super_key")) {
+    return res.status(401).json({ error: 'Unauthorized: Store Admin credentials required to upload media' });
+  }
+
   try {
     const { base64, filename, contentType } = req.body || {};
 
     if (!base64) {
-      return res.status(400).json({ error: 'Base64 image string is required' });
+      return res.status(400).json({ error: 'Base64 media string is required' });
     }
 
-    const cleanBase64 = base64.replace(/^data:image\/\w+;base64,/, '');
+    // The prefix strip was image-only, so video uploads kept their "data:video/mp4;base64,"
+    // header inside the payload and came back double-prefixed and mislabelled as an image.
+    const dataUrlMatch = /^data:([\w.+-]+\/[\w.+-]+)?;base64,/.exec(base64);
+    const cleanBase64 = dataUrlMatch ? base64.slice(dataUrlMatch[0].length) : base64;
+    const mimeType = (dataUrlMatch && dataUrlMatch[1]) || contentType || 'image/jpeg';
     const buffer = Buffer.from(cleanBase64, 'base64');
+
+    if (!buffer.length) {
+      return res.status(400).json({ error: 'Media payload could not be decoded' });
+    }
 
     const supabaseUrl = (process.env.SUPABASE_URL || "https://hyperxgt-db.supabase.co").replace(/\/$/, '');
     const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || "";
@@ -75,7 +89,7 @@ module.exports = async (req, res) => {
         const headers = {
           'apikey': supabaseAnonKey,
           'Authorization': `Bearer ${supabaseAnonKey}`,
-          'Content-Type': contentType || 'image/jpeg',
+          'Content-Type': mimeType,
           'x-upsert': 'true'
         };
 
@@ -90,7 +104,7 @@ module.exports = async (req, res) => {
 
     // Fallback: If Supabase Storage bucket isn't created yet, compress data URL safely
     if (!publicUrl) {
-      publicUrl = `data:image/${ext};base64,${cleanBase64}`;
+      publicUrl = `data:${mimeType};base64,${cleanBase64}`;
     }
 
     return res.status(200).json({

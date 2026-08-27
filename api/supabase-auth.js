@@ -141,11 +141,19 @@ module.exports = async (req, res) => {
         });
       } catch(e) {}
 
+      // Supabase only returns a session when email confirmation is disabled. When it does
+      // not, no token is issued — previously a synthetic "demo_token_<timestamp>" was sent,
+      // which the browser stored as if it were a real session.
+      const accessToken = (sessionData && sessionData.access_token) || null;
+
       return res.status(201).json({
         success: true,
-        message: `Registered successfully in Supabase! Verification email sent to ${email}`,
-        token: sessionData ? sessionData.access_token : "demo_token_" + Date.now(),
-        refresh_token: sessionData ? sessionData.refresh_token : null,
+        requiresConfirmation: !accessToken,
+        message: accessToken
+          ? "Registered successfully — you are signed in."
+          : `Registered successfully! Confirm your email (${email}), then sign in.`,
+        token: accessToken,
+        refresh_token: (sessionData && sessionData.refresh_token) || null,
         user: {
           id: userObj.id || userObj.user_id,
           supabase_user_id: userObj.id,
@@ -180,27 +188,32 @@ module.exports = async (req, res) => {
         } else if (loginRes.body && (loginRes.body.error_description || loginRes.body.msg)) {
           const apiError = loginRes.body.error_description || loginRes.body.msg;
           if (apiError.toLowerCase().includes("email not confirmed")) {
-            return res.status(400).json({ 
-              error: "Email not confirmed yet. Please click the 'Verify Email' button sent to your inbox, or disable 'Confirm Email' in your Supabase Auth settings." 
+            return res.status(400).json({
+              error: "Email not confirmed yet. Please click the 'Verify Email' button sent to your inbox, or disable 'Confirm Email' in your Supabase Auth settings."
             });
           }
-          return res.status(400).json({ error: apiError });
+          return res.status(401).json({ error: apiError });
         }
       } catch(err) {
-        console.log("Supabase login connection error:", err.message);
+        console.error("Supabase login connection error:", err.message);
+        return res.status(503).json({ error: 'Authentication service is unreachable. Please try again shortly.' });
       }
 
-      const loggedUser = (authResult && authResult.user) ? authResult.user : {
-        id: "usr_" + Math.floor(100000 + Math.random() * 900000),
-        email: email.toLowerCase().trim(),
-        user_metadata: { full_name: email.split('@')[0], phone: "" }
-      };
+      // AUTHENTICATION BYPASS FIX: this previously fell through to a fabricated user object
+      // and a synthetic "token_<timestamp>", so whenever Supabase was unconfigured or did
+      // not return a token, ANY email with ANY password received a successful session.
+      // No verified access token means no session — full stop.
+      if (!authResult || !authResult.access_token || !authResult.user) {
+        return res.status(401).json({ error: 'Invalid email or password.' });
+      }
+
+      const loggedUser = authResult.user;
 
       return res.status(200).json({
         success: true,
-        message: "Supabase authentication successful ✓",
-        token: authResult ? authResult.access_token : "token_" + Date.now(),
-        refresh_token: authResult ? authResult.refresh_token : null,
+        message: "Signed in successfully",
+        token: authResult.access_token,
+        refresh_token: authResult.refresh_token || null,
         user: {
           id: loggedUser.id,
           name: (loggedUser.user_metadata && loggedUser.user_metadata.full_name) || loggedUser.email.split('@')[0],
@@ -292,14 +305,29 @@ module.exports = async (req, res) => {
         updateBody.password = password;
       }
 
-      if (userToken && userToken !== 'demo_token') {
-        try {
-          const updateUrl = `${supabaseUrl}/auth/v1/user`;
-          await httpsRequest(updateUrl, 'PUT', {
-            'apikey': supabaseAnonKey,
-            'Authorization': `Bearer ${userToken}`
-          }, updateBody);
-        } catch(e) {}
+      // A write with no valid session must not report success — this endpoint also changes
+      // the account password, and it previously returned 200 regardless of the outcome.
+      if (!userToken || userToken === 'demo_token') {
+        return res.status(401).json({ error: 'You must be signed in to update your profile.' });
+      }
+
+      try {
+        const updateUrl = `${supabaseUrl}/auth/v1/user`;
+        const upRes = await httpsRequest(updateUrl, 'PUT', {
+          'apikey': supabaseAnonKey,
+          'Authorization': `Bearer ${userToken}`
+        }, updateBody);
+
+        if (upRes.statusCode === 401 || upRes.statusCode === 403) {
+          return res.status(401).json({ error: 'Your session has expired. Please sign in again.' });
+        }
+        if (upRes.statusCode < 200 || upRes.statusCode >= 300) {
+          const detail = (upRes.body && (upRes.body.msg || upRes.body.error_description || upRes.body.message)) || `Supabase responded with ${upRes.statusCode}`;
+          return res.status(400).json({ error: detail });
+        }
+      } catch (err) {
+        console.error("Supabase profile update error:", err.message);
+        return res.status(503).json({ error: 'Profile service is unreachable. Please try again shortly.' });
       }
 
       return res.status(200).json({

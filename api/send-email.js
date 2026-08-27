@@ -109,7 +109,22 @@ module.exports = async (req, res) => {
 
   try {
     const { template, toEmail, toName, order, confirmUrl } = req.body || {};
+    // Values below are interpolated into email HTML; escape them so a crafted name or
+    // product title cannot inject markup into a message sent from our verified domain.
+    const esc = v => String(v ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+    const safeLink = u => { const r = String(u ?? "").trim(); return /^https?:\/\//i.test(r) ? esc(r) : ""; };
     const targetEmail = (toEmail || "support@hyperxgt.com").toLowerCase().trim();
+
+    // Recipient and body values arrive from the browser, so validate the address and
+    // restrict the template rather than rendering whatever is posted.
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(targetEmail)) {
+      return res.status(400).json({ error: 'A valid recipient email address is required.' });
+    }
+
+    const ALLOWED_TEMPLATES = ['verification', 'welcome', 'password_reset', 'order_receipt', 'test'];
+    if (template && !ALLOWED_TEMPLATES.includes(template)) {
+      return res.status(400).json({ error: `Unknown email template '${template}'.` });
+    }
 
     const resendApiKey = process.env.RESEND_API_KEY;
     let subject = `Notification from ${brandName}`;
@@ -117,8 +132,8 @@ module.exports = async (req, res) => {
 
     // 1. REGISTRATION / CONFIRM SIGNUP / VERIFICATION EMAIL TEMPLATE
     if (template === 'verification' || template === 'welcome') {
-      subject = `Welcome to ${brandName} Driver Garage, ${toName || 'Racer'}! 🏎️`;
-      const verificationLink = confirmUrl || `https://hyperxgt.com/account.html`;
+      subject = `Welcome to ${brandName} Driver Garage, ${String(toName || 'Racer').replace(/[\r\n]/g, ' ')}! 🏎️`;
+      const verificationLink = safeLink(confirmUrl) || `${(process.env.SITE_URL || 'https://hyperxgt.com').replace(/\/$/, '')}/account.html`;
 
       htmlContent = `
         <div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e0e4ec; border-radius: 16px; overflow: hidden; color: #111; box-shadow: 0 4px 14px rgba(0,0,0,0.05);">
@@ -129,7 +144,7 @@ module.exports = async (req, res) => {
           <div style="padding: 36px 32px; line-height: 1.6;">
             <div style="font-size: 11px; font-weight: 800; color: #2e7d32; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;">ACCOUNT REGISTRATION</div>
             <h2 style="color: #111; margin-top: 0; font-size: 22px; font-weight: 900;">Welcome to the Driver Garage! 🏎️</h2>
-            <p style="font-size: 15px;">Hi <strong>${toName || targetEmail}</strong>,</p>
+            <p style="font-size: 15px;">Hi <strong>${esc(toName || targetEmail)}</strong>,</p>
             <p style="font-size: 14px; color: #444;">Thank you for creating your account with <strong>${brandName}</strong> — India's premier destination for high-speed RC racing cars, crawlers, drift platforms, and collector scale models.</p>
             
             <div style="text-align: center; margin: 32px 0;">
@@ -158,7 +173,7 @@ module.exports = async (req, res) => {
     // 2. PASSWORD RESET EMAIL TEMPLATE
     else if (template === 'password_reset') {
       subject = `Reset your ${brandName} Account Password 🔒`;
-      const resetLink = confirmUrl || `https://hyperxgt.com/account.html`;
+      const resetLink = safeLink(confirmUrl) || `${(process.env.SITE_URL || 'https://hyperxgt.com').replace(/\/$/, '')}/account.html`;
 
       htmlContent = `
         <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e0e4ec; border-radius: 16px; overflow: hidden; color: #111;">
@@ -168,7 +183,7 @@ module.exports = async (req, res) => {
           </div>
           <div style="padding: 36px 32px; line-height: 1.6;">
             <h2 style="color: #111; margin-top: 0;">Password Reset Request 🔒</h2>
-            <p>Hi <strong>${toName || targetEmail}</strong>,</p>
+            <p>Hi <strong>${esc(toName || targetEmail)}</strong>,</p>
             <p>We received a password reset request for your <strong>${brandName} Driver Garage</strong> account.</p>
             <div style="text-align: center; margin: 32px 0;">
               <a href="${resetLink}" target="_blank" style="background: #111; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 15px; display: inline-block;">Reset Account Password →</a>
@@ -186,10 +201,10 @@ module.exports = async (req, res) => {
 
     // 3. ORDER CONFIRMATION TAX INVOICE EMAIL TEMPLATE
     else if (template === 'order_receipt' && order) {
-      subject = `${brandName} Order Confirmation — ${order.id} (₹${Number(order.total || 0).toLocaleString("en-IN")})`;
+      subject = `${brandName} Order Confirmation — ${String(order.id || '').replace(/[\r\n]/g, ' ')} (₹${Number(order.total || 0).toLocaleString("en-IN")})`;
       const itemsList = (order.items || []).map(it => `
         <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>${it.name}</strong><br><small style="color:#777">SKU: ${it.sku}</small></td>
+          <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>${esc(it.name)}</strong><br><small style="color:#777">SKU: ${esc(it.sku)}</small></td>
           <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${it.qty}</td>
           <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">₹${(it.price * it.qty).toLocaleString("en-IN")}</td>
         </tr>
@@ -203,7 +218,7 @@ module.exports = async (req, res) => {
             <p style="color: #2e7d32; font-size: 12px; margin-top: 4px; font-weight: 800;">✓ ORDER CONFIRMED & DISPATCH READY</p>
           </div>
           <div style="padding: 28px;">
-            <p>Hi <strong>${(order.customer && order.customer.name) ? order.customer.name : (toName || 'Customer')}</strong>,</p>
+            <p>Hi <strong>${esc((order.customer && order.customer.name) ? order.customer.name : (toName || 'Customer'))}</strong>,</p>
             <p>Thank you for your order with ${brandName}! We have received your order and our store admin team is inspecting your items for express dispatch.</p>
 
             <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px;">
