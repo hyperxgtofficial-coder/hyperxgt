@@ -13376,9 +13376,9 @@ window.HX_PRODUCTS = [
     "dimensions": "18 × 9 × 9 cm",
     "weight": "0.2 kg",
     "age": "8+ Years",
-    "image": "assets/products/HX-1333.webp",
+    "image": "assets/products/32JJ336AU-W.webp",
     "images": [
-      "assets/products/HX-1333.webp"
+      "assets/products/32JJ336AU-W.webp"
     ],
     "short_description": "<p>Official HyperXGT 1:32 Audi RS6 model (HX-1333). Designed for high performance and collector durability.</p>",
     "full_description": "<p>Official HyperXGT 1:32 Audi RS6 model (HX-1333). Designed for high performance and collector durability.</p>",
