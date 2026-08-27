@@ -25,7 +25,7 @@ function calculateServerOrder(items) {
     let match = null;
 
     if (catalog.length > 0) {
-      match = catalog.find(p => p.id === Number(item.id) || (p.sku && p.sku.toLowerCase() === String(item.sku || '').toLowerCase()));
+      match = catalog.find(p => String(p.id) === String(item.id) || (p.sku && p.sku.toLowerCase() === String(item.sku || '').toLowerCase()));
     }
 
     const unitPrice = match ? Number(match.price) : Number(item.price || 1999);

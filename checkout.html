@@ -138,7 +138,7 @@
       }
 
       const summaryEl = document.getElementById("checkoutSummary");
-      const c = getCart(), ids = Object.keys(c).map(Number);
+      const c = getCart(), ids = Object.keys(c);
 
       if (!ids.length) {
         summaryEl.innerHTML = '<div class="empty">Cart is empty. <a href="shop.html">Shop Now</a></div>';
@@ -147,8 +147,10 @@
       }
 
       let subtotal = 0;
+      // getProducts() applies the catalogue fallbacks; the bare P binding could be stale.
+      const catalogue = getProducts();
       const itemsList = ids.map(id => {
-        const p = P.find(x => x.id === id);
+        const p = catalogue.find(x => String(x.id) === String(id));
         if (!p) return "";
         const qty = c[id];
         const tot = p.price * qty;
@@ -159,7 +161,8 @@
         </div>`;
       }).join("");
 
-      const shipping = subtotal > 4999 ? 0 : 250;
+      // shippingFor() mirrors the server-authoritative rule in api/create-order.js.
+      const shipping = shippingFor(subtotal);
       const grandTotal = subtotal + shipping;
 
       summaryEl.innerHTML = `
@@ -181,63 +184,111 @@
         const city = document.getElementById("custCity").value.trim();
         const state = document.getElementById("custState").value.trim();
         const pincode = document.getElementById("custPincode").value.trim();
-        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+        const selectedPayment = document.querySelector('input[name="payment"]:checked');
+        if (!selectedPayment) return toast("Please choose a payment method.");
+        const paymentMethod = selectedPayment.value;
 
-        const orderId = "HX-" + Math.floor(100000 + Math.random() * 900000);
+        const placeBtn = document.getElementById("placeOrder");
+        const lineItems = ids.map(id => {
+          const p = catalogue.find(x => String(x.id) === String(id));
+          if (!p) return null;
+          return { id, sku: p.sku, name: p.name, qty: c[id], price: p.price };
+        }).filter(Boolean);
 
-        const orderData = {
-          id: orderId,
-          date: new Date().toLocaleDateString('en-CA') + ' ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
-          customer: { name, phone, email, address, city, state, pincode },
-          items: ids.map(id => {
-            const p = P.find(x => x.id === id);
-            return { id, sku: p.sku, name: p.name, qty: c[id], price: p.price };
-          }),
-          subtotal,
-          total: grandTotal,
-          paymentMethod: paymentMethod === 'cashfree' ? 'Cashfree Payments (UPI/Cards)' : (paymentMethod === 'cod' ? 'Cash on Delivery' : 'Razorpay PG'),
-          paymentStatus: paymentMethod === 'cod' ? 'COD Pending' : 'Paid',
-          fulfillmentStatus: 'Pending Admin Acceptance'
-        };
+        if (!lineItems.length) return toast("Your cart items are no longer available.");
 
-        // Save order to persistent database (shared across Customer Account & Admin Panel)
-        saveOrderToDB(orderData);
+        placeBtn.disabled = true;
 
-        // Send Order Receipt Email
         try {
-          fetch('/api/send-email', {
+          // The server recalculates pricing from data/products.json and is the source of
+          // truth for the order id and total. Previously the client invented both, and the
+          // order never left localStorage.
+          const res = await fetch('/api/create-order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              template: 'order_receipt',
-              toEmail: email,
-              toName: name,
-              order: orderData
+              customer: { name, phone, email, address, city, state, pincode },
+              items: lineItems,
+              paymentMethod
             })
-          }).catch(() => {});
-        } catch(e) {}
+          });
+          const result = await res.json();
 
-        if (paymentMethod === 'cashfree') {
-          toast("Connecting to Cashfree Instant Payments...");
-          try {
-            await fetch('/api/cashfree-order', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                orderId,
-                amount: grandTotal,
-                items: orderData.items,
-                customer: { name, phone, email }
-              })
-            });
-          } catch(err) {}
+          if (!res.ok || !result.success || !result.order) {
+            throw new Error(result.error || "We could not create your order. Please try again.");
+          }
+
+          const server = result.order;
+          const orderData = {
+            id: server.orderId,
+            date: new Date().toLocaleDateString('en-CA') + ' ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+            customer: server.customer,
+            items: server.items,
+            subtotal: server.subtotal,
+            shipping: server.shipping,
+            total: server.amount,
+            paymentMethod: paymentMethod === 'cashfree' ? 'Cashfree Payments (UPI/Cards)' : (paymentMethod === 'cod' ? 'Cash on Delivery' : 'Razorpay PG'),
+            // Never claim "Paid" here — no payment has been captured or verified at this
+            // point. /api/verify-payment is what promotes an order to paid.
+            paymentStatus: server.paymentStatus,
+            fulfillmentStatus: server.fulfillmentStatus
+          };
+
+          saveOrderToDB(orderData);
+
+          fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ template: 'order_receipt', toEmail: email, toName: name, order: orderData })
+          }).catch(err => console.error("Order receipt email failed:", err));
+
+          if (paymentMethod === 'cod') {
+            localStorage.removeItem("hx_cart");
+            updateCount();
+            toast("Order placed! Pay on delivery. Redirecting to your garage...");
+            setTimeout(() => {
+              location.href = `account.html?order_id=${encodeURIComponent(orderData.id)}&success=1`;
+            }, 1000);
+            return;
+          }
+
+          // Online payment: the cart is deliberately NOT cleared until payment is actually
+          // captured, so a failed or abandoned payment leaves the customer able to retry.
+          toast("Creating secure payment session...");
+          const payRes = await fetch('/api/cashfree-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              orderId: orderData.id,
+              amount: orderData.total,
+              items: orderData.items,
+              customer: { name, phone, email }
+            })
+          });
+          const payData = await payRes.json();
+
+          if (!payRes.ok || !payData.success || !payData.payment_session_id) {
+            throw new Error(payData.error || "Payment gateway is unavailable. Your order is saved as unpaid — please retry payment from your garage.");
+          }
+
+          if (typeof Cashfree !== "function") {
+            throw new Error("Payment SDK failed to load. Please refresh and try again.");
+          }
+
+          const cashfree = Cashfree({ mode: (payData.environment === 'PROD') ? 'production' : 'sandbox' });
+          const checkoutResult = await cashfree.checkout({
+            paymentSessionId: payData.payment_session_id,
+            redirectTarget: '_self'
+          });
+
+          if (checkoutResult && checkoutResult.error) {
+            throw new Error(checkoutResult.error.message || "Payment was not completed.");
+          }
+        } catch (err) {
+          console.error("Checkout failed:", err);
+          toast(err.message || "Checkout failed. Please try again.");
+          placeBtn.disabled = false;
         }
-
-        localStorage.removeItem("hx_cart");
-        toast("Order Placed Successfully! Redirecting to Garage...");
-        setTimeout(() => {
-          location.href = `account.html?order_id=${orderId}&success=1`;
-        }, 1000);
       };
     });
   </script>

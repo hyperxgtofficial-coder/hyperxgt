@@ -3,6 +3,38 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+function httpsRequest(urlStr, method, headers, bodyObj) {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = new URL(urlStr);
+      const postData = bodyObj ? JSON.stringify(bodyObj) : '';
+      const reqHeaders = { 'Content-Type': 'application/json', ...headers };
+      if (postData) reqHeaders['Content-Length'] = Buffer.byteLength(postData);
+
+      const options = {
+        hostname: url.hostname,
+        port: url.port || 443,
+        path: url.pathname + url.search,
+        method: method || 'GET',
+        headers: reqHeaders
+      };
+
+      const request = https.request(options, (response) => {
+        let data = '';
+        response.on('data', chunk => data += chunk);
+        response.on('end', () => {
+          try { resolve({ statusCode: response.statusCode, body: JSON.parse(data) }); }
+          catch (e) { resolve({ statusCode: response.statusCode, body: data }); }
+        });
+      });
+
+      request.on('error', err => reject(err));
+      if (postData) request.write(postData);
+      request.end();
+    } catch (err) { reject(err); }
+  });
+}
+
 // SERVER-AUTHORITATIVE PRICE CALCULATOR
 function getAuthoritativePrice(items) {
   let subtotal = 0;
@@ -15,13 +47,10 @@ function getAuthoritativePrice(items) {
     }
   } catch(e) {}
 
+  // An empty cart previously produced a phantom ₹1999 "RC Model" order line rather than
+  // an error, so a bad request could create a real payment session for a made-up item.
   if (!Array.isArray(items) || items.length === 0) {
-    return {
-      subtotal: 1999,
-      shipping: 0,
-      grandTotal: 1999,
-      items: [{ id: 1, name: "RC Model", price: 1999, qty: 1 }]
-    };
+    return { error: 'Order must contain at least one item' };
   }
 
   const verifiedItems = [];
@@ -31,7 +60,7 @@ function getAuthoritativePrice(items) {
     let match = null;
 
     if (catalog.length > 0) {
-      match = catalog.find(p => p.id === Number(item.id) || (p.sku && p.sku.toLowerCase() === String(item.sku || '').toLowerCase()));
+      match = catalog.find(p => String(p.id) === String(item.id) || (p.sku && p.sku.toLowerCase() === String(item.sku || '').toLowerCase()));
     }
 
     const unitPrice = match ? Number(match.price) : Number(item.price || 1999);
@@ -97,7 +126,19 @@ module.exports = async (req, res) => {
     const secretKey = process.env.CASHFREE_SECRET_KEY || "";
     const env = process.env.CASHFREE_ENV || "TEST";
 
-    const payload = JSON.stringify({
+    // This previously returned a randomly generated "session_..." string, which the browser
+    // SDK cannot use. Without credentials there is no way to take a real payment, so say so
+    // rather than handing back a session id that silently fails at the payment step.
+    if (!appId || !secretKey) {
+      return res.status(503).json({
+        success: false,
+        error: 'Online payment is not configured. Set CASHFREE_APP_ID and CASHFREE_SECRET_KEY, or pay with Cash on Delivery.'
+      });
+    }
+
+    const siteUrl = (process.env.SITE_URL || 'https://hyperxgt.com').replace(/\/$/, '');
+
+    const payload = {
       order_id: finalOrderId,
       order_amount: verifiedTotal,
       order_currency: "INR",
@@ -108,22 +149,32 @@ module.exports = async (req, res) => {
         customer_phone: (customer && customer.phone) ? customer.phone.replace(/[^0-9]/g, '').slice(-10) : "9876543210"
       },
       order_meta: {
-        return_url: `https://hyperxgt.com/account.html?order_id={order_id}`,
-        notify_url: `https://hyperxgt.com/api/verify-payment?provider=cashfree`
+        return_url: `${siteUrl}/account.html?order_id={order_id}`,
+        notify_url: `${siteUrl}/api/verify-payment?provider=cashfree`
       }
-    });
+    };
 
-    const dummyPaymentSessionId = "session_" + Math.random().toString(36).substring(2, 15);
+    const host = env === 'PROD' ? 'api.cashfree.com' : 'sandbox.cashfree.com';
+    const cfRes = await httpsRequest(`https://${host}/pg/orders`, 'POST', {
+      'x-client-id': appId,
+      'x-client-secret': secretKey,
+      'x-api-version': '2023-08-01'
+    }, payload);
+
+    if (cfRes.statusCode !== 200 || !cfRes.body || !cfRes.body.payment_session_id) {
+      const detail = (cfRes.body && (cfRes.body.message || cfRes.body.error)) || `Cashfree responded with ${cfRes.statusCode}`;
+      console.error('Cashfree order creation rejected:', detail);
+      return res.status(502).json({ success: false, error: 'Could not create the payment session.', details: detail });
+    }
 
     return res.status(200).json({
       success: true,
-      message: "Cashfree Payment Session Created (Server Price Enforced)",
-      payment_session_id: dummyPaymentSessionId,
-      order_id: finalOrderId,
+      message: "Cashfree payment session created (server price enforced)",
+      payment_session_id: cfRes.body.payment_session_id,
+      order_id: cfRes.body.order_id || finalOrderId,
       order_amount: verifiedTotal,
       items: calculation.items,
-      environment: env,
-      cashfree_app_id: appId
+      environment: env
     });
 
   } catch (err) {
