@@ -76,6 +76,7 @@ module.exports = async (req, res) => {
 
     const supabaseUrl = (process.env.SUPABASE_URL || "https://hyperxgt-db.supabase.co").replace(/\/$/, '');
     const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || "";
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
 
     const ext = filename ? filename.split('.').pop() : 'jpg';
     const uniqueName = `prod_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}.${ext}`;
@@ -83,12 +84,13 @@ module.exports = async (req, res) => {
     let publicUrl = "";
 
     // 1. UPLOAD TO SUPABASE STORAGE BUCKET ('products')
-    if (supabaseAnonKey && supabaseUrl.includes("supabase")) {
+    if ((supabaseServiceKey || supabaseAnonKey) && supabaseUrl.includes("supabase")) {
       try {
         const uploadUrl = `${supabaseUrl}/storage/v1/object/products/${uniqueName}`;
+        const activeKey = supabaseServiceKey || supabaseAnonKey;
         const headers = {
-          'apikey': supabaseAnonKey,
-          'Authorization': `Bearer ${supabaseAnonKey}`,
+          'apikey': activeKey,
+          'Authorization': `Bearer ${activeKey}`,
           'Content-Type': mimeType,
           'x-upsert': 'true'
         };

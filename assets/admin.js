@@ -234,6 +234,38 @@ window.setAsHeroImageByIdx = function(idx) {
   }
 };
 
+function compressImageFile(file, maxWidth = 1000, maxHeight = 1000, quality = 0.82) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth || height > maxHeight) {
+          if (width > height) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => resolve(e.target.result || '');
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve('');
+    reader.readAsDataURL(file);
+  });
+}
+
 function initImageUploadHandler() {
   const fileInput = $("#formFileInput");
   const imgInput = $("#formImage");
@@ -250,12 +282,7 @@ function initImageUploadHandler() {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         try {
-          const base64 = await new Promise((res, rej) => {
-            const reader = new FileReader();
-            reader.onload = () => res(reader.result);
-            reader.onerror = rej;
-            reader.readAsDataURL(file);
-          });
+          const base64 = await compressImageFile(file);
 
           const apiRes = await fetch('/api/upload-image', {
             method: 'POST',
@@ -263,7 +290,7 @@ function initImageUploadHandler() {
             body: JSON.stringify({
               base64,
               filename: file.name,
-              contentType: file.type || 'image/jpeg'
+              contentType: 'image/jpeg'
             })
           });
           const data = await apiRes.json();
