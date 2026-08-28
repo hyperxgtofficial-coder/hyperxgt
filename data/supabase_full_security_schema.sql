@@ -66,19 +66,26 @@ CREATE POLICY "Service role can modify products" ON public.products FOR ALL USIN
 CREATE TABLE IF NOT EXISTS public.orders (
   id TEXT PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
-  customer_email TEXT NOT NULL,
+  customer_email TEXT,
   customer_name TEXT,
   customer_phone TEXT,
   shipping_address JSONB,
-  items JSONB NOT NULL,
-  subtotal NUMERIC NOT NULL,
+  items JSONB,
+  subtotal NUMERIC,
   shipping_fee NUMERIC DEFAULT 0,
-  total NUMERIC NOT NULL,
+  total NUMERIC,
   payment_method TEXT,
   payment_status TEXT DEFAULT 'Pending',
   fulfillment_status TEXT DEFAULT 'Pending Admin Acceptance',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- Safely add missing user_id & customer_email columns if orders table already existed
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS customer_email TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS customer_name TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS customer_phone TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS shipping_address JSONB;
 
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
 
