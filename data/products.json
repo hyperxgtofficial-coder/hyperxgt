@@ -35,7 +35,7 @@
     "gstRate": 18,
     "hsn": "95030090",
     "no_image": false,
-    "video": ""
+    "video": "https://youtu.be/7w7LUaLpM4E?si=hu1udj_zaTSfUz9v"
   },
   {
     "id": 2,
@@ -2815,7 +2815,8 @@
     "upsells": [],
     "source_page": 4,
     "featured": true,
-    "no_image": true
+    "no_image": true,
+    "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   },
   {
     "id": 72,

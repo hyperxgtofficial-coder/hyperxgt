@@ -1423,34 +1423,39 @@ function productInit() {
   let videoPlayerHTML = "";
   if (p.video && p.video.trim()) {
     const vUrl = p.video.trim();
-    let iframeSrc = "";
-    
+    let vId = "";
+
     if (vUrl.includes("youtube.com/watch?v=")) {
-      const vId = vUrl.split("v=")[1]?.split("&")[0];
-      iframeSrc = `https://www.youtube.com/embed/${vId}?autoplay=0&rel=0`;
+      vId = vUrl.split("v=")[1]?.split("&")[0];
     } else if (vUrl.includes("youtu.be/")) {
-      const vId = vUrl.split("youtu.be/")[1]?.split("?")[0];
-      iframeSrc = `https://www.youtube.com/embed/${vId}?autoplay=0&rel=0`;
+      vId = vUrl.split("youtu.be/")[1]?.split("?")[0];
+    } else if (vUrl.includes("youtube.com/shorts/")) {
+      vId = vUrl.split("youtube.com/shorts/")[1]?.split("?")[0];
+    } else if (vUrl.includes("youtube.com/embed/")) {
+      vId = vUrl.split("youtube.com/embed/")[1]?.split("?")[0];
     }
 
-    if (iframeSrc) {
+    if (vId) {
+      const iframeSrc = `https://www.youtube-nocookie.com/embed/${vId.trim()}?autoplay=0&rel=0`;
       videoPlayerHTML = `
-        <div style="margin-top:24px;background:#000;border-radius:18px;overflow:hidden;box-shadow:var(--shadow)">
-          <div style="background:#111;padding:10px 16px;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;gap:8px">
-            <span>🎥 Live Action Product Video</span>
+        <div style="margin-top:24px;background:#0d0e11;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)">
+          <div style="background:#111;padding:12px 18px;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:space-between">
+            <span style="display:flex;align-items:center;gap:8px">🎥 <strong style="color:#ed1c24">Live Action Product Video & Action Demo</strong></span>
+            <span style="background:#ed1c24;color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px">YOUTUBE HD</span>
           </div>
           <div style="position:relative;padding-bottom:56.25%;height:0">
-            <iframe src="${iframeSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen></iframe>
+            <iframe src="${iframeSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
       `;
     } else {
       videoPlayerHTML = `
-        <div style="margin-top:24px;background:#000;border-radius:18px;overflow:hidden;box-shadow:var(--shadow)">
-          <div style="background:#111;padding:10px 16px;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;gap:8px">
-            <span>🎥 Live Action Product Video</span>
+        <div style="margin-top:24px;background:#000;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)">
+          <div style="background:#111;padding:12px 18px;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:space-between">
+            <span>🎥 Product Action Video</span>
+            <span style="background:#1488d8;color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px">HD MP4</span>
           </div>
-          <video controls controlsList="nodownload" preload="metadata" style="width:100%;max-height:360px;background:#000;display:block" src="${vUrl}">
+          <video controls controlsList="nodownload" preload="metadata" style="width:100%;max-height:380px;background:#000;display:block" src="${esc(vUrl)}">
             Your browser does not support video playback.
           </video>
         </div>
