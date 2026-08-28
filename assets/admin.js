@@ -871,9 +871,9 @@ async function saveProduct(e) {
     toast('⚠️ Network error saving product. Saved locally only.');
   }
 
-  if (idVal) {
-    const idx = P.findIndex(p => p.id === Number(idVal));
-    if (idx !== -1) P[idx] = productObj;
+  const idx = P.findIndex(p => String(p.id) === String(idVal) || (p.sku && p.sku.toLowerCase() === (sku || '').toLowerCase()));
+  if (idx !== -1) {
+    P[idx] = { ...P[idx], ...productObj };
   } else {
     P.unshift(productObj);
   }
@@ -1029,11 +1029,37 @@ function initDatabaseSyncHub() {
   }
 }
 
+async function fetchLiveBackendProductsAdmin() {
+  try {
+    const res = await fetch('/api/products-crud');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data && data.products && Array.isArray(data.products) && data.products.length > 0) {
+      const liveProducts = data.products.filter(p => p && p.id != null);
+      const map = new Map();
+      (P || []).forEach(p => { if (p && p.id != null) map.set(String(p.id), p); });
+      liveProducts.forEach(p => {
+        const key = String(p.id);
+        const existing = map.get(key) || {};
+        map.set(key, { ...existing, ...p });
+      });
+      const mergedList = Array.from(map.values()).filter(p => p && p.id != null);
+      if (mergedList.length > 0) {
+        P = mergedList;
+        saveProductsDB(P);
+        if (typeof renderAdminProducts === "function") renderAdminProducts();
+        if (typeof populateAdminCatFilter === "function") populateAdminCatFilter();
+      }
+    }
+  } catch(e) {}
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initAdminAuth();
   initAdminTabs();
   P = loadProductsDB();
   renderAdminProducts();
+  fetchLiveBackendProductsAdmin();
   renderAdminOrders();
   renderAdminReviews();
   renderAdminCollaborations();
