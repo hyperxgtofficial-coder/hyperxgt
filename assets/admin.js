@@ -596,51 +596,6 @@ function initCsvBulkUploader() {
   };
 }
 
-// INTEGRATIONS & SOCIAL PUBLISHER AI CAPTION GENERATOR
-function initSocialPublisher() {
-  const form = $("#socialPublisherForm");
-  const btnAuto = $("#btnAutoCaption");
-  const prodSelect = $("#socialProdSelect");
-  const captionArea = $("#socialCaption");
-
-  if (prodSelect) {
-    prodSelect.innerHTML = P.map(p => `<option value="${p.id}">${esc(p.name)} (${esc(p.sku)}) — ${INR(p.price)}</option>`).join("");
-  }
-
-  if (btnAuto && prodSelect && captionArea) {
-    btnAuto.onclick = function() {
-      const pId = Number(prodSelect.value);
-      const p = P.find(x => x.id === pId) || P[0];
-      if (!p) return;
-
-      captionArea.value = `🏁 NEW DROP ALERT: ${p.name} (SKU: ${p.sku})!\n\n` +
-        `⚡ High-performance ${p.scale} ${p.category} with ${p.drive} drivetrain & ${p.speed} top speed.\n` +
-        `🔥 Official Price: ${INR(p.price)} (Ships within 24 Hours across India)\n\n` +
-        `📲 Order now at hyperxgt.com or WhatsApp +91 70902 27777!\n\n` +
-        `#HyperXGT #RCCars #RCIndia #Brushless #RCRacing #HobbyGrade #${p.category.replace(/[^a-zA-Z]/g,'')}`;
-
-      toast("Generated AI Social Caption ✨");
-    };
-  }
-
-  if (form) {
-    form.onsubmit = function(e) {
-      e.preventDefault();
-      const channels = [];
-      if ($("#chkInsta")?.checked) channels.push("Instagram");
-      if ($("#chkFb")?.checked) channels.push("Facebook");
-      if ($("#chkWa")?.checked) channels.push("WhatsApp Broadcast");
-      if ($("#chkYt")?.checked) channels.push("YouTube Shorts");
-
-      if (!channels.length) {
-        alert("Please select at least one social media channel.");
-        return;
-      }
-      toast(`Published post to ${channels.join(", ")} ✓`);
-    };
-  }
-}
-
 // ORDER FULFILLMENT & LOGISTICS TRACKING CONTROLLER
 window.openOrderModal = function(orderId) {
   const orders = getOrdersDB();
@@ -1095,7 +1050,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initVideoUploadHandler();
   initCollabForm();
   initCsvBulkUploader();
-  initSocialPublisher();
   initDatabaseSyncHub();
 
   const openAddBtn = $("#btnOpenAddModal");

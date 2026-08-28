@@ -73,7 +73,6 @@
         <button class="admin-tab" data-tab="orders">Orders & Logistics Center</button>
         <button class="admin-tab" data-tab="reviews">💬 Reviews & Unboxing Approvals</button>
         <button class="admin-tab" data-tab="collaborations">🤝 Brand Collaborations</button>
-        <button class="admin-tab" data-tab="integrations">🔌 Integrations & Social Publisher</button>
         <button class="admin-tab" data-tab="database">Database & Shiprocket API Logs</button>
       </div>
 
@@ -225,101 +224,6 @@
                 <!-- Rendered dynamically -->
               </tbody>
             </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- INTEGRATIONS & SOCIAL MEDIA PUBLISHER SECTION -->
-      <section id="tab-integrations" class="tab-content">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-top:20px">
-          
-          <!-- SOCIAL MEDIA CONTENT PUBLISHER -->
-          <div style="background:#fff; border:1px solid #7b2cbf; border-radius:18px; padding:24px">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
-              <h3 style="margin:0; color:#7b2cbf; font-size:16px">📲 Social Media Content Publisher</h3>
-              <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 10px; border-radius:8px">META & SOCIAL API READY</span>
-            </div>
-            <p style="font-size:12px; color:#666; margin-bottom:18px">Select any store product to generate promotional captions and publish posts/reels across your connected social channels.</p>
-
-            <form id="socialPublisherForm">
-              <div style="margin-bottom:14px">
-                <label class="form-label">Select Product to Promote *</label>
-                <select class="field" id="socialProdSelect" style="margin:0">
-                  <!-- Populated dynamically with 338 products -->
-                </select>
-              </div>
-
-              <div style="margin-bottom:14px">
-                <label class="form-label">Target Social Channels *</label>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; background:#f9f9fc; padding:12px; border-radius:10px; border:1px solid var(--line); font-size:12px">
-                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer"><input type="checkbox" id="chkInsta" checked> 📸 Instagram Feed & Reels</label>
-                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer"><input type="checkbox" id="chkFb" checked> 📘 Facebook Page & Shop</label>
-                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer"><input type="checkbox" id="chkWa" checked> 💬 WhatsApp Broadcast</label>
-                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer"><input type="checkbox" id="chkYt" checked> 📺 YouTube Shorts</label>
-                </div>
-              </div>
-
-              <div style="margin-bottom:14px">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
-                  <label class="form-label" style="margin:0">Post Caption & Hashtags *</label>
-                  <button type="button" class="btn clear" id="btnAutoCaption" style="height:28px; padding:0 10px; font-size:10px; background:#f0f4ff; color:#1488d8">✨ Auto-Generate AI Copy</button>
-                </div>
-                <textarea class="field" id="socialCaption" style="height:110px; padding-top:10px; font-size:12px" placeholder="Enter social post caption..."></textarea>
-              </div>
-
-              <div style="display:flex; gap:12px; align-items:center">
-                <button class="btn" type="submit" style="background:#7b2cbf; color:#fff; height:46px; flex:1; font-weight:900">🚀 Publish Live to Connected Channels</button>
-              </div>
-            </form>
-          </div>
-
-          <!-- CONNECTED PLATFORMS HUB -->
-          <div style="display:flex; flex-direction:column; gap:14px">
-            <div style="background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px">
-              <h3 style="margin:0 0 14px; font-size:15px; color:#111">🔌 Connected E-Commerce & Social APIs</h3>
-              
-              <div style="display:flex; flex-direction:column; gap:12px">
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
-                  <div>
-                    <strong style="color:#111; display:block">📸 Instagram Graph API</strong>
-                    <small style="color:#666; font-size:10px">HyperXGT Business Account (@hyperxgt_official)</small>
-                  </div>
-                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
-                </div>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
-                  <div>
-                    <strong style="color:#111; display:block">📘 Facebook Marketing & Shop API</strong>
-                    <small style="color:#666; font-size:10px">HyperXGT Official Facebook Page</small>
-                  </div>
-                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
-                </div>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
-                  <div>
-                    <strong style="color:#111; display:block">💬 WhatsApp Cloud API</strong>
-                    <small style="color:#666; font-size:10px">+91 70902 27777 Business Broadcast</small>
-                  </div>
-                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
-                </div>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
-                  <div>
-                    <strong style="color:#111; display:block">🚀 Shiprocket REST API v1</strong>
-                    <small style="color:#666; font-size:10px">Courier Allocation & AWB Generation</small>
-                  </div>
-                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
-                </div>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f8fafe; border-radius:12px; border:1px solid #e2e8f0">
-                  <div>
-                    <strong style="color:#111; display:block">💳 Razorpay & Cashfree Gateways</strong>
-                    <small style="color:#666; font-size:10px">Live Instant UPI, Netbanking & Cards</small>
-                  </div>
-                  <span style="background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:900; padding:4px 8px; border-radius:6px">Connected ✓</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
