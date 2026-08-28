@@ -44,6 +44,109 @@ function httpsRequest(urlStr, method, headers, bodyObj) {
   });
 }
 
+async function dispatchDirectEmail(template, toEmail, toName, confirmUrl) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    console.log("RESEND_API_KEY is not configured in environment variables.");
+    return;
+  }
+
+  const brandName = process.env.BRAND_NAME || 'HyperXGT';
+  const senderName = process.env.EMAIL_SENDER_NAME || 'HyperXGT Driver Support';
+  const senderEmail = process.env.EMAIL_SENDER_ADDRESS || 'support@hyperxgt.com';
+  const replyToEmail = process.env.REPLY_TO_ADDRESS || 'support@hyperxgt.com';
+
+  let fromHeader = `${senderName} <${senderEmail}>`;
+  if (process.env.USE_RESEND_DEV || senderEmail.includes("example.com")) {
+    fromHeader = `${senderName} <onboarding@resend.dev>`;
+  }
+
+  const siteUrl = (process.env.SITE_URL || 'https://hyperxgt.com').replace(/\/$/, '');
+  const verificationLink = confirmUrl || `${siteUrl}/account.html?verified=true`;
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+
+  let subject = `Welcome to ${brandName} Driver Garage, ${toName || 'Racer'}! 🏎️`;
+  let htmlContent = "";
+
+  if (template === 'verification' || template === 'welcome') {
+    subject = `Activate Your ${brandName} Account & Welcome 10% OFF Gift Inside 🎁`;
+    htmlContent = `
+      <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e0e4ec; border-radius: 16px; overflow: hidden; color: #111;">
+        <div style="background: #0d0e11; padding: 32px 24px; text-align: center; border-bottom: 3px solid #1488d8;">
+          <img src="https://hyperxgt.com/assets/hyperxgt-logo.png" alt="${brandName} Logo" style="height: 48px; max-width: 220px; object-fit: contain;">
+          <div style="color: #1488d8; font-size: 11px; margin-top: 4px; text-transform: uppercase; font-weight: 900; letter-spacing: 0.15em;">RC PERFORMANCE · STORE · CLUB</div>
+        </div>
+        <div style="padding: 36px 32px; line-height: 1.6;">
+          <div style="font-size: 11px; font-weight: 800; color: #2e7d32; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;">ACCOUNT REGISTRATION & ACTIVATION</div>
+          <h2 style="color: #111; margin-top: 0; font-size: 22px; font-weight: 900;">Welcome to the Driver Garage! 🏎️</h2>
+          <p style="font-size: 15px;">Hi <strong>${esc(toName || toEmail)}</strong>,</p>
+          <p style="font-size: 14px; color: #444;">Thank you for creating your account with <strong>${brandName}</strong> — India's premier destination for high-speed RC racing cars, crawlers, drift platforms, and collector scale models.</p>
+          
+          <div style="text-align: center; margin: 32px 0;">
+            <a href="${verificationLink}" target="_blank" style="background: #1488d8; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 15px; display: inline-block; box-shadow: 0 4px 14px rgba(20,136,216,0.35);">Verify Email Address & Activate Account →</a>
+          </div>
+
+          <div style="background: #f4f6ff; border: 1.5px dashed #dfe4ff; border-radius: 14px; padding: 22px; margin: 28px 0; text-align: center;">
+            <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">YOUR WELCOME GIFT CODE</div>
+            <div style="font-size: 26px; font-weight: 900; color: #1488d8; letter-spacing: 0.12em; margin: 8px 0;">HYPERXGT10</div>
+            <div style="font-size: 13px; color: #2e7d32; font-weight: 800;">Get 10% OFF on your first RC car or spare parts order!</div>
+          </div>
+
+          <div style="background: #fffbebf7; border-left: 4px solid #f59e0b; padding: 14px 16px; border-radius: 0 8px 8px 0; font-size: 12px; color: #92400e; margin-top: 24px;">
+            <strong>Security Note:</strong> If you did not create an account at ${brandName}, you can safely ignore this email.
+          </div>
+
+          <div style="border-top: 1px solid #eee; margin-top: 36px; padding-top: 24px; font-size: 12px; color: #666; text-align: center;">
+            <p style="margin: 0 0 6px;">Need assistance? Contact our Garage Team at <a href="mailto:${replyToEmail}" style="color: #1488d8; text-decoration: none; font-weight: 700;">${replyToEmail}</a></p>
+            <p style="margin: 0;">© 2026 ${brandName} · All Rights Reserved · India</p>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (template === 'password_reset') {
+    subject = `Reset your ${brandName} Account Password 🔒`;
+    htmlContent = `
+      <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e0e4ec; border-radius: 16px; overflow: hidden; color: #111;">
+        <div style="background: #0d0e11; padding: 32px 24px; text-align: center; border-bottom: 3px solid #ed1c24;">
+          <img src="https://hyperxgt.com/assets/hyperxgt-logo.png" alt="${brandName} Logo" style="height: 48px; max-width: 220px; object-fit: contain;">
+          <div style="color: #ed1c24; font-size: 11px; text-transform: uppercase; font-weight: 900; letter-spacing: 0.15em; margin-top: 4px;">SECURITY CENTER</div>
+        </div>
+        <div style="padding: 36px 32px; line-height: 1.6;">
+          <h2 style="color: #111; margin-top: 0;">Password Reset Request 🔒</h2>
+          <p>Hi <strong>${esc(toName || toEmail)}</strong>,</p>
+          <p>We received a password reset request for your <strong>${brandName} Driver Garage</strong> account.</p>
+          <div style="text-align: center; margin: 32px 0;">
+            <a href="${verificationLink}" target="_blank" style="background: #111; color: #ffffff; padding: 16px 36px; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 15px; display: inline-block;">Reset Account Password →</a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  const payload = {
+    from: fromHeader,
+    to: [toEmail.toLowerCase().trim()],
+    reply_to: replyToEmail,
+    subject: subject,
+    html: htmlContent
+  };
+
+  try {
+    let rRes = await httpsRequest('https://api.resend.com/emails', 'POST', {
+      'Authorization': `Bearer ${resendApiKey}`
+    }, payload);
+
+    if (rRes.statusCode >= 400 && fromHeader !== `${senderName} <onboarding@resend.dev>`) {
+      payload.from = `${senderName} <onboarding@resend.dev>`;
+      await httpsRequest('https://api.resend.com/emails', 'POST', {
+        'Authorization': `Bearer ${resendApiKey}`
+      }, payload);
+    }
+  } catch(e) {
+    console.error("Direct email dispatch error:", e.message);
+  }
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');
@@ -71,7 +174,7 @@ module.exports = async (req, res) => {
     const redirectUrl = `${redirectDomain}/account.html`;
 
     // 1. SUPABASE SIGNUP / REGISTRATION (auth/v1/signup)
-    if (action === 'register') {
+    if (action === 'register' || action === 'signup') {
       const { name, email, phone, password } = req.body || {};
 
       if (!email || !password) {
@@ -130,15 +233,9 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: supabaseError || "Failed to register user in Supabase Auth." });
       }
 
-      // Trigger Branded Welcome & Verification Email Dispatch
+      // Trigger Branded Welcome & Verification Email Dispatch directly
       try {
-        const origin = req.headers.host ? `https://${req.headers.host}` : redirectDomain;
-        await httpsRequest(`${origin}/api/send-email`, 'POST', { 'Content-Type': 'application/json' }, {
-          template: 'verification',
-          toEmail: email,
-          toName: name || 'Racer',
-          confirmUrl: redirectUrl
-        });
+        await dispatchDirectEmail('verification', email, name, redirectUrl);
       } catch(e) {}
 
       // Supabase only returns a session when email confirmation is disabled. When it does
@@ -248,14 +345,9 @@ module.exports = async (req, res) => {
         }
       } catch(err) {}
 
-      // Trigger Branded Password Reset Email
+      // Trigger Branded Password Reset Email directly
       try {
-        const origin = req.headers.host ? `https://${req.headers.host}` : redirectDomain;
-        await httpsRequest(`${origin}/api/send-email`, 'POST', { 'Content-Type': 'application/json' }, {
-          template: 'password_reset',
-          toEmail: email,
-          confirmUrl: redirectUrl
-        });
+        await dispatchDirectEmail('password_reset', email, '', redirectUrl);
       } catch(e) {}
 
       return res.status(200).json({
