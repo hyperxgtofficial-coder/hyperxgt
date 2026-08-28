@@ -156,11 +156,23 @@ module.exports = async (req, res) => {
       // Persist to Supabase DB if credentials set (use service_role key for writes - RLS requires it)
       if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
-          await httpsRequest(`${supabaseUrl}/rest/v1/products?id=eq.${updatedProd.id}`, 'PATCH', {
+          const dbItem = {
+            id: Number(updatedProd.id),
+            sku: String(updatedProd.sku || `HX-${updatedProd.id}`),
+            name: String(updatedProd.name || ''),
+            category: String(updatedProd.category || ''),
+            price: Number(updatedProd.price || 0),
+            regular_price: Number(updatedProd.mrp || 0),
+            stock: Number(updatedProd.stock !== undefined ? updatedProd.stock : 25),
+            image: String(updatedProd.image || ''),
+            images: Array.isArray(updatedProd.images) ? updatedProd.images : [],
+            no_image: Boolean(updatedProd.no_image)
+          };
+          await httpsRequest(`${supabaseUrl}/rest/v1/products`, 'POST', {
             'apikey': supabaseServiceKey,
             'Authorization': `Bearer ${supabaseServiceKey}`,
-            'Prefer': 'return=minimal'
-          }, updatedProd);
+            'Prefer': 'resolution=merge-duplicates, return=minimal'
+          }, [dbItem]);
         } catch(e) { console.error('Supabase PUT error:', e.message); }
       }
 
@@ -179,7 +191,31 @@ module.exports = async (req, res) => {
       if (req.query.bulk === '1' && Array.isArray(payload)) {
         cachedProducts = payload;
         saveProductsToJsonDisk(cachedProducts);
-        return res.status(200).json({ success: true, message: `Bulk updated ${payload.length} products` });
+
+        if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
+          try {
+            const dbPayload = payload.map(p => ({
+              id: Number(p.id),
+              sku: String(p.sku || `HX-${p.id}`),
+              name: String(p.name || ''),
+              category: String(p.category || ''),
+              price: Number(p.price || 0),
+              regular_price: Number(p.mrp || 0),
+              stock: Number(p.stock !== undefined ? p.stock : 25),
+              image: String(p.image || ''),
+              images: Array.isArray(p.images) ? p.images : [],
+              no_image: Boolean(p.no_image)
+            }));
+
+            await httpsRequest(`${supabaseUrl}/rest/v1/products`, 'POST', {
+              'apikey': supabaseServiceKey,
+              'Authorization': `Bearer ${supabaseServiceKey}`,
+              'Prefer': 'resolution=merge-duplicates, return=minimal'
+            }, dbPayload);
+          } catch(e) { console.error('Supabase bulk POST error:', e.message); }
+        }
+
+        return res.status(200).json({ success: true, message: `Bulk updated ${payload.length} products to live database!` });
       }
 
       const newProd = payload;
@@ -190,11 +226,23 @@ module.exports = async (req, res) => {
 
       if (supabaseServiceKey && supabaseUrl.includes("supabase")) {
         try {
+          const dbItem = {
+            id: Number(newProd.id),
+            sku: String(newProd.sku || `HX-${newProd.id}`),
+            name: String(newProd.name || ''),
+            category: String(newProd.category || ''),
+            price: Number(newProd.price || 0),
+            regular_price: Number(newProd.mrp || 0),
+            stock: Number(newProd.stock !== undefined ? newProd.stock : 25),
+            image: String(newProd.image || ''),
+            images: Array.isArray(newProd.images) ? newProd.images : [],
+            no_image: Boolean(newProd.no_image)
+          };
           await httpsRequest(`${supabaseUrl}/rest/v1/products`, 'POST', {
             'apikey': supabaseServiceKey,
             'Authorization': `Bearer ${supabaseServiceKey}`,
-            'Prefer': 'return=minimal'
-          }, newProd);
+            'Prefer': 'resolution=merge-duplicates, return=minimal'
+          }, [dbItem]);
         } catch(e) { console.error('Supabase POST error:', e.message); }
       }
 
