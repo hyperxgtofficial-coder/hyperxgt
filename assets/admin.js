@@ -234,7 +234,7 @@ window.setAsHeroImageByIdx = function(idx) {
   }
 };
 
-function compressImageFile(file, maxWidth = 1000, maxHeight = 1000, quality = 0.82) {
+function compressImageFile(file, maxWidth = 1000, maxHeight = 1000, quality = 0.84) {
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = (e) => {
